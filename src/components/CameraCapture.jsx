@@ -15,7 +15,6 @@ export default function CameraCapture({ onCapture }) {
   }, [facingMode]);
 
   const startCamera = async () => {
-    // Stop any existing stream first
     stopCamera();
 
     try {
@@ -98,7 +97,9 @@ export default function CameraCapture({ onCapture }) {
         ref={videoRef}
         autoPlay
         playsInline
-        className="w-full h-[75%] rounded shadow-md object-cover"
+        className={`w-full h-[75%] rounded shadow-md object-cover ${
+          facingMode === "user" ? "scale-x-[-1]" : "scale-x-[-1]"
+        }`}
       />
       <canvas ref={canvasRef} className="hidden" />
 

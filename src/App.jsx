@@ -1,39 +1,33 @@
-import { useState } from "react";
-import CameraCapture from "./components/CameraCapture";
+import { useEffect, useState } from "react";
+// import { SplashScreen } from "./screens/splash";
+import Onboarding from "./screens/Onboarding";
+import Home from "./screens/Home";
 
 function App() {
-  const [showCamera, setShowCamera] = useState(false);
-  const [capturedImage, setCapturedImage] = useState(null);
+  const [showSplash, setShowSplash] = useState(true);
+  const [isNewUser, setIsNewUser] = useState(false);
 
-  const handleImageCapture = (imgData) => {
-    setCapturedImage(imgData);
-    setShowCamera(false);
+  useEffect(() => {
+    const isNew = !localStorage.getItem("hasOnboarded");
+    setIsNewUser(isNew);
+
+    const splashTimer = setTimeout(() => {
+      // setShowSplash(false);
+    }, 1500); 
+
+    return () => clearTimeout(splashTimer);
+  }, []);
+
+  const handleOnboardingComplete = () => {
+    localStorage.setItem("hasOnboarded", "true");
+    setIsNewUser(false);
   };
 
-  return (
-    <div className="p-4 font-poppin">
-      {!showCamera && (
-        <button
-          onClick={() => setShowCamera(true)}
-          className="bg-red text-white px-6 py-3 rounded"
-        >
-          Open Camera
-        </button>
-      )}
+  // if (showSplash) return <SplashScreen />;
 
-      {showCamera && <CameraCapture onCapture={handleImageCapture} />}
+  if (isNewUser) return <Onboarding onComplete={handleOnboardingComplete} />;
 
-      {!showCamera && capturedImage && (
-        <div className="mt-4 flex justify-center">
-          <img
-            src={capturedImage}
-            alt="Captured"
-            className="rounded shadow-md max-w-full h-auto"
-          />
-        </div>
-      )}
-    </div>
-  );
+  return <Home />;
 }
 
 export default App;
