@@ -17,20 +17,20 @@ export default function CameraCapture({ onCapture }) {
   const startCamera = async () => {
     // Stop any existing stream first
     stopCamera();
-  
+
     try {
       const newStream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode,
         },
       });
-  
+
       const video = videoRef.current;
       if (video) {
         video.srcObject = newStream;
         video.play();
       }
-  
+
       setStream(newStream);
     } catch (err) {
       console.error("Error accessing camera:", err);
@@ -93,12 +93,12 @@ export default function CameraCapture({ onCapture }) {
   };
 
   return (
-    <div className="flex flex-col h-screen items-center gap-4 p-4 relative">
+    <div className="flex flex-col h-screen items-center gap-4 py-4 px-3 relative">
       <video
         ref={videoRef}
         autoPlay
         playsInline
-        className="w-full h-[80%] rounded shadow-md object-cover"
+        className="w-full h-[75%] rounded shadow-md object-cover"
       />
       <canvas ref={canvasRef} className="hidden" />
 
