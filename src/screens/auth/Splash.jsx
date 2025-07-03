@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
 
-const SplashScreen = ({ isNewUser }) => {
-  console.log('isNewUser: ', isNewUser);
+const SplashScreen = ({ isNewUser = true }) => {
   const [progress, setProgress] = useState(0);
   const navigate = useNavigate();
 
@@ -14,7 +13,7 @@ const SplashScreen = ({ isNewUser }) => {
         setProgress((prev) => {
           if (prev >= 100) {
             clearInterval(timer);
-            navigate('/dashboard');
+            navigate("/dashboard");
             return 100;
           }
           return prev + 1;
