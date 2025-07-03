@@ -6,7 +6,14 @@ import Home from "./screens/Home";
 function App() {
   const [showSplash, setShowSplash] = useState(true);
   const [isNewUser, setIsNewUser] = useState(false);
-
+  useEffect(() => {
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      console.log('👍 beforeinstallprompt fired');
+      window.deferredPrompt = e;
+    });
+  }, []);
+  
   useEffect(() => {
     const isNew = !localStorage.getItem("hasOnboarded");
     setIsNewUser(isNew);
