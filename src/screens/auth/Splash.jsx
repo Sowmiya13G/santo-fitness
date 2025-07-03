@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
 
-const SplashScreen = ({ isNewUser = true }) => {
+const SplashScreen = ({ isNewUser = false }) => {
   const [progress, setProgress] = useState(0);
   const navigate = useNavigate();
 
