@@ -78,7 +78,7 @@ const SplashScreen = ({ isNewUser = false }) => {
         setProgress((prev) => {
           if (prev >= 100) {
             clearInterval(timer);
-            setTimeout(() => navigate("/dashboard"), 200);
+            setTimeout(() => navigate("/home"), 200);
             return 100;
           }
           return prev + 1;
