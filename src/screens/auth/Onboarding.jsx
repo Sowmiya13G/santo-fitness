@@ -6,7 +6,7 @@ export default function Onboarding({ onComplete }) {
         <p className="mb-4">Let’s get started with a quick tour.</p>
         <button
           onClick={onComplete}
-          className="bg-red text-white px-6 py-2 rounded"
+          className="bg-primary text-white px-6 py-2 rounded"
         >
           Finish Onboarding
         </button>

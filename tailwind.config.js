@@ -4,18 +4,26 @@ export default {
   theme: {
     extend: {
       colors: {
-        gray: "#ADA4A5",
-        red: "#B12525",
-        red_63: "#F96363",
-        red_4D: "#E54D4D",
-        red_07: "#9C0707",
+        // common
+        primary: "#9C0707",
+        secondary: "#E54D4D",
+        // background
+        bg_primary: "#ADA4A5",
+        bg_secondary: "#ADA4A5",
+        // font
+        font_primary: "#000",
+        font_secondary: "#ddd",
+        // border
+        border_primary: "#000",
+        border_secondary: "#ddd",
+        // opacity
+        opacity_primary:"#9C070720"
       },
       backgroundImage: {
-        "red-gradient": "linear-gradient(to bottom, #E54D4D, #9C0707)",
-        "red-gradient-1": "linear-gradient(to bottom, #B12525, #F96363)",
+        "primary-gradient": "linear-gradient(to bottom, #E54D4D, #9C0707)",
       },
       fontFamily: {
-        poppin: ["Poppins", "sans-serif"], 
+        poppin: ["Poppins", "sans-serif"],
       },
     },
   },

@@ -32,7 +32,7 @@ export default function AppRoutes() {
       {isLoggedIn && (
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<Home />} />
-          <Route path="graph" element={<Graph />} />
+          <Route path="activity" element={<Graph />} />
           <Route path="camera" element={<Camera />} />
           <Route path="profile" element={<Profile />} />
           <Route path="recipes" element={<Recipes />} />

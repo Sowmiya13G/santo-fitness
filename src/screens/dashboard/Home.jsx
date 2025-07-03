@@ -11,11 +11,11 @@ function Home() {
   };
 
   return (
-    <div className="p-4 font-poppin">
+    <div className="p-4 font-poppin bg-white h-screen w-screen">
       {!showCamera && (
         <button
           onClick={() => setShowCamera(true)}
-          className="bg-red text-white px-6 py-3 rounded"
+          className="bg-primary text-white px-6 py-3 rounded"
         >
           Open Camera
         </button>

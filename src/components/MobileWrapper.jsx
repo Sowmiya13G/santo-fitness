@@ -16,7 +16,7 @@ function MobileWrapper({ children }) {
 
   if (!isMobile) {
     return (
-      <div className="h-screen flex items-center justify-center text-center px-4 bg-black text-white">
+      <div className="h-screen flex items-center justify-center text-center px-4 bg-font_primary text-white">
         <p className="text-lg">
           🚫 This app is only supported on mobile devices.<br />
           Please switch to a smaller screen to continue.

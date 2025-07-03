@@ -109,7 +109,7 @@ export default function CameraCapture({ onCapture }) {
         </button>
         <button
           onClick={capturePhoto}
-          className="bg-black border-4 border-white p-10 rounded-full mt-4"
+          className="bg-font_primary border-4 border-white p-10 rounded-full mt-4"
           aria-label="Capture Photo"
         ></button>
         <button onClick={toggleFlash} className=" text-white">
