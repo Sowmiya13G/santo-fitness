@@ -20,7 +20,8 @@ export default {
         opacity_primary:"#9C070720"
       },
       backgroundImage: {
-        "primary-gradient": "linear-gradient(to bottom, #E54D4D, #9C0707)",
+        // "primary-gradient": "linear-gradient(to right, #E54D4D, #9C0707)",
+        "primary-gradient": "linear-gradient(45deg, #E54D4D, #9C0707)",
       },
       fontFamily: {
         poppin: ["Poppins", "sans-serif"],
