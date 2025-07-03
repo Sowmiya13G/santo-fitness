@@ -71,24 +71,23 @@ const SplashScreen = ({ isNewUser = false }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    let timer;
-
+    const isNewUser = localStorage.getItem("isNewUser") === "true";
+  
     if (!isNewUser) {
-      timer = setInterval(() => {
+      const timer = setInterval(() => {
         setProgress((prev) => {
           if (prev >= 100) {
             clearInterval(timer);
-            // Give a slight delay before navigating for a smoother UX
             setTimeout(() => navigate("/dashboard"), 200);
             return 100;
           }
-          return prev + 1; // Adjust step for smoother animation
+          return prev + 1;
         });
-      }, 10); // 10ms = 1% every 10ms → 100 * 10ms = 1s total
+      }, 10);
+  
+      return () => clearInterval(timer);
     }
-
-    return () => clearInterval(timer);
-  }, [isNewUser, navigate]);
+  }, [navigate]);
 
   const handleStart = () => {
     navigate("/onboarding");
