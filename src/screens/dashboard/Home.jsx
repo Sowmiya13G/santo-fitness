@@ -1,5 +1,5 @@
 import { useState } from "react";
-import CameraCapture from "../components/CameraCapture";
+import CameraCapture from "../../components/CameraCapture";
 
 function Home() {
   const [showCamera, setShowCamera] = useState(false);
