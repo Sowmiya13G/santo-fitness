@@ -1,24 +1,7 @@
-import { useQuery, useMutation } from '@tanstack/react-query';
-import axiosInstance from '../../api/axiosInstance';
-import API_ENDPOINTS from '../../api/endpoints';
+import axiosInstance from '../../apiService/axiosInstance';
+import API_ENDPOINTS from '../../apiService/endpoints';
 
-const fetchUser = async () => {
-  const { data } = await axiosInstance.get(API_ENDPOINTS.user.profile);
-  return data;
+export const login = async (credentials) => {
+  const response = await axiosInstance.post(API_ENDPOINTS.AUTH.LOGIN, credentials);
+  return response.data; 
 };
-
-const updateUser = async (userData) => {
-  const { data } = await axiosInstance.put(API_ENDPOINTS.user.update, userData);
-  return data;
-};
-
-export const useUserQuery = () =>
-  useQuery({
-    queryKey: ['user'],
-    queryFn: fetchUser,
-  });
-
-export const useUpdateUser = () =>
-  useMutation({
-    mutationFn: updateUser,
-  });

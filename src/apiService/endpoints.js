@@ -1,10 +1,9 @@
 const API_ENDPOINTS = {
-    user: {
-      profile: '/user',
-      update: '/user',
-    },
-    // Add other endpoints here
-  };
-  
-  export default API_ENDPOINTS;
-  
+  AUTH: {
+    LOGIN: "/login",
+    FORGET_PASSWORD: "/forgot-password",
+    RESET_PASSWORD: "/reset-password",
+  },
+};
+
+export default API_ENDPOINTS;

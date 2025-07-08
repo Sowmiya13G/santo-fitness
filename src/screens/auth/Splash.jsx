@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import { useAuth } from "../../hooks/useAuth";
+import Button from "../../components/Button";
 
 const SplashScreen = () => {
   const [progress, setProgress] = useState(0);
@@ -9,9 +10,9 @@ const SplashScreen = () => {
   const { isLoggedIn } = useAuth();
 
   useEffect(() => {
-    if (!localStorage.getItem("token")) {
-      localStorage.setItem("token", "mock_token");
-    }
+    // if (!localStorage.getItem("token")) {
+    //   // localStorage.setItem("token", "mock_token");
+    // }
   }, []);
 
   useEffect(() => {
@@ -50,12 +51,7 @@ const SplashScreen = () => {
       </div>
 
       {!isLoggedIn ? (
-        <button
-          onClick={handleStart}
-          className="bg-white text-primary-500 px-6 py-3 rounded-full font-semibold shadow-md mt-8 bottom-5"
-        >
-          Get Started
-        </button>
+        <Button onClick={handleStart}>Get Started</Button>
       ) : (
         <div className="w-full h-3 bg-white/30 rounded-full overflow-hidden mt-4">
           <div
