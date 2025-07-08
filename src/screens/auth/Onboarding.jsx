@@ -1,16 +1,75 @@
+import React, { useState } from "react";
+import { FaAngleRight } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+// constants
+import { onboardingContent } from "../../constants/staticData";
 
 export default function Onboarding({ onComplete }) {
-    return (
-      <div className="p-4">
-        <h2 className="text-2xl font-bold mb-4">Welcome to Santo Fitness!</h2>
-        <p className="mb-4">Let’s get started with a quick tour.</p>
-        <button
-          onClick={onComplete}
-          className="bg-primary text-white px-6 py-2 rounded"
-        >
-          Finish Onboarding
-        </button>
+  const navigate = useNavigate();
+  const [step, setStep] = useState(0);
+
+  const isLastStep = step === onboardingContent.length - 1;
+  const totalSteps = onboardingContent.length;
+  const progressPercent = ((step + 1) / totalSteps) * 100;
+
+  const { image, title, content } = onboardingContent[step];
+
+  const handleNext = () => {
+    if (!isLastStep) {
+      setStep((prev) => prev + 1);
+    } else {
+      navigate("/login")
+    }
+  };
+
+  return (
+    <div className="h-screen w-screen flex flex-col justify-between bg-white">
+      <img
+        src={image}
+        alt={title}
+        className="object-contain w-full max-h-[60%]"
+      />
+
+      <div className="mx-5">
+        <h2 className="text-black text-2xl font-bold mb-2">{title}</h2>
+        <p className="text-gray-600">{content}</p>
       </div>
-    );
-  }
-  
+
+      <div className="flex justify-end items-center p-5">
+        <div className="relative w-16 h-16">
+          <svg
+            className="absolute top-0 left-0 w-full h-full"
+            viewBox="0 0 36 36"
+          >
+            <path
+              className="text-gray-300"
+              d="M18 2.0845
+                a 15.9155 15.9155 0 0 1 0 31.831
+                a 15.9155 15.9155 0 0 1 0 -31.831"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            />
+            <path
+              className="text-primary transition-all duration-300"
+              d="M18 2.0845
+                a 15.9155 15.9155 0 0 1 0 31.831
+                a 15.9155 15.9155 0 0 1 0 -31.831"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeDasharray={`${progressPercent}, 100`}
+            />
+          </svg>
+          <button
+            onClick={handleNext}
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
+                       bg-primary text-white rounded-full p-3 shadow-md hover:scale-105 transition focus:outline-none focus:ring-0"
+          >
+            <FaAngleRight className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
