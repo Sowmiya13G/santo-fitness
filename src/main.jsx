@@ -6,6 +6,12 @@ import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import { registerSW } from "virtual:pwa-register";
 
+import { QueryClientProvider } from "@tanstack/react-query";
+import { Provider } from "react-redux";
+import { queryClient } from "./app/queryClient";
+import { store } from "./app/store";
+
+// Register the service worker for PWA support
 registerSW({
   onNeedRefresh() {
     if (confirm("New version available. Reload?")) {
@@ -18,7 +24,13 @@ registerSW({
 });
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>
+  // <React.StrictMode>
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </QueryClientProvider>
+    </Provider>
+  // </React.StrictMode>
 );

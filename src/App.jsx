@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
-import { Route, Routes } from "react-router-dom";
 import AppRoutes from "./routes/AppRoutes";
+
 function App() {
   useEffect(() => {
     const handleBeforeInstallPrompt = (e) => {
