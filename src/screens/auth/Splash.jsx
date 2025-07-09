@@ -37,7 +37,7 @@ const SplashScreen = () => {
   };
 
   return (
-    <div className="fixed inset-0 bg-primary-gradient text-white flex flex-col items-center justify-between p-8 z-50">
+    <div className="h-screen w-screen fixed inset-0 bg-primary-gradient text-white flex flex-col items-center justify-between p-8 z-50">
       <div className="flex flex-col items-center justify-center mt-24">
         <img
           src={logo}
@@ -51,7 +51,7 @@ const SplashScreen = () => {
       </div>
 
       {!isLoggedIn ? (
-        <Button onClick={handleStart}>Get Started</Button>
+        <Button onClick={handleStart} variant="secondary">Get Started</Button>
       ) : (
         <div className="w-full h-3 bg-white/30 rounded-full overflow-hidden mt-4">
           <div

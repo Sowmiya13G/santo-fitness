@@ -19,6 +19,8 @@ export default {
         border_secondary: "#ddd",
         // opacity
         opacity_primary: "#9C070720",
+        icon:"#8E8E93",
+        feild_primay:"#F7F8F8"
       },
       backgroundImage: {
         // "primary-gradient": "linear-gradient(to right, #E54D4D, #9C0707)",
