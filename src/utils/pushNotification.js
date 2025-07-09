@@ -1,15 +1,13 @@
 // pushNotification.js
-import { messaging, getToken } from "../../firebase";
+import { getToken, messaging } from "../../firebase";
 
 const VAPID_KEY =
   "BHlaAMHjZCKXfxWz2GeFVWWXQAAtXPaM-jXdz1fVyJpmkbyLIbbii7jdHO5VyzldnQA04EL6Bqg4JdTYOLy9LkI";
 export const requestForToken = async () => {
   try {
     const currentToken = await getToken(messaging, { vapidKey: VAPID_KEY });
-    console.log('currentToken: ', currentToken);
     if (currentToken) {
-      console.log("FCM Token:", currentToken);
-      // Send token to server
+      localStorage.setItem("fcmToken", currentToken);
       return currentToken;
     } else {
       console.warn(

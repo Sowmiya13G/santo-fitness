@@ -1,29 +1,23 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
-import SplashScreen from "../screens/auth/Splash";
-import Onboarding from "../screens/auth/Onboarding";
+import ForgotPassword from "../screens/auth/ForgotPassword";
 import Login from "../screens/auth/Login";
 import OTP from "../screens/auth/OTP";
-import ForgotPassword from "../screens/auth/ForgotPassword";
+import Onboarding from "../screens/auth/Onboarding";
+import SplashScreen from "../screens/auth/Splash";
 
-import DashboardLayout from "./DashboardLayout";
-import Home from "../screens/dashboard/Home";
-import Graph from "../screens/dashboard/Graph";
 import Camera from "../screens/dashboard/Camera";
+import Graph from "../screens/dashboard/Graph";
+import Home from "../screens/dashboard/Home";
 import Profile from "../screens/dashboard/Profile";
 import Recipes from "../screens/dashboard/Recipes";
-import { useEffect } from "react";
-import { requestForToken } from "../components/pushNotification";
+import DashboardLayout from "./DashboardLayout";
+
 
 export default function AppRoutes() {
   const { isLoggedIn } = useAuth();
 
-  useEffect(() => {
-    requestForToken();
-    // if (isLoggedIn) {
-    // }
-  }, [isLoggedIn]);
   return (
     <Routes>
       <Route path="/" element={<SplashScreen />} />

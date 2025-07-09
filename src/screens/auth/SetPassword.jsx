@@ -11,7 +11,7 @@ import { sendFCMToken } from "../../features/user/userAPI";
 import { setFCMToken } from "../../features/user/userSlice";
 import { requestForToken } from "../../utils/pushNotification";
 
-function Login() {
+function SetPassword() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [phone, setPhone] = useState("");
@@ -55,13 +55,11 @@ function Login() {
         const msg =
           err?.response?.data?.message || "Invalid phone number or password.";
         showToast("error", msg);
-        setLoading(false);
       } finally {
         setLoading(false);
       }
     } else {
       showToast("warning", "Enter values");
-      setLoading(false);
     }
   };
 
@@ -115,4 +113,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default SetPassword;

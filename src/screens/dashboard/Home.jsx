@@ -9,7 +9,7 @@ function Home() {
     setCapturedImage(imgData);
     setShowCamera(false);
   };
-// localStorage.removeItem("token")
+localStorage.removeItem("token")
   return (
     <div className="p-4 font-poppin bg-white h-screen w-screen">
       {!showCamera && (

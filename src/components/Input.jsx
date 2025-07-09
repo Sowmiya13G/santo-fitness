@@ -6,6 +6,8 @@ const getInputPattern = (type) => {
       return "[0-9]*";
     case "alphanumeric":
       return "[A-Za-z0-9]*";
+    case "email":
+      return "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
     case "alphabetic":
     default:
       return "[A-Za-z]*";
@@ -21,7 +23,7 @@ const Input = ({
   iconPosition = "prefix",
   wrapperClassName = "",
   inputClassName = "",
-  maxLength
+  maxLength,
 }) => {
   const pattern = getInputPattern(type);
 
