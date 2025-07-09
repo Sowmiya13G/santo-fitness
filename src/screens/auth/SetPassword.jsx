@@ -49,7 +49,7 @@ function SetPassword() {
           dispatch(setToken(response.data?.token));
           handleSendFCM();
           showToast("success", "Login successful!");
-          navigate("/dashboard");
+          navigate("/home");
         }
       } catch (err) {
         const msg =

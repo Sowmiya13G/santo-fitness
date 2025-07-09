@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FiLock, FiPhone } from "react-icons/fi";
+import { FiLock, FiLogIn, FiPhone } from "react-icons/fi";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
@@ -49,7 +49,7 @@ function Login() {
           dispatch(setToken(response.data?.token));
           handleSendFCM();
           showToast("success", "Login successful!");
-          navigate("/dashboard");
+          navigate("/home");
         }
       } catch (err) {
         const msg =
@@ -107,7 +107,7 @@ function Login() {
       </div>
 
       <div className="w-full max-w-md absolute bottom-10 px-6">
-        <Button onClick={handleLogin} disabled={loading}>
+        <Button onClick={handleLogin} disabled={loading}icon={<FiLogIn/>} >
           {loading ? "Logging in..." : "Login"}
         </Button>
       </div>

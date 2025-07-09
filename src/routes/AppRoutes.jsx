@@ -14,13 +14,13 @@ import Profile from "../screens/dashboard/Profile";
 import Recipes from "../screens/dashboard/Recipes";
 import DashboardLayout from "./DashboardLayout";
 
-
 export default function AppRoutes() {
   const { isLoggedIn } = useAuth();
 
   return (
     <Routes>
       <Route path="/" element={<SplashScreen />} />
+
       {!isLoggedIn && (
         <>
           <Route path="/onboarding" element={<Onboarding />} />
@@ -31,13 +31,15 @@ export default function AppRoutes() {
       )}
 
       {isLoggedIn && (
-        <Route path="/dashboard" element={<DashboardLayout />}>
-          <Route index element={<Home />} />
-          <Route path="activity" element={<Graph />} />
-          <Route path="camera" element={<Camera />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="recipes" element={<Recipes />} />
-        </Route>
+        <>
+          <Route element={<DashboardLayout />}>
+            <Route path="/home" element={<Home />} />
+            <Route path="/activity" element={<Graph />} />
+            <Route path="/camera" element={<Camera />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/recipes" element={<Recipes />} />
+          </Route>
+        </>
       )}
 
       <Route path="*" element={<Navigate to="/" />} />

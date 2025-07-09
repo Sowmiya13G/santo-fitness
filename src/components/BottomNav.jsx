@@ -14,7 +14,7 @@ import ProfileInactive from "../assets/icons/profile.svg";
 export default function BottomNav() {
   const navItems = [
     {
-      to: "/dashboard",
+      to: "/home",
       label: "Home",
       icon: {
         active: HomeActive,
@@ -22,7 +22,7 @@ export default function BottomNav() {
       },
     },
     {
-      to: "/dashboard/activity",
+      to: "/activity",
       label: "Graph",
       icon: {
         active: GraphActive,
@@ -30,7 +30,7 @@ export default function BottomNav() {
       },
     },
     {
-      to: "/dashboard/camera",
+      to: "/camera",
       label: "Camera",
       icon: {
         active: CameraActive,
@@ -38,7 +38,7 @@ export default function BottomNav() {
       },
     },
     {
-      to: "/dashboard/profile",
+      to: "/profile",
       label: "Profile",
       icon: {
         active: ProfileActive,
@@ -57,7 +57,7 @@ export default function BottomNav() {
 
       <div className="bg-white rounded-t-3xl shadow-[0_-4px_10px_rgba(0,0,0,0.1)] px-8 pt-6 pb-5 flex justify-between items-center">
         {navItems.slice(0, 2).map(({ to, icon }, i) => (
-          <NavLink key={i} to={to} end={to === "/dashboard"}>
+          <NavLink key={i} to={to} end={to === "/home"}>
             {({ isActive }) => (
               <div className="flex flex-col items-center text-xs w-14">
                 <img
