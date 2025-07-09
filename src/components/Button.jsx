@@ -9,7 +9,6 @@ const Button = ({
   variant = "primary",
   customClassName=""
 }) => {
-  console.log('variant: ', variant);
   const isPrimary = variant === "primary";
 
   const baseStyles =

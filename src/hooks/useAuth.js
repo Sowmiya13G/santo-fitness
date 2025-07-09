@@ -1,6 +1,7 @@
+import { useSelector } from "react-redux";
+
 export const useAuth = () => {
-    const isLoggedIn = localStorage.getItem('token') !== null
-    console.log('isLoggedIn: ',localStorage.getItem('token'), isLoggedIn);
-    return { isLoggedIn }
-  }
-  
+  const token = useSelector((state) => state.auth.token);
+  const isLoggedIn = !!token;
+  return { isLoggedIn };
+};

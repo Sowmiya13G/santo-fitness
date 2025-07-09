@@ -21,7 +21,7 @@ const Input = ({
   iconPosition = "prefix",
   wrapperClassName = "",
   inputClassName = "",
-  maxLength=10
+  maxLength
 }) => {
   const pattern = getInputPattern(type);
 

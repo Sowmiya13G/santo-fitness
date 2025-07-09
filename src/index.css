@@ -84,3 +84,36 @@ button:focus-visible {
     user-select: none;
   }
 }
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10%);
+  }
+}
+
+.slide-in {
+  animation: slideIn 0.3s ease forwards;
+}
+
+.slide-out {
+  animation: slideOut 0.2s ease forwards;
+}
+.Toastify__progress-bar {
+  height: 6px !important;
+  border-radius: 0 0 6px 6px;
+}

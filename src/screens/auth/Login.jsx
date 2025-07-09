@@ -1,17 +1,46 @@
 import React, { useState } from "react";
-import Input from "../../components/Input";
-import Button from "../../components/Button";
-import { FiPhone, FiLock } from "react-icons/fi";
+import { FiLock, FiPhone } from "react-icons/fi";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Button from "../../components/Button";
+import Input from "../../components/Input";
+import { showToast } from "../../components/Toast";
+import { login } from "../../features/auth/authAPI";
+import { setToken } from "../../features/auth/authSlice";
 
 function Login() {
   const navigate = useNavigate();
-
+   const dispatch = useDispatch(); 
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = () => {
-    console.log("Logging in with:", { phone, password });
+  const handleLogin = async () => {
+    setLoading(true);
+    if (phone && password) {
+      try {
+        const payload = {
+          phoneNumber: phone,
+          password: password,
+        };
+
+        const response = await login(payload);
+        if (response?.status === 200) {
+          console.log("response: ", response);
+          dispatch(setToken(response.data?.token));
+          showToast("success", "Login successful!");
+          navigate("/dashboard");
+        }
+      } catch (err) {
+        const msg =
+          err?.response?.data?.message || "Invalid phone number or password.";
+        showToast("error", msg);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      showToast("warning", "Enter values");
+    }
   };
 
   return (
@@ -21,11 +50,14 @@ function Login() {
         <p className="text-font_primary font-bold text-xl">Welcome back</p>
       </div>
 
-      <div className="w-full max-w-md space-y-4 mt-14">
+      <div className="w-full max-w-md space-y-4 mt-32">
         <Input
           placeholder="Enter phone number"
           value={phone}
-          onChange={(e) => setPhone(e.target.value)}
+          onChange={(e) => {
+            const value = e.target.value;
+            if (/^\d{0,10}$/.test(value)) setPhone(value);
+          }}
           type="numeric"
           icon={<FiPhone />}
           iconPosition="prefix"
@@ -42,7 +74,7 @@ function Login() {
         />
 
         <p
-          className="text-font_secondary underline text-sm text-center"
+          className="text-font_secondary underline text-sm text-center cursor-pointer"
           onClick={() => navigate("/forgot-password")}
         >
           Forgot Password?
@@ -50,7 +82,9 @@ function Login() {
       </div>
 
       <div className="w-full max-w-md absolute bottom-10 px-6">
-        <Button onClick={handleLogin}>Login</Button>
+        <Button onClick={handleLogin} disabled={loading}>
+          {loading ? "Logging in..." : "Login"}
+        </Button>
       </div>
     </div>
   );

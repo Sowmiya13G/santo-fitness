@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import AppRoutes from "./routes/AppRoutes";
 
 function App() {
@@ -19,7 +20,12 @@ function App() {
     };
   }, []);
 
-  return <AppRoutes />;
+  return (
+    <>
+      <AppRoutes />
+      <ToastContainer position="top-center" autoClose={3000} />
+    </>
+  );
 }
 
 export default App;

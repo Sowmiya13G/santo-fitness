@@ -10,10 +10,11 @@ const SplashScreen = () => {
   const { isLoggedIn } = useAuth();
 
   useEffect(() => {
-    // if (!localStorage.getItem("token")) {
-    //   // localStorage.setItem("token", "mock_token");
-    // }
-  }, []);
+    if (isLoggedIn) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [isLoggedIn, navigate]);
+  
 
   useEffect(() => {
     if (isLoggedIn) {
