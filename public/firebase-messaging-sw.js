@@ -15,37 +15,38 @@ firebase.initializeApp({
   appId: "1:803941658163:web:41b70107c8f032cb577d46",
 });
 
-const messaging = firebase.messaging();
+firebase.messaging();
 
-self.addEventListener('notificationclick', function (event) {
+self.addEventListener("notificationclick", function (event) {
   console.log("Notification click received");
 
   event.notification.close();
 
   event.waitUntil(
-    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function (clientList) {
-      for (const client of clientList) {
-        if (client.url.includes("localhost:5173") && 'focus' in client) {
-          return client.focus(); // Will only focus if window is not minimized
+    clients
+      .matchAll({ type: "window", includeUncontrolled: true })
+      .then(function (clientList) {
+        for (const client of clientList) {
+          if (client.url.includes("localhost:5173") && "focus" in client) {
+            return client.focus(); // Will only focus if window is not minimized
+          }
         }
-      }
-      if (clients.openWindow) {
-        return clients.openWindow("http://localhost:5173/onboarding");
-      }
-    })
+        if (clients.openWindow) {
+          return clients.openWindow("http://localhost:5173/onboarding");
+        }
+      })
   );
 });
 
-messaging.onBackgroundMessage((payload) => {
-  const { title, body, url } = payload.notification;
+// messaging.onBackgroundMessage((payload) => {
+//   const { title, body, url } = payload.notification;
 
-  self.registration.showNotification(title, {
-    body,
-    icon: "/icon.png",
-    data: { url }, // ✅ Important
-  });
-});
-
+//   self.registration.showNotification(title, {
+//     body,
+//     icon: "/icon.png",
+//     data: { url }, // ✅ Important
+//   });
+// });
 
 // messaging.onBackgroundMessage((payload) => {
 //   console.log("Received background message: ", payload);
