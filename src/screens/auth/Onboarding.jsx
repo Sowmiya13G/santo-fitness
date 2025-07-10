@@ -18,12 +18,12 @@ export default function Onboarding({ onComplete }) {
     if (!isLastStep) {
       setStep((prev) => prev + 1);
     } else {
-      navigate("/login");
+      navigate("/login")
     }
   };
 
   return (
-    <div className="h-[100dvh] w-screen bg-white flex flex-col items-center px-6 justify-center font-poppin">
+    <div className="h-screen w-screen flex flex-col justify-between bg-white">
       <img
         src={image}
         alt={title}
@@ -36,19 +36,16 @@ export default function Onboarding({ onComplete }) {
       </div>
 
       <div className="flex justify-end items-center p-5">
-        <button
-          onClick={handleNext}
-          className="relative w-16 h-16 bg-transparent hover:border-0 transition outline-none focus:outline-none focus:ring-0 focus-visible:ring-0"
-        >
+        <div className="relative w-16 h-16">
           <svg
-            className="absolute top-0 left-0 w-full h-full pointer-events-none"
+            className="absolute top-0 left-0 w-full h-full"
             viewBox="0 0 36 36"
           >
             <path
               className="text-gray-300"
               d="M18 2.0845
-          a 15.9155 15.9155 0 0 1 0 31.831
-          a 15.9155 15.9155 0 0 1 0 -31.831"
+                a 15.9155 15.9155 0 0 1 0 31.831
+                a 15.9155 15.9155 0 0 1 0 -31.831"
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
@@ -56,21 +53,22 @@ export default function Onboarding({ onComplete }) {
             <path
               className="text-primary transition-all duration-300"
               d="M18 2.0845
-          a 15.9155 15.9155 0 0 1 0 31.831
-          a 15.9155 15.9155 0 0 1 0 -31.831"
+                a 15.9155 15.9155 0 0 1 0 31.831
+                a 15.9155 15.9155 0 0 1 0 -31.831"
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
               strokeDasharray={`${progressPercent}, 100`}
             />
           </svg>
-          <div
+          <button
+            onClick={handleNext}
             className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
-                 bg-primary text-white rounded-full p-3"
+                       bg-primary text-white rounded-full p-3 shadow-md hover:scale-105 transition focus:outline-none focus:ring-0"
           >
             <FaAngleRight className="w-4 h-4" />
-          </div>
-        </button>
+          </button>
+        </div>
       </div>
     </div>
   );
