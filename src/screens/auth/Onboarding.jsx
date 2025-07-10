@@ -18,12 +18,12 @@ export default function Onboarding({ onComplete }) {
     if (!isLastStep) {
       setStep((prev) => prev + 1);
     } else {
-      navigate("/login")
+      navigate("/login");
     }
   };
 
   return (
-    <div className="h-screen-dynamic  w-screen flex flex-col justify-between bg-white">
+    <div className="h-screen-dynamic overflow-hidden w-screen flex flex-col justify-between bg-white">
       <img
         src={image}
         alt={title}
