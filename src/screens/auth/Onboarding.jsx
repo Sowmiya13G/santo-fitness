@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { FaAngleRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-// constants
 import { onboardingContent } from "../../constants/staticData";
 
-export default function Onboarding({ onComplete }) {
+export default function Onboarding() {
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
 
@@ -23,48 +22,56 @@ export default function Onboarding({ onComplete }) {
   };
 
   return (
-    <div className="h-screen-dynamic overflow-hidden w-screen flex flex-col justify-between bg-white">
-      <img
-        src={image}
-        alt={title}
-        className="object-contain w-full max-h-[60%]"
-      />
-
-      <div className="mx-5">
-        <h2 className="text-black text-2xl font-bold mb-2">{title}</h2>
-        <p className="text-gray-600">{content}</p>
+    <div className="h-screen-dynamic w-screen flex flex-col justify-between bg-white">
+      {/* Image Section */}
+      <div className="flex-1 flex items-center justify-center p-4">
+        <img
+          src={image}
+          alt={title}
+          className="object-contain w-full max-h-[60vh]"
+        />
       </div>
 
-      <div className="flex justify-end items-center p-5">
+      {/* Text Content */}
+      <div className="px-6 pb-6">
+        <h2 className="text-black text-2xl font-bold mb-2">{title}</h2>
+        <p className="text-gray-600 text-base">{content}</p>
+      </div>
+
+      {/* Button + Progress */}
+      <div className="flex justify-end items-center px-6 pb-6">
         <div className="relative w-16 h-16">
           <svg
             className="absolute top-0 left-0 w-full h-full"
             viewBox="0 0 36 36"
           >
+            {/* Track Circle */}
             <path
-              className="text-gray-300"
               d="M18 2.0845
-                a 15.9155 15.9155 0 0 1 0 31.831
-                a 15.9155 15.9155 0 0 1 0 -31.831"
+                 a 15.9155 15.9155 0 0 1 0 31.831
+                 a 15.9155 15.9155 0 0 1 0 -31.831"
               fill="none"
-              stroke="currentColor"
+              stroke="#E5E7EB"
               strokeWidth="2"
             />
+            {/* Progress Path */}
             <path
-              className="text-primary transition-all duration-300"
               d="M18 2.0845
-                a 15.9155 15.9155 0 0 1 0 31.831
-                a 15.9155 15.9155 0 0 1 0 -31.831"
+                 a 15.9155 15.9155 0 0 1 0 31.831
+                 a 15.9155 15.9155 0 0 1 0 -31.831"
               fill="none"
-              stroke="currentColor"
+              stroke="#0ea5e9"
               strokeWidth="2"
               strokeDasharray={`${progressPercent}, 100`}
+              className="transition-all duration-300"
             />
           </svg>
+
+          {/* Button */}
           <button
             onClick={handleNext}
             className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
-                       bg-primary text-white rounded-full p-3 shadow-md hover:scale-105 transition focus:outline-none focus:ring-0"
+                       bg-primary text-white rounded-full p-3 shadow-md hover:scale-105 transition"
           >
             <FaAngleRight className="w-4 h-4" />
           </button>

@@ -31,7 +31,7 @@ const SplashScreen = () => {
 
       return () => clearInterval(timer);
     }
-  }, [navigate]);
+  }, [isLoggedIn, navigate]);
 
   const handleStart = () => {
     navigate("/onboarding");
