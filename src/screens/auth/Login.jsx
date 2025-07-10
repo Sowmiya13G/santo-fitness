@@ -1,23 +1,36 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+// packages
+import { yupResolver } from "@hookform/resolvers/yup";
+import { FormProvider, useForm } from "react-hook-form";
 import { FiLock, FiLogIn, FiPhone } from "react-icons/fi";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useForm, FormProvider } from "react-hook-form";
-
+// components
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import { showToast } from "../../components/Toast";
+// others
 import { login } from "../../features/auth/authAPI";
 import { setToken } from "../../features/auth/authSlice";
 import { sendFCMToken } from "../../features/user/userAPI";
 import { setFCMToken } from "../../features/user/userSlice";
 import { requestForToken } from "../../utils/pushNotification";
+import { loginSchema } from "../../utils/validation";
 
 function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const methods = useForm();
-  const [loading, setLoading] = useState(false);
+
+  const methods = useForm({
+    resolver: yupResolver(loginSchema),
+  });
+
+  const {
+    handleSubmit,
+    formState: { isSubmitting },
+  } = methods;
+
+  // ---------------------------------- functionalites ---------------------------------- //
 
   const handleSendFCM = () => {
     try {
@@ -35,7 +48,6 @@ function Login() {
   };
 
   const onSubmit = async (data) => {
-    setLoading(true);
     try {
       const payload = {
         phoneNumber: data.phoneNumber,
@@ -53,26 +65,25 @@ function Login() {
       const msg =
         err?.response?.data?.message || "Invalid phone number or password.";
       showToast("error", msg);
-    } finally {
-      setLoading(false);
     }
   };
+  // ---------------------------------- use effects ---------------------------------- //
 
   useEffect(() => {
     requestForToken();
   }, []);
+  // ---------------------------------- render ui ---------------------------------- //
 
   return (
-    <div className="min-h-screen w-screen bg-white flex flex-col items-center px-6 pt-32 pb-24 font-poppin relative">
-      <div className="w-full max-w-md text-center mt-12">
-        <p className="text-font_primary text-base mb-4">Hey there,</p>
+    <div className="min-h-screen w-screen bg-white flex flex-col items-center px-6 pt-16 pb-12 font-poppin justify-center relative">
+      <div className="w-full max-w-md text-center  ">
+        <p className="text-font_primary text-base mb-2">Hey there,</p>
         <p className="text-font_primary font-bold text-xl">Welcome back</p>
       </div>
-
       <FormProvider {...methods}>
         <form
-          onSubmit={methods.handleSubmit(onSubmit)}
-          className="w-full max-w-md space-y-4 mt-32"
+          onSubmit={handleSubmit(onSubmit)}
+          className="w-full max-w-md space-y-4 mt-16"
         >
           <Input
             name="phoneNumber"
@@ -81,30 +92,18 @@ function Login() {
             icon={<FiPhone />}
             iconPosition="prefix"
             maxLength={10}
-            rules={{
-              required: "Phone number is required",
-              minLength: {
-                value: 10,
-                message: "Enter valid Phone number",
-              },
-            }}
           />
 
           <Input
             name="password"
             placeholder="Enter password"
-            type="alphanumeric"
+            type="password"
             icon={<FiLock />}
             iconPosition="prefix"
-            rules={{
-              required: "Please enter your password",
-              // validate: (value) =>
-              //   value !== password || "Passwords do not match",
-            }}
           />
 
           <p
-            className="text-font_secondary underline text-sm text-center cursor-pointer"
+            className="text-icon underline text-sm text-center cursor-pointer"
             onClick={() => navigate("/forgot-password")}
           >
             Forgot Password?
@@ -113,8 +112,8 @@ function Login() {
           <div className="w-full absolute bottom-10 left-0 px-6">
             <Button
               type="submit"
-              disabled={loading}
-              loading={loading}
+              disabled={isSubmitting}
+              loading={isSubmitting}
               icon={<FiLogIn />}
             >
               Login

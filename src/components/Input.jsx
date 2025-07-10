@@ -1,21 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
-
-const getInputPattern = (type) => {
-  switch (type) {
-    case "numeric":
-      return "[0-9]*";
-    case "alphanumeric":
-      return "[A-Za-z0-9]*";
-    case "email":
-      return "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
-    case "password":
-      return undefined; // Let rules handle password validation
-    case "alphabetic":
-    default:
-      return "[A-Za-z]*";
-  }
-};
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 const Input = ({
   placeholder,
@@ -26,16 +11,26 @@ const Input = ({
   wrapperClassName = "",
   inputClassName = "",
   maxLength,
-  rules = {}, // ✅ Accept rules prop
 }) => {
   const {
     register,
     formState: { errors },
   } = useFormContext();
 
-  const pattern = getInputPattern(type);
+  const [showPassword, setShowPassword] = useState(false);
   const error = errors?.[name]?.message;
   const baseBorder = error ? "border-red-500" : "border-gray-300";
+
+  const inputType =
+    type === "password"
+      ? showPassword
+        ? "text"
+        : "password"
+      : type === "numeric"
+      ? "text"
+      : type;
+
+  const toggleVisibility = () => setShowPassword((prev) => !prev);
 
   return (
     <div className="w-full space-y-1">
@@ -45,18 +40,25 @@ const Input = ({
         {icon && iconPosition === "prefix" && (
           <span className="text-icon">{icon}</span>
         )}
+
         <input
-          type={type === "numeric" ? "text" : type}
+          type={inputType}
           placeholder={placeholder}
           maxLength={maxLength}
-          pattern={pattern}
-          {...register(name, rules)} 
+          {...register(name)}
           className={`flex-1 outline-none text-font_primary bg-feild_primay w-full h-10 ${inputClassName}`}
         />
-        {icon && iconPosition === "suffix" && (
-          <span className="text-icon">{icon}</span>
+
+        {type === "password" ? (
+          <span className="text-icon cursor-pointer" onClick={toggleVisibility}>
+            {showPassword ? <FiEyeOff /> : <FiEye />}
+          </span>
+        ) : (
+          icon &&
+          iconPosition === "suffix" && <span className="text-icon">{icon}</span>
         )}
       </div>
+
       {error && <p className="text-red-500 text-sm pl-2">{error}</p>}
     </div>
   );
