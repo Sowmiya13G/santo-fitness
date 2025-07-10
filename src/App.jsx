@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AppRoutes from "./routes/AppRoutes";
+import InstallSplashScreen from "./screens/auth/installSplash";
 
 const App = () => {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
+  console.log('deferredPrompt: ', deferredPrompt);
   const [isPWAInstalled, setIsPWAInstalled] = useState(false);
+  console.log('isPWAInstalled: ', isPWAInstalled);
 
   useEffect(() => {
     // Detect standalone mode
@@ -45,6 +48,9 @@ const App = () => {
       setDeferredPrompt(null);
     }
   };
+  if (!isPWAInstalled && deferredPrompt) {
+    return <InstallSplashScreen handleInstallClick={handleInstallClick} />;
+  }
 
   return (
     <>
@@ -52,13 +58,6 @@ const App = () => {
       <ToastContainer position="top-center" autoClose={3000} />
 
       {/* Show install button only if app is not yet installed */}
-      {!isPWAInstalled && deferredPrompt && (
-        <div style={{ textAlign: "center", marginTop: "1rem" }}>
-          <button onClick={handleInstallClick} style={{ padding: "0.5rem 1rem" }}>
-            📲 Install App
-          </button>
-        </div>
-      )}
     </>
   );
 };
