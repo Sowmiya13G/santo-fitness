@@ -35,7 +35,7 @@ const Input = ({
   return (
     <div className="w-full space-y-1">
       <div
-        className={`flex items-center rounded-xl px-4 py-2 shadow-sm bg-feild_primay gap-2 w-full border ${baseBorder} ${wrapperClassName}`}
+        className={`flex items-center rounded-xl px-4 py-1 shadow-sm bg-feild_primay gap-2 w-full border ${baseBorder} ${wrapperClassName}`}
       >
         {icon && iconPosition === "prefix" && (
           <span className="text-icon">{icon}</span>

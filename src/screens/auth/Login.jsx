@@ -16,6 +16,7 @@ import { sendFCMToken } from "../../features/user/userAPI";
 import { setFCMToken } from "../../features/user/userSlice";
 import { requestForToken } from "../../utils/pushNotification";
 import { loginSchema } from "../../utils/validation";
+import AuthLayout from "../../routes/AuthLayout";
 
 function Login() {
   const navigate = useNavigate();
@@ -75,7 +76,7 @@ function Login() {
   // ---------------------------------- render ui ---------------------------------- //
 
   return (
-    <div className="min-h-screen w-screen bg-white flex flex-col items-center px-6 pt-16 pb-12 font-poppin justify-center relative">
+    <AuthLayout>
       <div className="w-full max-w-md text-center  ">
         <p className="text-font_primary text-base mb-2">Hey there,</p>
         <p className="text-font_primary font-bold text-xl">Welcome back</p>
@@ -121,7 +122,7 @@ function Login() {
           </div>
         </form>
       </FormProvider>
-    </div>
+    </AuthLayout>
   );
 }
 
