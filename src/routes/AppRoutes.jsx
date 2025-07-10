@@ -14,14 +14,17 @@ import Profile from "../screens/dashboard/Profile";
 import Recipes from "../screens/dashboard/Recipes";
 import DashboardLayout from "./DashboardLayout";
 
-
 export default function AppRoutes() {
   const { isLoggedIn } = useAuth();
 
   return (
     <Routes>
-      <Route path="/" element={<SplashScreen />} />
-
+      <Route
+        path="/"
+        element={
+          isLoggedIn ? <Navigate to="/home" replace /> : <SplashScreen />
+        }
+      />
       {!isLoggedIn && (
         <>
           <Route path="/onboarding" element={<Onboarding />} />
