@@ -10,7 +10,17 @@ const App = () => {
   console.log("deferredPrompt: ", deferredPrompt);
   const [isPWAInstalled, setIsPWAInstalled] = useState(false);
   console.log("isPWAInstalled: ", isPWAInstalled);
-  useViewportHeight();
+  useEffect(() => {
+    const setVH = () => {
+      document.documentElement.style.setProperty(
+        "--vh",
+        `${window.innerHeight * 0.01}px`
+      );
+    };
+    setVH();
+    window.addEventListener("resize", setVH);
+    return () => window.removeEventListener("resize", setVH);
+  }, []);
 
   useEffect(() => {
     // Detect standalone mode
