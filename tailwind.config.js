@@ -1,9 +1,12 @@
 /** @type {import('tailwindcss').Config} */
-import plugin from 'tailwindcss/plugin';
+import plugin from "tailwindcss/plugin";
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      height: {
+        "screen-dynamic": "calc(var(--vh) * 100)",
+      },
       colors: {
         // common
         primary: "#9C0707",
@@ -19,8 +22,8 @@ export default {
         border_secondary: "#ddd",
         // opacity
         opacity_primary: "#9C070720",
-        icon:"#8E8E93",
-        feild_primay:"#F7F8F8"
+        icon: "#8E8E93",
+        feild_primay: "#F7F8F8",
       },
       backgroundImage: {
         // "primary-gradient": "linear-gradient(to right, #E54D4D, #9C0707)",
@@ -34,10 +37,10 @@ export default {
   plugins: [
     plugin(function ({ addUtilities }) {
       addUtilities({
-        '.text-gradient': {
-          backgroundImage: 'linear-gradient(45deg, #E54D4D, #9C0707)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
+        ".text-gradient": {
+          backgroundImage: "linear-gradient(45deg, #E54D4D, #9C0707)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
         },
       });
     }),
