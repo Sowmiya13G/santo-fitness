@@ -64,7 +64,7 @@ const App = () => {
   }
 
   return (
-    <div className="h-[100vh] overflow-hidden">
+    <div className="h-screen-dynamic overflow-hidden">
       <AppRoutes />
       <ToastContainer position="top-center" autoClose={3000} />
 
