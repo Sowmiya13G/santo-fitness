@@ -53,12 +53,12 @@ const App = () => {
   }
 
   return (
-    <>
+    <div className="h-[100vh] overflow-hidden">
       <AppRoutes />
       <ToastContainer position="top-center" autoClose={3000} />
 
       {/* Show install button only if app is not yet installed */}
-    </>
+    </div>
   );
 };
 
