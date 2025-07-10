@@ -107,7 +107,7 @@ function Login() {
       </div>
 
       <div className="w-full max-w-md absolute bottom-10 px-6">
-        <Button onClick={handleLogin} disabled={loading}icon={<FiLogIn/>} >
+        <Button onClick={handleLogin} disabled={loading} icon={<FiLogIn />}>
           {loading ? "Logging in..." : "Login"}
         </Button>
       </div>

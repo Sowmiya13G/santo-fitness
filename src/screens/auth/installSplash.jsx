@@ -1,10 +1,10 @@
 import logo from "../../assets/logo.png";
 import Button from "../../components/Button";
-
-const InstallSplashScreen = ({handleInstallClick}) => {
+import { MdOutlineInstallMobile } from "react-icons/md";
+const InstallSplashScreen = ({ handleInstallClick }) => {
   return (
-    <div className="h-screen w-screen fixed inset-0 bg-primary-gradient text-white flex flex-col items-center justify-between p-8 z-50">
-      <div className="flex flex-col items-center justify-center mt-24">
+    <div className="h-full w-screen fixed inset-0 bg-primary-gradient text-white flex flex-col items-start justify-between p-8 z-50">
+      <div className="flex flex-col items-center justify-center">
         <img
           src={logo}
           alt="App Logo"
@@ -16,8 +16,12 @@ const InstallSplashScreen = ({handleInstallClick}) => {
         </h2>
       </div>
 
-      <Button onClick={handleInstallClick} variant="secondary">
-        Get Started
+      <Button
+        onClick={handleInstallClick}
+        variant="secondary"
+        icon={<MdOutlineInstallMobile className="text-primary" size={20} />}
+      >
+        Install
       </Button>
     </div>
   );
