@@ -3,12 +3,12 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AppRoutes from "./routes/AppRoutes";
 import InstallSplashScreen from "./screens/auth/installSplash";
-
+import "./index.css";
 const App = () => {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
-  console.log('deferredPrompt: ', deferredPrompt);
+  console.log("deferredPrompt: ", deferredPrompt);
   const [isPWAInstalled, setIsPWAInstalled] = useState(false);
-  console.log('isPWAInstalled: ', isPWAInstalled);
+  console.log("isPWAInstalled: ", isPWAInstalled);
 
   useEffect(() => {
     // Detect standalone mode
