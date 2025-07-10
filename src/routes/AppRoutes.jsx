@@ -3,7 +3,6 @@ import { useAuth } from "../hooks/useAuth";
 
 import ForgotPassword from "../screens/auth/ForgotPassword";
 import Login from "../screens/auth/Login";
-import OTP from "../screens/auth/OTP";
 import Onboarding from "../screens/auth/Onboarding";
 import SetPassword from "../screens/auth/SetPassword";
 import SplashScreen from "../screens/auth/Splash";
@@ -27,7 +26,6 @@ export default function AppRoutes() {
         <>
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/otp" element={<OTP />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<SetPassword />} />
         </>

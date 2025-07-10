@@ -50,14 +50,12 @@ function SetPassword() {
 
   const handleSetPassword = async () => {
     if (!validate()) return;
-
     setLoading(true);
     try {
       const payload = {
         token: token,
         newPassword: data?.password,
       };
-
       const response = await resetPassword(payload);
       if (response?.status === 200) {
         showToast("success", "Password Reset successful!");
