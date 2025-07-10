@@ -14,6 +14,7 @@ import Profile from "../screens/dashboard/Profile";
 import Recipes from "../screens/dashboard/Recipes";
 import DashboardLayout from "./DashboardLayout";
 
+
 export default function AppRoutes() {
   const { isLoggedIn } = useAuth();
 
