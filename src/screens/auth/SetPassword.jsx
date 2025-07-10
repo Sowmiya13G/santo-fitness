@@ -47,7 +47,7 @@ function SetPassword() {
 
   // ---------------------------------- render ui ---------------------------------- //
   return (
-    <div className="min-h-screen w-screen bg-white flex flex-col items-center px-6 justify-center font-poppin">
+    <div className="h-[100dvh] w-screen bg-white flex flex-col items-center px-6 justify-center font-poppin">
       <FormProvider {...methods}>
         <form
           onSubmit={handleSubmit(onSubmit)}

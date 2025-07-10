@@ -23,7 +23,7 @@ export default function Onboarding({ onComplete }) {
   };
 
   return (
-    <div className="min-h-screen w-screen bg-white flex flex-col items-center px-6 justify-center font-poppin">
+    <div className="h-[100dvh] w-screen bg-white flex flex-col items-center px-6 justify-center font-poppin">
       <img
         src={image}
         alt={title}

@@ -43,7 +43,7 @@ function ForgotPassword() {
  
   // ---------------------------------- render ui ---------------------------------- //
   return (
-    <div className="min-h-screen w-screen bg-white flex flex-col items-center justify-center px-6 font-poppin relative">
+    <div className="h-[100dvh] w-screen bg-white flex flex-col items-center justify-center px-6 font-poppin relative">
       <FormProvider {...methods}>
         <form
           onSubmit={handleSubmit(onSubmit)}
