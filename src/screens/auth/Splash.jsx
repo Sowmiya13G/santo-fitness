@@ -38,7 +38,7 @@ const SplashScreen = () => {
   };
 
   return (
-    <div className="h-[100dvh] overflow-hidden w-screen fixed inset-0 bg-primary-gradient text-white flex flex-col items-center justify-between p-8 z-50">
+    <div className="h-[100svh] overflow-hidden w-screen fixed inset-0 bg-primary-gradient text-white flex flex-col items-center justify-between p-8 z-50">
       <div className="flex flex-col items-center justify-center mt-2">
         <img
           src={logo}
