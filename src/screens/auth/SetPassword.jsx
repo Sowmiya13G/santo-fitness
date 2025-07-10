@@ -1,112 +1,118 @@
-import React, { useEffect, useState } from "react";
-import { FiLock, FiPhone } from "react-icons/fi";
+import React, { useState } from "react";
+import { FiLock } from "react-icons/fi";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import { showToast } from "../../components/Toast";
-import { login } from "../../features/auth/authAPI";
-import { setToken } from "../../features/auth/authSlice";
-import { sendFCMToken } from "../../features/user/userAPI";
-import { setFCMToken } from "../../features/user/userSlice";
-import { requestForToken } from "../../utils/pushNotification";
+import { resetPassword } from "../../features/auth/authAPI";
 
 function SetPassword() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
+
+  const { token } = useParams();
+  const [data, setData] = useState({
+    password: "",
+    confirmPassword: "",
+  });
+  const [errors, setErrors] = useState({ password: "", confirmPassword: "" });
   const [loading, setLoading] = useState(false);
 
-  const handleSendFCM = () => {
+  const validate = () => {
+    const newErrors = { password: "", confirmPassword: "" };
+
+    const strongPasswordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+
+    if (!data.password) {
+      newErrors.password = "Password is required";
+    } else if (data.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+    } else if (!strongPasswordRegex.test(data.password)) {
+      newErrors.password =
+        "Password must include uppercase, lowercase, number, and special character";
+    }
+
+    if (!data.confirmPassword) {
+      newErrors.confirmPassword = "Please confirm your password";
+    } else if (data.password !== data.confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match";
+    }
+
+    const filteredErrors = Object.fromEntries(
+      Object.entries(newErrors).filter(([_, val]) => val)
+    );
+
+    setErrors(filteredErrors);
+    return Object.keys(filteredErrors).length === 0;
+  };
+
+  const handleSetPassword = async () => {
+    if (!validate()) return;
+
+    setLoading(true);
     try {
       const payload = {
-        fcmToken: localStorage.getItem("fcmToken"),
+        token: token,
+        newPassword: data?.password,
       };
 
-      const response = sendFCMToken(payload);
+      const response = await resetPassword(payload);
       if (response?.status === 200) {
-        console.log("response: ", response);
-        dispatch(setFCMToken(response.data?.token));
+        showToast("success", "Password Reset successful!");
+        navigate("/login");
       }
     } catch (err) {
-      const msg = err?.response?.data?.message;
-      showToast("error", msg);
-    }
-  };
-  const handleLogin = async () => {
-    setLoading(true);
-    if (phone && password) {
-      try {
-        const payload = {
-          phoneNumber: phone,
-          password: password,
-        };
-
-        const response = await login(payload);
-        if (response?.status === 200) {
-          console.log("response: ", response);
-          dispatch(setToken(response.data?.token));
-          handleSendFCM();
-          showToast("success", "Login successful!");
-          navigate("/home");
-        }
-      } catch (err) {
-        const msg =
-          err?.response?.data?.message || "Invalid phone number or password.";
-        showToast("error", msg);
-      } finally {
-        setLoading(false);
-      }
-    } else {
-      showToast("warning", "Enter values");
+      showToast("error", "Failed to reset password");
+      console.error("Failed to reset password:", err);
+      setLoading(false);
+    } finally {
+      setLoading(false);
     }
   };
 
-  useEffect(() => {
-    requestForToken();
-  }, []);
   return (
     <div className="min-h-screen w-screen bg-white flex flex-col items-center px-6 pt-32 pb-24 font-poppin relative">
-      <div className="w-full max-w-md text-center mt-12">
-        <p className="text-font_primary text-base mb-4">Hey there,</p>
-        <p className="text-font_primary font-bold text-xl">Welcome back</p>
-      </div>
-
-      <div className="w-full max-w-md space-y-4 mt-32">
-        <Input
-          placeholder="Enter phone number"
-          value={phone}
-          onChange={(e) => {
-            const value = e.target.value;
-            if (/^\d{0,10}$/.test(value)) setPhone(value);
-          }}
-          type="numeric"
-          icon={<FiPhone />}
-          iconPosition="prefix"
-          maxLength={10}
-        />
+      <div className="w-full max-w-md space-y-4 mt-52">
+        <p className="text-font_primary text-center font-bold text-xl mb-12">
+          Reset Your Password Safely!
+        </p>
 
         <Input
           placeholder="Enter password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          type="alphanumeric"
+          value={data.password}
+          onChange={(e) => {
+            setData((prev) => ({ ...prev, password: e.target.value }));
+            setErrors((prev) => ({ ...prev, password: "" }));
+          }}
+          type="password"
           icon={<FiLock />}
           iconPosition="prefix"
+          error={errors.password}
         />
 
-        <p
-          className="text-font_secondary underline text-sm text-center cursor-pointer"
-          onClick={() => navigate("/forgot-password")}
-        >
-          Forgot Password?
-        </p>
+        <Input
+          placeholder="Enter confirm password"
+          value={data.confirmPassword}
+          onChange={(e) => {
+            setData((prev) => ({ ...prev, confirmPassword: e.target.value }));
+            setErrors((prev) => ({ ...prev, confirmPassword: "" }));
+          }}
+          type="password"
+          icon={<FiLock />}
+          iconPosition="prefix"
+          error={errors.confirmPassword}
+        />
       </div>
 
       <div className="w-full max-w-md absolute bottom-10 px-6">
-        <Button onClick={handleLogin} disabled={loading}>
-          {loading ? "Logging in..." : "Login"}
+        <Button
+          onClick={handleSetPassword}
+          disabled={loading}
+          loading={loading}
+        >
+          {loading ? "Resetting..." : "Reset"}
         </Button>
       </div>
     </div>
