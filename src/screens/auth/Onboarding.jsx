@@ -23,7 +23,7 @@ export default function Onboarding({ onComplete }) {
   };
 
   return (
-    <div className="h-full w-screen flex flex-col justify-between bg-white">
+    <div className="h-[100vh] w-screen flex flex-col justify-between bg-white">
       <img
         src={image}
         alt={title}
