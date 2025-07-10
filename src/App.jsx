@@ -4,11 +4,13 @@ import "react-toastify/dist/ReactToastify.css";
 import AppRoutes from "./routes/AppRoutes";
 import InstallSplashScreen from "./screens/auth/installSplash";
 import "./index.css";
+import { useViewportHeight } from "./hooks/useViewportHeight";
 const App = () => {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   console.log("deferredPrompt: ", deferredPrompt);
   const [isPWAInstalled, setIsPWAInstalled] = useState(false);
   console.log("isPWAInstalled: ", isPWAInstalled);
+  useViewportHeight();
 
   useEffect(() => {
     // Detect standalone mode
