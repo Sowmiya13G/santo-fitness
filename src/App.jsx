@@ -1,62 +1,42 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import AppRoutes from "./routes/AppRoutes";
-import PWAInstallPrompt from "./components/pwaInstallComponent";
+import AppRoutes from "./routes/AppRoutes"; // adjust the import path if needed
 
-function isInStandaloneMode() {
-  return (
-    window.matchMedia("(display-mode: standalone)").matches ||
-    window.navigator.standalone === true
-  );
-}
-
-function App() {
-  const [isInstalled, setIsInstalled] = useState(true); // Default true for SSR safety
+const App = () => {
+  const [isPWAInstalled, setIsPWAInstalled] = useState(false);
 
   useEffect(() => {
-    const checkInstallStatus = () => {
-      const installed = isInStandaloneMode();
-      setIsInstalled(installed);
+    const checkPWAInstallation = () => {
+      const isStandalone =
+        window.matchMedia("(display-mode: standalone)").matches ||
+        window.navigator.standalone === true;
+
+      setIsPWAInstalled(isStandalone);
+      console.log("PWA installed (standalone mode):", isStandalone);
     };
 
-    checkInstallStatus();
-
-    const handleBeforeInstallPrompt = (e) => {
-      e.preventDefault();
-      console.log("👍 beforeinstallprompt fired");
-    };
-
-    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
-    window.addEventListener("DOMContentLoaded", checkInstallStatus);
-
-    return () => {
-      window.removeEventListener(
-        "beforeinstallprompt",
-        handleBeforeInstallPrompt
-      );
-      window.removeEventListener("DOMContentLoaded", checkInstallStatus);
-    };
+    checkPWAInstallation();
   }, []);
 
-  if (!isInstalled) {
+  if (!isPWAInstalled) {
     return (
-      <div style={{ padding: 30, textAlign: "center" }}>
-        <h1>📲 Install Required</h1>
-        <p>This app only works when installed on your device.</p>
-        <p>Tap the <strong>“Install”</strong> or <strong>“Add to Home Screen”</strong> option in your browser.</p>
-        <PWAInstallPrompt />
+      <div className="min-w-full mx-auto text-center justify-center flex ">
+        {isPWAInstalled
+          ? "✅ Running as installed PWA"
+          : "ℹ️ Running in browser (not standalone)"}
       </div>
     );
   }
-
   return (
     <>
       <AppRoutes />
-      <PWAInstallPrompt />
+
       <ToastContainer position="top-center" autoClose={3000} />
+
+      {/* Optional debug message */}
     </>
   );
-}
+};
 
 export default App;

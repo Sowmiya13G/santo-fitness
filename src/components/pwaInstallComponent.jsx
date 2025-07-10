@@ -5,9 +5,18 @@ const PWAInstallPrompt = () => {
   const [showInstallButton, setShowInstallButton] = useState(false);
 
   useEffect(() => {
+    // Do not show if already installed
+    if (
+      window.matchMedia("(display-mode: standalone)").matches ||
+      window.navigator.standalone === true
+    ) {
+      return;
+    }
+
     const handler = (e) => {
       e.preventDefault();
       setDeferredPrompt(e);
+      window.deferredPrompt = e;
       setShowInstallButton(true);
     };
 
@@ -23,9 +32,9 @@ const PWAInstallPrompt = () => {
       deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
       if (outcome === "accepted") {
-        console.log("User accepted the install prompt");
+        console.log("✅ User accepted the install prompt");
       } else {
-        console.log("User dismissed the install prompt");
+        console.log("❌ User dismissed the install prompt");
       }
       setDeferredPrompt(null);
       setShowInstallButton(false);
@@ -35,16 +44,18 @@ const PWAInstallPrompt = () => {
   return (
     <>
       {showInstallButton && (
-        <div style={{ position: "fixed", bottom: 20, right: 20 }}>
+        <div style={{ position: "fixed", bottom: 20, right: 20, zIndex: 1000 }}>
           <button
             onClick={handleInstallClick}
             style={{
-              padding: "10px 20px",
-              background: "#007bff",
+              padding: "12px 24px",
+              background: "#2563eb",
               color: "white",
+              fontSize: "16px",
+              fontWeight: "bold",
               border: "none",
-              borderRadius: "8px",
-              boxShadow: "0 2px 10px rgba(0,0,0,0.2)",
+              borderRadius: "10px",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
               cursor: "pointer",
             }}
           >
