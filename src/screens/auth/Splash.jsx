@@ -3,8 +3,10 @@ import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import { useAuth } from "../../hooks/useAuth";
 import Button from "../../components/Button";
+import { useViewportHeight } from "../../hooks/useViewportHeight";
 
 const SplashScreen = () => {
+   useViewportHeight();
   const [progress, setProgress] = useState(0);
   const navigate = useNavigate();
   const { isLoggedIn } = useAuth();
