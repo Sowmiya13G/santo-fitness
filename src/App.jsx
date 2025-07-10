@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "./index.css";
 import AppRoutes from "./routes/AppRoutes";
 import InstallSplashScreen from "./screens/auth/installSplash";
-import "./index.css";
-import { useViewportHeight } from "./hooks/useViewportHeight";
 const App = () => {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   console.log("deferredPrompt: ", deferredPrompt);
