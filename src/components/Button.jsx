@@ -18,7 +18,9 @@ const Button = ({
 
   const buttonClass = `${baseStyles} ${
     isPrimary ? "bg-primary-gradient" : "bg-white"
-  } ${disabled || loading ? "opacity-50 cursor-not-allowed" : ""} ${customClassName}`;
+  } ${
+    disabled || loading ? "opacity-50 cursor-not-allowed" : ""
+  } ${customClassName}`;
 
   return (
     <button
@@ -28,10 +30,10 @@ const Button = ({
       disabled={disabled || loading}
     >
       {loading ? (
-        <span className="flex gap-1 items-center">
-          <span className="dot animate-bounce delay-0">.</span>
-          <span className="dot animate-bounce delay-150">.</span>
-          <span className="dot animate-bounce delay-300">.</span>
+        <span className="flex items-center justify-center w-full h-full space-x-1">
+          <span className="w-1 h-1 bg-white rounded-full animate-bounce [animation-delay:0s]"></span>
+          <span className="w-1 h-1 bg-white rounded-full animate-bounce [animation-delay:0.2s]"></span>
+          <span className="w-1 h-1 bg-white rounded-full animate-bounce [animation-delay:0.4s]"></span>
         </span>
       ) : (
         <>

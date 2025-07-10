@@ -1,4 +1,5 @@
 import React from "react";
+import { useFormContext } from "react-hook-form";
 
 const getInputPattern = (type) => {
   switch (type) {
@@ -7,8 +8,9 @@ const getInputPattern = (type) => {
     case "alphanumeric":
       return "[A-Za-z0-9]*";
     case "email":
-    case "password":
       return "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+    case "password":
+      return undefined; // Let rules handle password validation
     case "alphabetic":
     default:
       return "[A-Za-z]*";
@@ -17,18 +19,22 @@ const getInputPattern = (type) => {
 
 const Input = ({
   placeholder,
-  value,
-  onChange,
+  name,
   type = "alphabetic",
   icon = null,
   iconPosition = "prefix",
   wrapperClassName = "",
   inputClassName = "",
   maxLength,
-  error = "",
+  rules = {}, // ✅ Accept rules prop
 }) => {
-  const pattern = getInputPattern(type);
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
 
+  const pattern = getInputPattern(type);
+  const error = errors?.[name]?.message;
   const baseBorder = error ? "border-red-500" : "border-gray-300";
 
   return (
@@ -40,12 +46,11 @@ const Input = ({
           <span className="text-icon">{icon}</span>
         )}
         <input
-          type={type}
+          type={type === "numeric" ? "text" : type}
           placeholder={placeholder}
-          value={value}
           maxLength={maxLength}
-          onChange={onChange}
           pattern={pattern}
+          {...register(name, rules)} 
           className={`flex-1 outline-none text-font_primary bg-feild_primay w-full h-10 ${inputClassName}`}
         />
         {icon && iconPosition === "suffix" && (

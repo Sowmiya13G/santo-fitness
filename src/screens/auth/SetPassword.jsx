@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import { FiLock } from "react-icons/fi";
-import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import { showToast } from "../../components/Toast";
@@ -9,53 +10,24 @@ import { resetPassword } from "../../features/auth/authAPI";
 
 function SetPassword() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
   const { token } = useParams();
-  const [data, setData] = useState({
-    password: "",
-    confirmPassword: "",
-  });
-  const [errors, setErrors] = useState({ password: "", confirmPassword: "" });
-  const [loading, setLoading] = useState(false);
 
-  const validate = () => {
-    const newErrors = { password: "", confirmPassword: "" };
+  const methods = useForm({ mode: "onChange" });
+  const {
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    watch,
+  } = methods;
 
-    const strongPasswordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+  const password = watch("password");
 
-    if (!data.password) {
-      newErrors.password = "Password is required";
-    } else if (data.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
-    } else if (!strongPasswordRegex.test(data.password)) {
-      newErrors.password =
-        "Password must include uppercase, lowercase, number, and special character";
-    }
-
-    if (!data.confirmPassword) {
-      newErrors.confirmPassword = "Please confirm your password";
-    } else if (data.password !== data.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match";
-    }
-
-    const filteredErrors = Object.fromEntries(
-      Object.entries(newErrors).filter(([_, val]) => val)
-    );
-
-    setErrors(filteredErrors);
-    return Object.keys(filteredErrors).length === 0;
-  };
-
-  const handleSetPassword = async () => {
-    if (!validate()) return;
-    setLoading(true);
+  const onSubmit = async (data) => {
     try {
       const payload = {
         token: token,
-        newPassword: data?.password,
+        newPassword: data.password,
       };
+
       const response = await resetPassword(payload);
       if (response?.status === 200) {
         showToast("success", "Password Reset successful!");
@@ -63,57 +35,68 @@ function SetPassword() {
       }
     } catch (err) {
       showToast("error", "Failed to reset password");
-      console.error("Failed to reset password:", err);
-      setLoading(false);
-    } finally {
-      setLoading(false);
+      console.error("Reset error:", err);
     }
   };
 
   return (
-    <div className="min-h-screen w-screen bg-white flex flex-col items-center px-6 pt-32 pb-24 font-poppin relative">
-      <div className="w-full max-w-md space-y-4 mt-52">
-        <p className="text-font_primary text-center font-bold text-xl mb-12">
-          Reset Your Password Safely!
-        </p>
-
-        <Input
-          placeholder="Enter password"
-          value={data.password}
-          onChange={(e) => {
-            setData((prev) => ({ ...prev, password: e.target.value }));
-            setErrors((prev) => ({ ...prev, password: "" }));
-          }}
-          type="password"
-          icon={<FiLock />}
-          iconPosition="prefix"
-          error={errors.password}
-        />
-
-        <Input
-          placeholder="Enter confirm password"
-          value={data.confirmPassword}
-          onChange={(e) => {
-            setData((prev) => ({ ...prev, confirmPassword: e.target.value }));
-            setErrors((prev) => ({ ...prev, confirmPassword: "" }));
-          }}
-          type="password"
-          icon={<FiLock />}
-          iconPosition="prefix"
-          error={errors.confirmPassword}
-        />
-      </div>
-
-      <div className="w-full max-w-md absolute bottom-10 px-6">
-        <Button
-          onClick={handleSetPassword}
-          disabled={loading}
-          loading={loading}
+  
+    <div className="h-screen w-screen bg-white flex flex-col items-center px-6 pt-32 pb-24 font-poppin ">
+      <FormProvider {...methods}>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-4 mt-52"
         >
-          {loading ? "Resetting..." : "Reset"}
-        </Button>
-      </div>
+          <p className="text-font_primary text-center font-bold text-xl mb-12">
+            Reset Your Password Safely!
+          </p>
+
+          <Input
+            name="password"
+            placeholder="Enter password"
+            type="password"
+            icon={<FiLock />}
+            iconPosition="prefix"
+            rules={{
+              required: "Password is required",
+              minLength: {
+                value: 6,
+                message: "Password must be at least 6 characters",
+              },
+              pattern: {
+                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{6,}$/,
+                message:
+                  "Must include uppercase, lowercase, number, and special char",
+              },
+            }}
+          />
+
+          <Input
+            name="confirmPassword"
+            placeholder="Enter confirm password"
+            type="password"
+            icon={<FiLock />}
+            iconPosition="prefix"
+            rules={{
+              required: "Please confirm your password",
+              validate: (value) =>
+                value !== password || "Passwords do not match",
+            }}
+          />
+
+          <div className="w-full absolute self-center bottom-10 px-6">
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              loading={isSubmitting}
+            >
+              {"Reset"}
+            </Button>
+          </div>
+        </form>
+      </FormProvider>
     </div>
+ 
   );
 }
 

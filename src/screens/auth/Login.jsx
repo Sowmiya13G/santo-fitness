@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { FiLock, FiLogIn, FiPhone } from "react-icons/fi";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useForm, FormProvider } from "react-hook-form";
+
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import { showToast } from "../../components/Toast";
@@ -14,8 +16,7 @@ import { requestForToken } from "../../utils/pushNotification";
 function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
+  const methods = useForm();
   const [loading, setLoading] = useState(false);
 
   const handleSendFCM = () => {
@@ -23,10 +24,8 @@ function Login() {
       const payload = {
         fcmToken: localStorage.getItem("fcmToken"),
       };
-
       const response = sendFCMToken(payload);
       if (response?.status === 200) {
-        console.log("response: ", response);
         dispatch(setFCMToken(response.data?.token));
       }
     } catch (err) {
@@ -34,33 +33,27 @@ function Login() {
       showToast("error", msg);
     }
   };
-  const handleLogin = async () => {
-    setLoading(true);
-    if (phone && password) {
-      try {
-        const payload = {
-          phoneNumber: phone,
-          password: password,
-        };
 
-        const response = await login(payload);
-        if (response?.status === 200) {
-          console.log("response: ", response);
-          dispatch(setToken(response.data?.token));
-          handleSendFCM();
-          showToast("success", "Login successful!");
-          navigate("/home");
-        }
-      } catch (err) {
-        const msg =
-          err?.response?.data?.message || "Invalid phone number or password.";
-        showToast("error", msg);
-        setLoading(false);
-      } finally {
-        setLoading(false);
+  const onSubmit = async (data) => {
+    setLoading(true);
+    try {
+      const payload = {
+        phoneNumber: data.phoneNumber,
+        password: data.password,
+      };
+      const response = await login(payload);
+
+      if (response?.status === 200) {
+        dispatch(setToken(response.data?.token));
+        handleSendFCM();
+        showToast("success", "Login successful!");
+        navigate("/home");
       }
-    } else {
-      showToast("warning", "Enter values");
+    } catch (err) {
+      const msg =
+        err?.response?.data?.message || "Invalid phone number or password.";
+      showToast("error", msg);
+    } finally {
       setLoading(false);
     }
   };
@@ -68,6 +61,7 @@ function Login() {
   useEffect(() => {
     requestForToken();
   }, []);
+
   return (
     <div className="min-h-screen w-screen bg-white flex flex-col items-center px-6 pt-32 pb-24 font-poppin relative">
       <div className="w-full max-w-md text-center mt-12">
@@ -75,42 +69,59 @@ function Login() {
         <p className="text-font_primary font-bold text-xl">Welcome back</p>
       </div>
 
-      <div className="w-full max-w-md space-y-4 mt-32">
-        <Input
-          placeholder="Enter phone number"
-          value={phone}
-          onChange={(e) => {
-            const value = e.target.value;
-            if (/^\d{0,10}$/.test(value)) setPhone(value);
-          }}
-          type="numeric"
-          icon={<FiPhone />}
-          iconPosition="prefix"
-          maxLength={10}
-        />
-
-        <Input
-          placeholder="Enter password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          type="alphanumeric"
-          icon={<FiLock />}
-          iconPosition="prefix"
-        />
-
-        <p
-          className="text-font_secondary underline text-sm text-center cursor-pointer"
-          onClick={() => navigate("/forgot-password")}
+      <FormProvider {...methods}>
+        <form
+          onSubmit={methods.handleSubmit(onSubmit)}
+          className="w-full max-w-md space-y-4 mt-32"
         >
-          Forgot Password?
-        </p>
-      </div>
+          <Input
+            name="phoneNumber"
+            placeholder="Enter phone number"
+            type="numeric"
+            icon={<FiPhone />}
+            iconPosition="prefix"
+            maxLength={10}
+            rules={{
+              required: "Phone number is required",
+              minLength: {
+                value: 10,
+                message: "Enter valid Phone number",
+              },
+            }}
+          />
 
-      <div className="w-full max-w-md absolute bottom-10 px-6">
-        <Button onClick={handleLogin} disabled={loading} icon={<FiLogIn />}>
-          {loading ? "Logging in..." : "Login"}
-        </Button>
-      </div>
+          <Input
+            name="password"
+            placeholder="Enter password"
+            type="alphanumeric"
+            icon={<FiLock />}
+            iconPosition="prefix"
+            rules={{
+              required: "Please enter your password",
+              // validate: (value) =>
+              //   value !== password || "Passwords do not match",
+            }}
+          />
+
+          <p
+            className="text-font_secondary underline text-sm text-center cursor-pointer"
+            onClick={() => navigate("/forgot-password")}
+          >
+            Forgot Password?
+          </p>
+
+          <div className="w-full absolute bottom-10 left-0 px-6">
+            <Button
+              type="submit"
+              disabled={loading}
+              loading={loading}
+              icon={<FiLogIn />}
+            >
+              Login
+            </Button>
+          </div>
+        </form>
+      </FormProvider>
     </div>
   );
 }
