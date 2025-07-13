@@ -3,7 +3,7 @@ import BottomNav from '../components/BottomNav'
 
 export default function DashboardLayout() {
   return (
-    <div className="min-h-screen pb-16">
+    <div className="min-h-screen pb-16 ">
       <Outlet />
       <BottomNav />
     </div>

@@ -67,8 +67,6 @@ const App = () => {
     <div className="h-screen-dynamic  hide-scrollbar">
       <AppRoutes />
       <ToastContainer position="top-center" autoClose={3000} />
-
-      {/* Show install button only if app is not yet installed */}
     </div>
   );
 };

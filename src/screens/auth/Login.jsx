@@ -113,12 +113,11 @@ function Login() {
           <div className="w-full absolute bottom-10 left-0 px-6">
             <Button
               type="submit"
+              label={"Login"}
               disabled={isSubmitting}
               loading={isSubmitting}
               icon={<FiLogIn />}
-            >
-              Login
-            </Button>
+            />
           </div>
         </form>
       </FormProvider>

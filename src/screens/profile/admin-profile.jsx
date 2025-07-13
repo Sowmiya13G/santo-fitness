@@ -13,9 +13,8 @@ const AdminProfile = () => {
           localStorage.removeItem("token");
           navigate("/login");
         }}
-      >
-        LOGOUT
-      </Button>
+        label={"Login"}
+      />
     </div>
   );
 };

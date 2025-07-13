@@ -1,7 +1,7 @@
 import React from "react";
 
 const Button = ({
-  children,
+  label,
   onClick,
   type = "button",
   icon = null,
@@ -16,11 +16,9 @@ const Button = ({
   const baseStyles =
     "px-6 py-3 rounded-full font-semibold shadow-md w-full flex items-center justify-center gap-2 h-16 focus:outline-none hover:border-0 focus:ring-0 hover:outline-none active:outline-none transition-opacity duration-300";
 
-  const buttonClass = `${baseStyles} ${
+  const buttonClass = `  ${customClassName} ${baseStyles} ${
     isPrimary ? "bg-primary-gradient" : "bg-white"
-  } ${
-    disabled || loading ? "opacity-50 cursor-not-allowed" : ""
-  } ${customClassName}`;
+  } ${disabled || loading ? "opacity-50 cursor-not-allowed" : ""} `;
 
   return (
     <button
@@ -31,15 +29,19 @@ const Button = ({
     >
       {loading ? (
         <span className="flex items-center justify-center w-full h-full space-x-1">
-          <span className="w-1 h-1 bg-white rounded-full animate-bounce [animation-delay:0s]"></span>
-          <span className="w-1 h-1 bg-white rounded-full animate-bounce [animation-delay:0.2s]"></span>
-          <span className="w-1 h-1 bg-white rounded-full animate-bounce [animation-delay:0.4s]"></span>
+          {[0, 1, 2].map((_, i) => (
+            <span
+              key={i}
+              className="w-1.5 h-1.5 bg-white rounded-full animate-bounce"
+              style={{ animationDelay: `${i * 0.15}s` }}
+            ></span>
+          ))}
         </span>
       ) : (
         <>
           {icon && iconPosition === "prefix" && <span>{icon}</span>}
-          <span className={`${isPrimary ? "text-white" : "text-gradient"}`}>
-            {children}
+          <span className={isPrimary ? "text-white" : "text-gradient"}>
+            {label}
           </span>
           {icon && iconPosition === "suffix" && <span>{icon}</span>}
         </>

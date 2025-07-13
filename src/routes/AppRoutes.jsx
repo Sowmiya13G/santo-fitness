@@ -31,7 +31,7 @@ export default function AppRoutes() {
           isLoggedIn ? <Navigate to="/home" replace /> : <SplashScreen />
         }
       />
-      {!isLoggedIn && (
+      {!isLoggedIn && ( 
         <>
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/login" element={<Login />} />

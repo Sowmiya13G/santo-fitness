@@ -15,7 +15,7 @@ import { setPasswordSchema } from "../../utils/validation";
 function SetPassword() {
   const navigate = useNavigate();
   const { token } = useParams();
- 
+
   const methods = useForm({
     resolver: yupResolver(setPasswordSchema),
     mode: "onChange",
@@ -78,9 +78,8 @@ function SetPassword() {
               type="submit"
               disabled={isSubmitting}
               loading={isSubmitting}
-            >
-              Reset
-            </Button>
+              label={"Reset"}
+            />
           </div>
         </form>
       </FormProvider>

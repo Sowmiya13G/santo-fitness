@@ -19,10 +19,9 @@ const InstallSplashScreen = ({ handleInstallClick }) => {
       <Button
         onClick={handleInstallClick}
         variant="secondary"
+        label={"Install"}
         icon={<MdOutlineInstallMobile className="text-primary" size={20} />}
-      >
-        Install
-      </Button>
+      />
     </div>
   );
 };

@@ -14,7 +14,6 @@ const SplashScreen = () => {
       navigate("/home", { replace: true });
     }
   }, [isLoggedIn, navigate]);
-  
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -46,13 +45,15 @@ const SplashScreen = () => {
           className="w-50 h-50 mb-6 object-contain"
         />
         <h2 className="text-4xl font-bold ">Santo Fitness</h2>
-        <h2 className="text-xl text-bg_primary  mt-5">
-          Everybody Can Train
-        </h2>
+        <h2 className="text-xl text-bg_primary  mt-5">Everybody Can Train</h2>
       </div>
 
       {!isLoggedIn ? (
-        <Button onClick={handleStart} variant="secondary">Get Started</Button>
+        <Button
+          onClick={handleStart}
+          variant="secondary"
+          label={"Get Started"}
+        />
       ) : (
         <div className="w-full h-3 bg-white/30 rounded-full overflow-hidden mt-4">
           <div

@@ -40,7 +40,7 @@ function ForgotPassword() {
       );
     }
   };
- 
+
   // ---------------------------------- render ui ---------------------------------- //
   return (
     <div className="h-full overflow-hidden  w-screen bg-white flex flex-col items-center justify-center px-6  relative">
@@ -71,9 +71,8 @@ function ForgotPassword() {
               type="submit"
               disabled={isSubmitting}
               loading={isSubmitting}
-            >
-              Continue
-            </Button>
+              label={"Continue"}
+            />
           </div>
         </form>
       </FormProvider>
