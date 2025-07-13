@@ -1,4 +1,4 @@
-import { Card } from "@/components/ui/card";
+import { Card } from "@/components/card/card";
 import Progress from "@/components/ui/diet-progress";
 
 const ActivityCard = ({ label, value, left }) => (

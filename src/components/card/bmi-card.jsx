@@ -1,4 +1,4 @@
-import { Card } from "@/components/ui/card";
+import { Card } from "@/components/card/card";
 
 const BMICard = ({ bmi }) => (
   <Card className="bg-gradient-to-r from-red-400 to-red-600 text-white rounded-2xl p-4 shadow-lg">

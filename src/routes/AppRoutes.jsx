@@ -1,21 +1,26 @@
+import { useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
+
 import { useAuth } from "../hooks/useAuth";
 
+// auth screens
 import ForgotPassword from "../screens/auth/forgot-password";
 import Login from "../screens/auth/login";
+import Onboarding from "../screens/auth/oboarding";
 import SetPassword from "../screens/auth/set-password";
 import SplashScreen from "../screens/auth/splash";
 
-import Onboarding from "../screens/auth/Onboarding";
 import Camera from "../screens/dashboard/camera";
 import Graph from "../screens/dashboard/graph";
+import Home from "../screens/dashboard/home";
 import Profile from "../screens/dashboard/profile";
 import Recipes from "../screens/dashboard/recipes";
 import DashboardLayout from "./DashboardLayout";
-import Home from "../screens/Dashboard/home";
+
 export default function AppRoutes() {
   const { isLoggedIn } = useAuth();
-
+  const { userData } = useSelector((state) => state.auth);
+  console.log("userData: ", userData?.role);
   return (
     <Routes>
       <Route

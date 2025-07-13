@@ -1,4 +1,4 @@
-import { Card } from "@/components/ui/card";
+import { Card } from "@/components/card/card";
 import AudioPlayer from "./audio-player";
 
 const BestDietMeals = () => (

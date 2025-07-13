@@ -1,4 +1,4 @@
-import ActivityCard from "./active-card";
+import ActivityCard from "../card/active-card";
 
 const activities = [
   { label: "Calories", value: "760 kCal", left: "230 kCal" },

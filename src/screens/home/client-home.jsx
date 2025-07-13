@@ -1,8 +1,8 @@
-import ActivityGrid from "../../components/ui/active-grid";
-import BestDietMeals from "../../components/ui/best-diet-meals";
-import BMICard from "../../components/ui/bmi-card";
-import DietProgress from "../../components/ui/diet-progress";
-import Header from "../../components/ui/header";
+import BMICard from "@/components/card/bmi-card";
+import ActivityGrid from "@/components/ui/active-grid";
+import BestDietMeals from "@/components/ui/best-diet-meals";
+import DietProgress from "@/components/ui/diet-progress";
+import Header from "@/components/ui/header";
 
 const ClientDashboard = () => {
   return (
