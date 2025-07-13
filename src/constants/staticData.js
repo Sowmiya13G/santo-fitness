@@ -36,7 +36,6 @@ export const basicFields = [
     name: "userId",
     label: "User ID",
     placeholder: "Enter user ID",
-    type: "number",
   },
   { name: "age", label: "Age", placeholder: "Enter age", type: "number" },
   {

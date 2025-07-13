@@ -31,6 +31,7 @@ function UserData() {
 
   const {
     handleSubmit,
+    reset,
     formState: { isSubmitting },
   } = methods;
 
@@ -47,7 +48,29 @@ function UserData() {
         try {
           const response = await getUserData(userData._id);
           if (response?.status === 200) {
-            console.log('response: ', response);
+            const client = response.user;
+            reset({
+              clientName: client.name || "",
+              userId: client.userId || "",
+              age: client.age || "",
+              height: client.height || "",
+              weight: client.weight || "",
+              bodyAge: client.age || "",
+              bmi: client.BMI || "",
+              fat: client.FAT || "",
+              "v.fat": client.VFat || "",
+              "s.fat": client.SFat || "",
+              kcal: client.kCal || "",
+              "fullbody.s.fat": client.fullBodySFat || "",
+              "fullbody.muscle": client.fullBodyMuscle || "",
+              "arms.s.fat": client.armSFat || "",
+              "arms.muscle": client.armsMuscle || "",
+              "trunck.s.fat": client.trunkSFat || "",
+              "trunck.muscle": client.trunkMuscle || "",
+              "legs.s.fat": client.legsSFat || "",
+              "legs.muscle": client.legsMuscle || "",
+              dob: client.DOB ? new Date(client.DOB) : null,
+            });
           }
         } catch (err) {
           console.error("Failed to fetch user data:", err);

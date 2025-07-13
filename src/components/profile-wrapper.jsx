@@ -7,7 +7,7 @@ export default function ProfileWrapper({
   children,
 }) {
   return (
-    <div className="flex flex-col h-full min-h-screen bg-primary-gradient px-4 w-full">
+    <div className="flex flex-col h-full min-h-screen bg-primary-gradient">
       <ScreenHeader title={title} isBack={isBack} titleColor="text-white" />
       {image && (
         <div className="flex justify-center">
@@ -18,7 +18,7 @@ export default function ProfileWrapper({
           />
         </div>
       )}
-      <div className="flex-1 overflow-y-auto w-full space-y-4 bg-white rounded-t-3xl z-10">
+      <div className="flex-1 overflow-y-auto space-y-4 bg-white rounded-t-3xl z-10">
         <div className="flex justify-center pt-2">
           <div className="bg-border_secondary h-1.5 w-28 rounded-full" />
         </div>
