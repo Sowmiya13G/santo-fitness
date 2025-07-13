@@ -10,9 +10,11 @@ import Onboarding from "../screens/auth/oboarding";
 import SetPassword from "../screens/auth/set-password";
 import SplashScreen from "../screens/auth/splash";
 
-import LoggedIn from "@/screens/auth/logged-in";
+import LoggedIn from "@/screens/dashboard/logged-in";
 import ClientReport from "@/screens/profile/client-report";
+import ClientWorkoutNotes from "@/screens/profile/client-workout";
 import PersonalData from "@/screens/profile/personal-data";
+import WorkoutDone from "@/screens/profile/workout-done";
 import Camera from "../screens/dashboard/camera";
 import Graph from "../screens/dashboard/graph";
 import Home from "../screens/dashboard/home";
@@ -54,7 +56,14 @@ export default function AppRoutes() {
           <Route path="/welcome" element={<LoggedIn />} />
           <Route path="/profile/personal-data" element={<PersonalData />} />
           <Route path="/profile/testing-reports" element={<ClientReport />} />
-
+          <Route
+            path="/profile/workout-notes"
+            element={<ClientWorkoutNotes />}
+          />
+          <Route
+            path="/profile/workout-done"
+            element={<WorkoutDone />}
+          />
           <Route element={<DashboardLayout />}>
             <Route path="/home" element={<Home />} />
             <Route path="/activity" element={<Graph />} />
