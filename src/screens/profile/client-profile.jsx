@@ -48,7 +48,7 @@ const ClientProfile = () => {
   ];
 
   return (
-    <div className="h-full bg-white space-y-6 text-gray-800">
+    <div className="h-full bg-white space-y-6">
       <ScreenHeader title="Profile" />
       <ProfileCard
         image="https://avatar.iran.liara.run/public"

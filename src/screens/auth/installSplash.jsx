@@ -10,8 +10,8 @@ const InstallSplashScreen = ({ handleInstallClick }) => {
           alt="App Logo"
           className="w-50 h-50 mb-6 object-contain"
         />
-        <h2 className="text-4xl font-bold font-poppin">Santo Fitness</h2>
-        <h2 className="text-xl text-bg_primary font-poppin mt-5">
+        <h2 className="text-4xl font-bold ">Santo Fitness</h2>
+        <h2 className="text-xl text-bg_primary  mt-5">
           Everybody Can Train
         </h2>
       </div>

@@ -11,7 +11,7 @@ export default function ShadowView({ title, children, icon, onAction }) {
             hasChildren ? "mb-3" : ""
           }`}
         >
-          <h2 className="text-lg font-semibold">{title}</h2>
+          <h2 className="text-lg font-semibold text-black">{title}</h2>
           {icon && (
             <button
               onClick={onAction}

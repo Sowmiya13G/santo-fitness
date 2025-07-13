@@ -7,8 +7,8 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 // components
 import Button from "../../components/Button";
-import Input from "../../components/Input";
-import { showToast } from "../../components/Toast";
+import Input from "../../components/input/input";
+import { showToast } from "../../components/toast";
 // others
 import { login } from "../../features/auth/authAPI";
 import { setToken, setUserData } from "../../features/auth/authSlice";
@@ -76,7 +76,7 @@ function Login() {
   // ---------------------------------- render ui ---------------------------------- //
 
   return (
-    <div className="h-full overflow-hidden  w-screen bg-white flex flex-col items-center px-6 justify-center font-poppin">
+    <div className="h-full overflow-hidden  w-screen bg-white flex flex-col items-center px-6 justify-center ">
       <div className="w-full max-w-md text-center  ">
         <p className="text-font_primary text-base mb-2">Hey there,</p>
         <p className="text-font_primary font-bold text-xl">Welcome back</p>

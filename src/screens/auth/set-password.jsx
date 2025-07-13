@@ -6,8 +6,8 @@ import { FiLock } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router-dom";
 // components
 import Button from "../../components/Button";
-import Input from "../../components/Input";
-import { showToast } from "../../components/Toast";
+import Input from "../../components/input/input";
+import { showToast } from "../../components/toast";
 // others
 import { resetPassword } from "../../features/auth/authAPI";
 import { setPasswordSchema } from "../../utils/validation";
@@ -47,7 +47,7 @@ function SetPassword() {
 
   // ---------------------------------- render ui ---------------------------------- //
   return (
-    <div className="h-full overflow-hidden w-screen bg-white flex flex-col items-center px-6 justify-center font-poppin">
+    <div className="h-full overflow-hidden w-screen bg-white flex flex-col items-center px-6 justify-center ">
       <FormProvider {...methods}>
         <form
           onSubmit={handleSubmit(onSubmit)}

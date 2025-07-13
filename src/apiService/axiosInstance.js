@@ -7,7 +7,7 @@ const axiosInstance = axios.create({
   },
 });
 
-// Request interceptor to attach token
+// Attach auth token from localStorage to every request
 axiosInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
@@ -16,4 +16,23 @@ axiosInstance.interceptors.request.use((config) => {
   return config;
 });
 
-export default axiosInstance;
+// ------------- API METHODS WITH SUPPORT FOR DYNAMIC QUERIES, HEADERS, BODY, ETC. -------------
+
+const apiService = {
+  get: (url, params = {}, config = {}) =>
+    axiosInstance.get(url, { params, ...config }),
+
+  post: (url, data = {}, config = {}) =>
+    axiosInstance.post(url, data, config),
+
+  put: (url, data = {}, config = {}) =>
+    axiosInstance.put(url, data, config),
+
+  patch: (url, data = {}, config = {}) =>
+    axiosInstance.patch(url, data, config),
+
+  delete: (url, config = {}) =>
+    axiosInstance.delete(url, config),
+};
+
+export default apiService;

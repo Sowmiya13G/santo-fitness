@@ -29,3 +29,73 @@ export const onboardingContent = [
       "Improve your sleep quality with us. Good sleep brings a great mood every morning.",
   },
 ];
+
+export const basicFields = [
+  { name: "clientName", label: "Name", placeholder: "Enter client name" },
+  {
+    name: "userId",
+    label: "User ID",
+    placeholder: "Enter user ID",
+    type: "number",
+  },
+  { name: "age", label: "Age", placeholder: "Enter age", type: "number" },
+  {
+    name: "height",
+    label: "Height",
+    placeholder: "Enter height",
+    type: "number",
+    text: "CM",
+  },
+  {
+    name: "weight",
+    label: "Weight",
+    placeholder: "Enter weight",
+    type: "number",
+    text: "KG",
+  },
+  {
+    name: "bodyAge",
+    label: "Body Age",
+    placeholder: "Enter body age",
+    type: "number",
+  },
+  { name: "bmi", label: "BMI", placeholder: "Enter BMI", type: "number" },
+];
+
+export const fatFields = [
+  { name: "fat", label: "Fat" },
+  { name: "v.fat", label: "V.Fat" },
+  { name: "s.fat", label: "S.Fat" },
+  { name: "kcal", label: "Kcal" },
+];
+
+export const sectionedFields = [
+  {
+    title: "Full body",
+    fields: [
+      { name: "fullbody.s.fat", label: "S.Fat" },
+      { name: "fullbody.muscle", label: "Muscle" },
+    ],
+  },
+  {
+    title: "Arms",
+    fields: [
+      { name: "arms.s.fat", label: "S.Fat" },
+      { name: "arms.muscle", label: "Muscle" },
+    ],
+  },
+  {
+    title: "Trunck",
+    fields: [
+      { name: "trunck.s.fat", label: "S.Fat" },
+      { name: "trunck.muscle", label: "Muscle" },
+    ],
+  },
+  {
+    title: "Legs",
+    fields: [
+      { name: "legs.s.fat", label: "S.Fat" },
+      { name: "legs.muscle", label: "Muscle" },
+    ],
+  },
+];

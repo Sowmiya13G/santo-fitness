@@ -16,6 +16,7 @@ import Home from "../screens/dashboard/home";
 import Profile from "../screens/dashboard/profile";
 import Recipes from "../screens/dashboard/recipes";
 import DashboardLayout from "./DashboardLayout";
+import PersonalData from "@/screens/profile/personal-data";
 
 export default function AppRoutes() {
   const { isLoggedIn } = useAuth();
@@ -50,6 +51,13 @@ export default function AppRoutes() {
         </>
       )}
 
+      {isLoggedIn && (
+        <>
+          <Route>
+            <Route path="/profile/personal-data" element={<PersonalData />} />
+          </Route>
+        </>
+      )}
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );

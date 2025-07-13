@@ -5,8 +5,8 @@ import { FormProvider, useForm } from "react-hook-form";
 import { FiMail } from "react-icons/fi";
 // components
 import Button from "../../components/Button";
-import Input from "../../components/Input";
-import { showToast } from "../../components/Toast";
+import Input from "../../components/input/input";
+import { showToast } from "../../components/toast";
 // others
 import { forgotPassword } from "../../features/auth/authAPI";
 import { forgotPasswordSchema } from "../../utils/validation";
@@ -43,7 +43,7 @@ function ForgotPassword() {
  
   // ---------------------------------- render ui ---------------------------------- //
   return (
-    <div className="h-full overflow-hidden  w-screen bg-white flex flex-col items-center justify-center px-6 font-poppin relative">
+    <div className="h-full overflow-hidden  w-screen bg-white flex flex-col items-center justify-center px-6  relative">
       <FormProvider {...methods}>
         <form
           onSubmit={handleSubmit(onSubmit)}

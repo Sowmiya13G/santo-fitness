@@ -1,5 +1,5 @@
 function Recipes() {
-    return <div className="p-4 font-poppin"></div>;
+    return <div className="p-4 "></div>;
   }
   
   export default Recipes;

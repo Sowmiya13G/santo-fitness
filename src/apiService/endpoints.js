@@ -5,7 +5,8 @@ const API_ENDPOINTS = {
     RESET_PASSWORD: "/reset-password",
   },
   USER: {
-    SAVE_FCM_TOKEN:"/save-token"
+    SAVE_FCM_TOKEN: "/save-token",
+    USER: "/users",
   },
 };
 

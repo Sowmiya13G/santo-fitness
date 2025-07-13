@@ -11,6 +11,9 @@ const Input = ({
   wrapperClassName = "",
   inputClassName = "",
   maxLength,
+  label,
+  text,
+  editable = true,
 }) => {
   const {
     register,
@@ -34,8 +37,12 @@ const Input = ({
 
   return (
     <div className="w-full space-y-1">
+      {label && <p className="text-base text-black">{label}</p>}
+
       <div
-        className={`flex items-center rounded-xl px-4 py-1 shadow-sm bg-feild_primay gap-2 w-full border ${baseBorder} ${wrapperClassName}`}
+        className={`flex items-center rounded-xl px-4 py-1 shadow-sm bg-feild_primay gap-2 w-full border ${baseBorder} ${wrapperClassName} ${
+          !editable ? "opacity-60" : ""
+        }`}
       >
         {icon && iconPosition === "prefix" && (
           <span className="text-icon">{icon}</span>
@@ -45,8 +52,11 @@ const Input = ({
           type={inputType}
           placeholder={placeholder}
           maxLength={maxLength}
+          disabled={!editable}
           {...register(name)}
-          className={`flex-1 outline-none text-font_primary bg-feild_primay w-full h-10 ${inputClassName}`}
+          className={`flex-1 outline-none text-font_primary bg-feild_primay w-full h-10 ${
+            !editable ? "cursor-not-allowed bg-feild_primay" : ""
+          } ${inputClassName}`}
         />
 
         {type === "password" ? (
@@ -54,8 +64,12 @@ const Input = ({
             {showPassword ? <FiEyeOff /> : <FiEye />}
           </span>
         ) : (
-          icon &&
-          iconPosition === "suffix" && <span className="text-icon">{icon}</span>
+          <>
+            {icon && iconPosition === "suffix" && (
+              <span className="text-icon">{icon}</span>
+            )}
+            {text && <span className="text-sm text-icon">{text}</span>}
+          </>
         )}
       </div>
 
