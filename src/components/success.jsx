@@ -21,8 +21,8 @@ export default function SuccessPage({
         <p className="text-gray-600">{content}</p>
       </div>
       {button && (
-        <div className="position bottom-4">
-          <Button onClick={onclick}>{button}</Button>
+        <div className="w-full absolute bottom-10 left-0 px-6">
+          <Button onClick={onclick} label={button} />
         </div>
       )}
     </div>

@@ -28,21 +28,29 @@ export default function AppRoutes() {
       <Route
         path="/"
         element={
-          isLoggedIn ? <Navigate to="/home" replace /> : <SplashScreen />
+          isLoggedIn ? (
+            <Navigate
+              to={location.pathname === "/" ? "/home" : location.pathname}
+              replace
+            />
+          ) : (
+            <SplashScreen />
+          )
         }
       />
-      {!isLoggedIn && ( 
+
+      {!isLoggedIn && (
         <>
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<SetPassword />} />
-          <Route path="/welcome" element={<LoggedIn />} />
         </>
       )}
 
       {isLoggedIn && (
         <>
+          <Route path="/welcome" element={<LoggedIn />} />
           <Route element={<DashboardLayout />}>
             <Route path="/home" element={<Home />} />
             <Route path="/activity" element={<Graph />} />

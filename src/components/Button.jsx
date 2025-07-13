@@ -10,6 +10,7 @@ const Button = ({
   customClassName = "",
   disabled = false,
   loading = false,
+  iconColor="text-white"
 }) => {
   const isPrimary = variant === "primary";
 
@@ -39,7 +40,9 @@ const Button = ({
         </span>
       ) : (
         <>
-          {icon && iconPosition === "prefix" && <span>{icon}</span>}
+          {icon && iconPosition === "prefix" && (
+            <span className={iconColor}>{icon}</span>
+          )}
           <span className={isPrimary ? "text-white" : "text-gradient"}>
             {label}
           </span>
