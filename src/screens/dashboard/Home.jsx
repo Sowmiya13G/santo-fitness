@@ -1,39 +1,30 @@
-import { useState } from "react";
-import CameraCapture from "../../components/CameraCapture";
+import { useSelector } from "react-redux";
+import AdminDashboard from "../home/admin-home";
+import TrainerDashboard from "../home/trainer-home";
+import ClientDashboard from "../home/client-home";
 
-function Home() {
-  const [showCamera, setShowCamera] = useState(false);
-  const [capturedImage, setCapturedImage] = useState(null);
-
-  const handleImageCapture = (imgData) => {
-    setCapturedImage(imgData);
-    setShowCamera(false);
+const Home = () => {
+  const { userData } = useSelector((state) => state.auth);
+  console.log("userData: ", userData);
+  const renderHome = (role) => {
+    console.log("role: ", role);
+    switch (role) {
+      case "admin":
+        return <AdminDashboard />;
+      case "trainer":
+        return <TrainerDashboard />;
+      case "client":
+        return <ClientDashboard />;
+      default:
+        return <div>Role not found</div>;
+    }
   };
 
   return (
-    <div className="p-4 font-poppin bg-white h-screen w-screen">
-      {!showCamera && (
-        <button
-          onClick={() => setShowCamera(true)}
-          className="bg-primary text-white px-6 py-3 rounded"
-        >
-          Open Camera
-        </button>
-      )}
-
-      {showCamera && <CameraCapture onCapture={handleImageCapture} />}
-
-      {!showCamera && capturedImage && (
-        <div className="mt-4 flex justify-center">
-          <img
-            src={capturedImage}
-            alt="Captured"
-            className="rounded shadow-md max-w-full h-auto scale-x-[-1]"
-          />
-        </div>
-      )}
+    <div className="p-4 bg-white w-screen overflow-scroll pb-10 h-full hide-scrollbar">
+      {renderHome(userData?.role)}
     </div>
   );
-}
+};
 
 export default Home;

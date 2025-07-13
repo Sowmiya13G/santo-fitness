@@ -6,8 +6,9 @@ import { registerSW } from "virtual:pwa-register";
 
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 import { queryClient } from "./app/queryClient";
-import { store } from "./app/store";
+import { persistor, store } from "./features/store.js";
 import "./index.css";
 // ✅ Register the service worker (provided by vite-plugin-pwa)
 registerSW({
@@ -23,10 +24,12 @@ registerSW({
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </QueryClientProvider>
+    <PersistGate loading={null} persistor={persistor}>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </QueryClientProvider>
+    </PersistGate>
   </Provider>
 );

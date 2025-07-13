@@ -1,19 +1,18 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
-import ForgotPassword from "../screens/auth/ForgotPassword";
-import Login from "../screens/auth/Login";
+import ForgotPassword from "../screens/auth/forgot-password";
+import Login from "../screens/auth/login";
+import SetPassword from "../screens/auth/set-password";
+import SplashScreen from "../screens/auth/splash";
+
 import Onboarding from "../screens/auth/Onboarding";
-import SetPassword from "../screens/auth/SetPassword";
-import SplashScreen from "../screens/auth/Splash";
-
-import Camera from "../screens/dashboard/Camera";
-import Graph from "../screens/dashboard/Graph";
-import Home from "../screens/dashboard/Home";
-import Profile from "../screens/dashboard/Profile";
-import Recipes from "../screens/dashboard/Recipes";
+import Camera from "../screens/dashboard/camera";
+import Graph from "../screens/dashboard/graph";
+import Profile from "../screens/dashboard/profile";
+import Recipes from "../screens/dashboard/recipes";
 import DashboardLayout from "./DashboardLayout";
-
+import Home from "../screens/Dashboard/home";
 export default function AppRoutes() {
   const { isLoggedIn } = useAuth();
 

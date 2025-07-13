@@ -11,7 +11,7 @@ import Input from "../../components/Input";
 import { showToast } from "../../components/Toast";
 // others
 import { login } from "../../features/auth/authAPI";
-import { setToken } from "../../features/auth/authSlice";
+import { setToken, setUserData } from "../../features/auth/authSlice";
 import { sendFCMToken } from "../../features/user/userAPI";
 import { setFCMToken } from "../../features/user/userSlice";
 import { requestForToken } from "../../utils/pushNotification";
@@ -56,7 +56,8 @@ function Login() {
       const response = await login(payload);
 
       if (response?.status === 200) {
-        dispatch(setToken(response.data?.token));
+        dispatch(setToken(response?.data?.token));
+        dispatch(setUserData(response?.data?.user));
         handleSendFCM();
         showToast("success", "Login successful!");
         navigate("/home");

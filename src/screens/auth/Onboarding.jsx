@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 // constants
 import { onboardingContent } from "../../constants/staticData";
 
-export default function Onboarding({ onComplete }) {
+export default function Onboarding() {
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
 

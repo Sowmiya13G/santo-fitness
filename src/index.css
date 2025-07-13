@@ -32,6 +32,15 @@ body {
   max-width: 700px;
   background-color: #000; /* or use Tailwind class on wrapper */
 }
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
 
 /* Disable app on non-mobile devices */
 @media (min-width: 769px) {
