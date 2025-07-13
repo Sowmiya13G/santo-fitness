@@ -31,7 +31,7 @@ export default function Onboarding() {
       />
 
       <div className="mx-5">
-        <h2 className="text-black text-2xl font-bold mb-2">{title}</h2>
+        <h2 className="text-font_primary text-2xl font-bold mb-2">{title}</h2>
         <p className="text-gray-600">{content}</p>
       </div>
 

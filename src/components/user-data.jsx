@@ -113,7 +113,7 @@ function UserData() {
           ))}
           {sectionedFields.map((section) => (
             <div key={section.title}>
-              <p className="text-base font-bold text-black mb-2">
+              <p className="text-base font-bold text-font_primary mb-2">
                 {section.title}
               </p>
               <div className="w-full flex space-x-4">

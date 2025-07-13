@@ -7,7 +7,7 @@ export default function ProfileWrapper({
   children,
 }) {
   return (
-    <div className="flex flex-col h-full min-h-screen bg-primary-gradient">
+    <div className="flex flex-col h-full min-h-screen bg-primary-gradient pt-4">
       <ScreenHeader title={title} isBack={isBack} titleColor="text-white" />
       {image && (
         <div className="flex justify-center">

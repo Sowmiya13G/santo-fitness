@@ -23,7 +23,7 @@ const InputDatePicker = ({
 
   return (
     <div className="w-full space-y-1">
-      {label && <p className="text-base text-black">{label}</p>}
+      {label && <p className="text-base text-font_primary">{label}</p>}
 
       <div
         className={`relative flex items-center rounded-xl px-4 py-1 shadow-sm bg-feild_primay w-full border ${baseBorder} ${wrapperClassName} ${
