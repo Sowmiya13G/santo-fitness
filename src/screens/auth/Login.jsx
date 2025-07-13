@@ -60,7 +60,7 @@ function Login() {
         dispatch(setUserData(response?.data?.user));
         handleSendFCM();
         showToast("success", "Login successful!");
-        navigate("/home");
+        navigate("/welcome");
       }
     } catch (err) {
       const msg =

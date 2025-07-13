@@ -10,13 +10,14 @@ import Onboarding from "../screens/auth/oboarding";
 import SetPassword from "../screens/auth/set-password";
 import SplashScreen from "../screens/auth/splash";
 
+import LoggedIn from "@/screens/auth/logged-in";
+import PersonalData from "@/screens/profile/personal-data";
 import Camera from "../screens/dashboard/camera";
 import Graph from "../screens/dashboard/graph";
 import Home from "../screens/dashboard/home";
 import Profile from "../screens/dashboard/profile";
 import Recipes from "../screens/dashboard/recipes";
 import DashboardLayout from "./DashboardLayout";
-import PersonalData from "@/screens/profile/personal-data";
 
 export default function AppRoutes() {
   const { isLoggedIn } = useAuth();
@@ -36,6 +37,7 @@ export default function AppRoutes() {
           <Route path="/login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<SetPassword />} />
+          <Route path="/welcome" element={<LoggedIn />} />
         </>
       )}
 

@@ -3,49 +3,25 @@ import { useState } from "react";
 import {
   FiBell,
   FiChevronRight,
-  FiFileText,
-  FiLogOut,
-  FiUser,
+  FiLogOut
 } from "react-icons/fi";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 // redux
 import { setToken } from "@/features/auth/authSlice";
 // component
+import ProfileCard from "@/components/card/profile-card";
 import { GradientIcon } from "@/components/gradient-icon";
 import RenderIconRow from "@/components/icon-row";
 import ScreenHeader from "@/components/screen-header";
 import ShadowView from "@/components/shadow-view";
 import Switch from "@/components/switch";
-import ProfileCard from "@/components/card/profile-card";
+import { accountItems } from "@/constants/staticData";
 
 const ClientProfile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [enabled, setEnabled] = useState(false);
-
-  const accountItems = [
-    {
-      title: "Personal Data",
-      icon: FiUser,
-      onAction: () => navigate("/profile/personal-data"),
-    },
-    {
-      title: "Testing Reports",
-      icon: FiFileText,
-      onAction: () => navigate("/profile/testing-reports"),
-    },
-    {
-      title: "Activity History",
-      icon: FiBell,
-      onAction: () => navigate("/profile/activity-history"),
-    },
-    {
-      title: "Workout Notes",
-      icon: FiFileText,
-      onAction: () => navigate("/profile/workout-notes"),
-    },
-  ];
 
   return (
     <div className="h-full bg-white space-y-6">

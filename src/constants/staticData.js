@@ -1,7 +1,15 @@
+import {
+  FiBell,
+  FiFileText,
+  FiUser
+} from "react-icons/fi";
 import Img1 from "../assets/images/onboarding-image1.svg";
 import Img2 from "../assets/images/onboarding-image2.svg";
 import Img3 from "../assets/images/onboarding-image3.svg";
 import Img4 from "../assets/images/onboarding-image4.svg";
+
+import Profile from "../assets/icons/profile.svg";
+
 
 export const onboardingContent = [
   {
@@ -27,6 +35,30 @@ export const onboardingContent = [
     title: "Improve Sleep Quality",
     content:
       "Improve your sleep quality with us. Good sleep brings a great mood every morning.",
+  },
+];
+
+
+export const accountItems = [
+  {
+    title: "Personal Data",
+    icon: Profile,
+    onAction: () => navigate("/profile/personal-data"),
+  },
+  {
+    title: "Testing Reports",
+    icon: FiFileText,
+    onAction: () => navigate("/profile/testing-reports"),
+  },
+  {
+    title: "Activity History",
+    icon: FiBell,
+    onAction: () => navigate("/profile/activity-history"),
+  },
+  {
+    title: "Workout Notes",
+    icon: FiFileText,
+    onAction: () => navigate("/profile/workout-notes"),
   },
 ];
 
