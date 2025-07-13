@@ -1,10 +1,6 @@
 import { useState } from "react";
 // packages
-import {
-  FiBell,
-  FiChevronRight,
-  FiLogOut
-} from "react-icons/fi";
+import { FiBell, FiChevronRight, FiLogOut } from "react-icons/fi";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 // redux
@@ -16,6 +12,7 @@ import RenderIconRow from "@/components/icon-row";
 import ScreenHeader from "@/components/screen-header";
 import ShadowView from "@/components/shadow-view";
 import Switch from "@/components/switch";
+
 import { accountItems } from "@/constants/staticData";
 
 const ClientProfile = () => {
@@ -36,13 +33,13 @@ const ClientProfile = () => {
       />
       <ShadowView title="Account">
         <div className="space-y-4">
-          {accountItems?.map(({ title, icon: Icon, onAction }) => (
+          {accountItems?.map(({ title, icon: Icon, toPath }) => (
             <RenderIconRow
               key={title}
               title={title}
               leftIcon={<GradientIcon Icon={Icon} />}
               rightIcon={<FiChevronRight />}
-              onAction={onAction}
+              onAction={() => navigate(toPath)}
             />
           ))}
         </div>

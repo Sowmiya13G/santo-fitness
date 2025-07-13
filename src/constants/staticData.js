@@ -1,14 +1,11 @@
-import {
-  FiBell,
-  FiFileText,
-  FiUser
-} from "react-icons/fi";
+import { FiBell, FiFileText } from "react-icons/fi";
 import Img1 from "../assets/images/onboarding-image1.svg";
 import Img2 from "../assets/images/onboarding-image2.svg";
 import Img3 from "../assets/images/onboarding-image3.svg";
 import Img4 from "../assets/images/onboarding-image4.svg";
 
 import Profile from "../assets/icons/profile.svg";
+import Report from "../assets/icons/report.svg";
 
 
 export const onboardingContent = [
@@ -38,27 +35,26 @@ export const onboardingContent = [
   },
 ];
 
-
 export const accountItems = [
   {
     title: "Personal Data",
     icon: Profile,
-    onAction: () => navigate("/profile/personal-data"),
+    toPath: "/profile/personal-data",
   },
   {
     title: "Testing Reports",
-    icon: FiFileText,
-    onAction: () => navigate("/profile/testing-reports"),
+    icon: Report,
+    toPath: "/profile/testing-reports",
   },
   {
     title: "Activity History",
     icon: FiBell,
-    onAction: () => navigate("/profile/activity-history"),
+    toPath: "/profile/activity-history",
   },
   {
     title: "Workout Notes",
     icon: FiFileText,
-    onAction: () => navigate("/profile/workout-notes"),
+    toPath: "/profile/workout-notes",
   },
 ];
 
@@ -69,28 +65,25 @@ export const basicFields = [
     label: "User ID",
     placeholder: "Enter user ID",
   },
-  { name: "age", label: "Age", placeholder: "Enter age", type: "number" },
+  { name: "age", label: "Age", placeholder: "Enter age" },
   {
     name: "height",
     label: "Height",
     placeholder: "Enter height",
-    type: "number",
     text: "CM",
   },
   {
     name: "weight",
     label: "Weight",
     placeholder: "Enter weight",
-    type: "number",
     text: "KG",
   },
   {
     name: "bodyAge",
     label: "Body Age",
     placeholder: "Enter body age",
-    type: "number",
   },
-  { name: "bmi", label: "BMI", placeholder: "Enter BMI", type: "number" },
+  { name: "bmi", label: "BMI", placeholder: "Enter BMI" },
 ];
 
 export const fatFields = [
@@ -129,4 +122,12 @@ export const sectionedFields = [
       { name: "legs.muscle", label: "Muscle" },
     ],
   },
+];
+
+export const subscriptionPlanData = [
+  { label: "3 Months", value: "3" },
+  { label: "4 Months", value: "4" },
+  { label: "6 Months", value: "6" },
+  { label: "12 Months", value: "12" },
+  { label: "15 Months", value: "15" },
 ];

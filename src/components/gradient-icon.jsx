@@ -8,18 +8,14 @@ export const GradientIcon = ({ Icon, size = 24 }) => {
     const loadSvg = async () => {
       let markup = "";
 
-      // Case 1: React component (e.g. FiUser)
       if (typeof Icon === "function") {
         markup = ReactDOMServer.renderToStaticMarkup(<Icon size={size} color="black" />);
       }
 
-      // Case 2: Precompiled SVG string (data URI or raw XML string)
       else if (typeof Icon === "string") {
-        // If it's already a data URI, decode and use as is
         if (Icon.startsWith("data:image/svg+xml,")) {
           markup = decodeURIComponent(Icon.replace("data:image/svg+xml,", ""));
         }
-        // Else try to fetch the SVG from the path
         else if (Icon.endsWith(".svg")) {
           try {
             const res = await fetch(Icon);
@@ -31,7 +27,6 @@ export const GradientIcon = ({ Icon, size = 24 }) => {
       }
 
       if (markup) {
-        // Ensure proper fill/stroke for masking
         const cleaned = markup
           .replace(/stroke="currentColor"/g, 'stroke="black"')
           .replace(/fill="currentColor"/g, 'fill="black"');

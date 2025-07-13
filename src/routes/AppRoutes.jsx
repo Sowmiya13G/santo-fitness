@@ -11,6 +11,7 @@ import SetPassword from "../screens/auth/set-password";
 import SplashScreen from "../screens/auth/splash";
 
 import LoggedIn from "@/screens/auth/logged-in";
+import ClientReport from "@/screens/profile/client-report";
 import PersonalData from "@/screens/profile/personal-data";
 import Camera from "../screens/dashboard/camera";
 import Graph from "../screens/dashboard/graph";
@@ -51,6 +52,9 @@ export default function AppRoutes() {
       {isLoggedIn && (
         <>
           <Route path="/welcome" element={<LoggedIn />} />
+          <Route path="/profile/personal-data" element={<PersonalData />} />
+          <Route path="/profile/testing-reports" element={<ClientReport />} />
+
           <Route element={<DashboardLayout />}>
             <Route path="/home" element={<Home />} />
             <Route path="/activity" element={<Graph />} />
@@ -61,13 +65,6 @@ export default function AppRoutes() {
         </>
       )}
 
-      {isLoggedIn && (
-        <>
-          <Route>
-            <Route path="/profile/personal-data" element={<PersonalData />} />
-          </Route>
-        </>
-      )}
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );

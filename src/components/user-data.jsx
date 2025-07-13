@@ -11,9 +11,11 @@ import {
   basicFields,
   fatFields,
   sectionedFields,
+  subscriptionPlanData,
 } from "@/constants/staticData";
-import { useEffect } from "react";
 import { getUserData } from "@/features/user/userAPI";
+import { useEffect } from "react";
+import Dropdown from "./input/dropdown";
 
 function chunkArray(array, size) {
   const result = [];
@@ -22,6 +24,12 @@ function chunkArray(array, size) {
   }
   return result;
 }
+
+const roleOptions = [
+  { label: "Client", value: "client" },
+  { label: "Trainer", value: "trainer" },
+  { label: "Admin", value: "admin" },
+];
 
 function UserData() {
   const { userData } = useSelector((state) => state.auth);
@@ -45,26 +53,27 @@ function UserData() {
       if (response?.status === 200) {
         const client = response.user;
         reset({
-          clientName: client.name || "",
-          userId: client.userId || "",
-          age: client.age || "",
-          height: client.height || "",
-          weight: client.weight || "",
-          bodyAge: client.age || "",
-          bmi: client.BMI || "",
-          fat: client.FAT || "",
-          "v.fat": client.VFat || "",
-          "s.fat": client.SFat || "",
-          kcal: client.kCal || "",
-          "fullbody.s.fat": client.fullBodySFat || "",
-          "fullbody.muscle": client.fullBodyMuscle || "",
-          "arms.s.fat": client.armSFat || "",
-          "arms.muscle": client.armsMuscle || "",
-          "trunck.s.fat": client.trunkSFat || "",
-          "trunck.muscle": client.trunkMuscle || "",
-          "legs.s.fat": client.legsSFat || "",
-          "legs.muscle": client.legsMuscle || "",
+          clientName: client.name ?? "",
+          userId: client.sfcId ?? "",
+          age: client.age ?? "",
+          height: client.height ?? "",
+          weight: client.weight ?? "",
+          bodyAge: client.age ?? "",
+          bmi: client.BMI ?? "",
+          fat: client.FAT ?? "",
+          "v.fat": client.VFat ?? "",
+          "s.fat": client.SFat ?? "",
+          kcal: client.kCal ?? "",
+          "fullbody.s.fat": client.fullBodySFat ?? "",
+          "fullbody.muscle": client.fullBodyMuscle ?? "",
+          "arms.s.fat": client.armSFat ?? "",
+          "arms.muscle": client.armsMuscle ?? "",
+          "trunck.s.fat": client.trunkSFat ?? "",
+          "trunck.muscle": client.trunkMuscle ?? "",
+          "legs.s.fat": client.legsSFat ?? "",
+          "legs.muscle": client.legsMuscle ?? "",
           dob: client.DOB ? new Date(client.DOB) : null,
+          subscription: client?.subscriptionPlan,
         });
       }
     } catch (err) {
@@ -96,7 +105,6 @@ function UserData() {
                 <Input
                   key={field.name}
                   {...field}
-                  type="number"
                   placeholder={`Enter ${field.label.toLowerCase()}`}
                   editable={editable}
                 />
@@ -113,7 +121,6 @@ function UserData() {
                   <Input
                     key={field.name}
                     {...field}
-                    type="number"
                     placeholder={`Enter ${field.label.toLowerCase()}`}
                     editable={editable}
                   />
@@ -125,6 +132,16 @@ function UserData() {
             name="dob"
             label="Date of Birth"
             editable={isClient ? false : true}
+          />
+
+          <Dropdown
+            name="subscription"
+            label="Subscription"
+            options={subscriptionPlanData}
+            value={methods.watch("subscription")}
+            onChange={(val) => methods.setValue("subscription", val)}
+            placeholder="Select subscription"
+            editable={!isClient}
           />
           {!isClient && (
             <Button
