@@ -13,7 +13,7 @@ import ShadowView from "@/components/shadow-view";
 import Switch from "@/components/switch";
 
 import { trainerAccountItems } from "@/constants/static-data";
-import { setToken } from "@/features/auth/auth-api";
+import { setToken } from "@/features/auth/auth-slice";
 
 const TrainerProfile = () => {
   const navigate = useNavigate();
