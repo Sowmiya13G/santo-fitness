@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
-import AdminDashboard from "../home/admin-home";
 import TrainerDashboard from "../home/trainer-home";
 import ClientDashboard from "../home/client-home";
+import AdminDashboard from "../home/admin-home";
 
 const Home = () => {
   const { userData } = useSelector((state) => state.auth);
