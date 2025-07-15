@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import AdminProfile from "../profile/admin-profile";
-import ClientProfile from "../profile/client-profile";
 import TrainerProfile from "../profile/trainer-profile";
+import ClientProfile from "../profile/client-profile";
 
 const Profile = () => {
   const { userData } = useSelector((state) => state.auth);
