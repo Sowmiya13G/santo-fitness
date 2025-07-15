@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 // components
 import Button from "@/components/Button";
 import Input from "@/components/input/input";
-import { showToast } from "../../components/toast";
+import { showToast } from "@/components/toast";
 // others
 import { login } from "@/features/auth/authAPI";
 import { setToken, setUserData } from "@/features/auth/authSlice";
