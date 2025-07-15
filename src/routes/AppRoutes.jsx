@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
 
-import { useAuth } from "../hooks/useAuth";
 
+import { useAuth } from "@/hooks/useAuth";
 // auth screens
 import ForgotPassword from "@/screens/auth/forgot-password";
 import Login from "@/screens/auth/login";

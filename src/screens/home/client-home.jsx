@@ -1,6 +1,5 @@
 import BMICard from "@/components/card/bmi-card";
 import BMRCard from "@/components/card/bmr-card";
-import NutrientProgress from "@/components/card/nutrientProgress";
 import ActivityGrid from "@/components/ui/active-grid";
 import BestDietMeals from "@/components/ui/best-diet-meals";
 import DietProgress from "@/components/ui/diet-progress";
