@@ -14,13 +14,14 @@ import {
   fatFields,
   sectionedFields,
   subscriptionPlanData,
-} from "@/constants/staticData";
+} from "@/constants/static-data";
 import {
   createUser,
   getUserData,
   getUsersList,
   updateUser,
-} from "@/features/user/userAPI";
+} from "@/features/user/user-api";
+import FatInput from "./input/fat-input";
 
 // function chunkArray(array, size) {
 //   const result = [];

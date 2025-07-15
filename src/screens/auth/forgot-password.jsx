@@ -7,7 +7,7 @@ import Button from "@/components/Button";
 import Input from "@/components/input/input";
 import { showToast } from "@/components/toast";
 // others
-import { forgotPassword } from "@/features/auth/authAPI";
+import { forgotPassword } from "@/features/auth/auth-api";
 import { forgotPasswordSchema } from "@/utils/validation";
 
 function ForgotPassword() {

@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
 
-import DashboardLayout from "./DashboardLayout";
-import { useAuth } from "@/hooks/useAuth";
+
+import { useAuth } from "@/hooks/use-auth";
 // auth screens
 import ForgotPassword from "@/screens/auth/forgot-password";
 import Login from "@/screens/auth/login";

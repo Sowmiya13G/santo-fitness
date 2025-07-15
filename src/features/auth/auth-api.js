@@ -1,4 +1,4 @@
-import axiosInstance from "../../apiService/axiosInstance";
+import axiosInstance from "../../apiService/axios-instance";
 import API_ENDPOINTS from "../../apiService/endpoints";
 
 export const login = async (credentials) => {

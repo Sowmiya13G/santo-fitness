@@ -1,3 +1,4 @@
+import { useAuth } from "@/hooks/use-auth";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";

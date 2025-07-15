@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaAngleRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 // constants
-import { onboardingContent } from "../../constants/staticData";
+import { onboardingContent } from "../../constants/static-data";
 
 export default function Onboarding() {
   const navigate = useNavigate();

@@ -8,7 +8,7 @@ import Button from "@/components/Button";
 import Input from "@/components/input/input";
 import { showToast } from "@/components/toast";
 // others
-import { resetPassword } from "@/features/auth/authAPI";
+import { resetPassword } from "@/features/auth/auth-api";
 import { setPasswordSchema } from "@/utils/validation";
 
 function SetPassword() {

@@ -11,6 +11,7 @@ import Input from "@/components/input/input";
 import { showToast } from "@/components/toast";
 // others
 import { login } from "@/features/auth/auth-api";
+import { setToken, setUserData } from "@/features/auth/auth-slice";
 import { sendFCMToken } from "@/features/user/user-api";
 import { setFCMToken } from "@/features/user/user-slice";
 import { requestForToken } from "@/utils/push-notification";
