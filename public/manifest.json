@@ -1,6 +1,6 @@
 {
-  "name": "My Vite PWA",
-  "short_name": "VitePWA",
+  "name": "Santo Fitness Centre",
+  "short_name": "SFC",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
