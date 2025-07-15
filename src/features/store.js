@@ -13,7 +13,7 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage
-import authReducer from "./auth/authSlice";
+import authReducer from "./auth/auth-slice";
 
 const persistConfig = {
   key: "auth",

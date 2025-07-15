@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react";
 import { registerSW } from "virtual:pwa-register";
-import { queryClient } from "./app/queryClient";
+import { queryClient } from "./app/query-client";
 import App from "./App.jsx";
 import { persistor, store } from "./features/store.js";
 import "./index.css";
