@@ -1,16 +1,15 @@
-import React from "react";
 // packages
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormProvider, useForm } from "react-hook-form";
 import { FiLock } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router-dom";
 // components
-import Button from "../../components/Button";
-import Input from "../../components/input/input";
-import { showToast } from "../../components/toast";
+import Button from "@/components/Button";
+import Input from "@/components/input/input";
+import { showToast } from "@/components/toast";
 // others
-import { resetPassword } from "../../features/auth/authAPI";
-import { setPasswordSchema } from "../../utils/validation";
+import { resetPassword } from "@/features/auth/authAPI";
+import { setPasswordSchema } from "@/utils/validation";
 
 function SetPassword() {
   const navigate = useNavigate();
