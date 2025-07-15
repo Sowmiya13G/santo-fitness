@@ -1,6 +1,7 @@
-import logo from "../../assets/logo.png";
-import Button from "../../components/Button";
 import { MdOutlineInstallMobile } from "react-icons/md";
+
+import Button from "@/components/Button";
+import logo from "../../assets/logo.png";
 const InstallSplashScreen = ({ handleInstallClick }) => {
   return (
     <div className="h-screen-dynamic overflow-hidden w-screen fixed inset-0 bg-primary-gradient text-white flex flex-col items-start justify-between p-8 z-50">

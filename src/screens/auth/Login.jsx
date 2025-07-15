@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 // packages
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormProvider, useForm } from "react-hook-form";
@@ -6,16 +6,16 @@ import { FiLock, FiLogIn, FiPhone } from "react-icons/fi";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 // components
-import Button from "../../components/Button";
-import Input from "../../components/input/input";
+import Button from "@/components/Button";
+import Input from "@/components/input/input";
 import { showToast } from "../../components/toast";
 // others
-import { login } from "../../features/auth/authAPI";
-import { setToken, setUserData } from "../../features/auth/authSlice";
-import { sendFCMToken } from "../../features/user/userAPI";
-import { setFCMToken } from "../../features/user/userSlice";
-import { requestForToken } from "../../utils/pushNotification";
-import { loginSchema } from "../../utils/validation";
+import { login } from "@/features/auth/authAPI";
+import { setToken, setUserData } from "@/features/auth/authSlice";
+import { sendFCMToken } from "@/features/user/userAPI";
+import { setFCMToken } from "@/features/user/userSlice";
+import { requestForToken } from "@/utils/pushNotification";
+import { loginSchema } from "@/utils/validation";
 
 function Login() {
   const navigate = useNavigate();

@@ -1,15 +1,15 @@
-import React from "react";
 // packages
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormProvider, useForm } from "react-hook-form";
 import { FiMail } from "react-icons/fi";
 // components
-import Button from "../../components/Button";
-import Input from "../../components/input/input";
-import { showToast } from "../../components/toast";
+import Button from "@/components/Button";
+import Input from "@/components/input/input";
+import { showToast } from "@/components/toast";
 // others
-import { forgotPassword } from "../../features/auth/authAPI";
-import { forgotPasswordSchema } from "../../utils/validation";
+import { forgotPassword } from "@/features/auth/authAPI";
+import { forgotPasswordSchema } from "@/utils/validation";
+
 
 function ForgotPassword() {
   const methods = useForm({
