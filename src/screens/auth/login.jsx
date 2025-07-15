@@ -1,6 +1,6 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect } from "react";
 // packages
-import { yupResolver } from "@hookform/resolvers/yup";
 import { FormProvider, useForm } from "react-hook-form";
 import { FiLock, FiLogIn, FiPhone } from "react-icons/fi";
 import { useDispatch } from "react-redux";

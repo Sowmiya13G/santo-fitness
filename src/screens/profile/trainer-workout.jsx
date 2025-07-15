@@ -2,20 +2,19 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { FaTrash } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
 
-import { getUsersList } from "@/features/user/userAPI";
-// components
 import Button from "@/components/Button";
+import Workout from "../../assets/images/workout.svg";
+// components
 import Dropdown from "@/components/input/dropdown";
 import Input from "@/components/input/input";
 import ProfileWrapper from "@/components/profile-wrapper";
 import { workoutClassData } from "@/constants/staticData";
+import { getUsersList } from "@/features/user/userAPI";
 
-import Workout from "../../assets/images/workout.svg";
 
 const TrainerWorkoutNotes = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [clientList, setClientList] = useState([]);
 
   const methods = useForm({

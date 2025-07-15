@@ -1,6 +1,12 @@
 import React from "react";
 
-const RenderIconRow = ({ title, leftIcon, rightIcon, rightContent, onAction }) => {
+const RenderIconRow = ({
+  title,
+  leftIcon,
+  rightIcon,
+  rightContent,
+  onAction,
+}) => {
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center space-x-2">

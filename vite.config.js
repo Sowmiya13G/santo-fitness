@@ -1,8 +1,8 @@
-import { defineConfig } from "vite";
+import path from "path";
 import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 import tsconfigPaths from "vite-tsconfig-paths";
-import path from "path";
 export default defineConfig({
   server: {
     host: true, // or "0.0.0.0"

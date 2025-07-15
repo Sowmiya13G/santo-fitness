@@ -1,6 +1,5 @@
 // store.js
 import { configureStore } from "@reduxjs/toolkit";
-import authReducer from "./auth/authSlice";
 
 import {
   persistStore,
@@ -13,6 +12,7 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage
+import authReducer from "./auth/authSlice";
 
 const persistConfig = {
   key: "auth",

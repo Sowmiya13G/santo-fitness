@@ -11,7 +11,7 @@ export const requestForToken = async () => {
       return currentToken;
     } else {
       console.warn(
-        "No registration token available. Request permission to generate one."
+        "No registration token available. Request permission to generate one.",
       );
     }
   } catch (err) {

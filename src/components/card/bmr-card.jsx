@@ -1,5 +1,5 @@
-import { Card } from "@/components/card/card";
 import Button from "../Button";
+import { Card } from "@/components/card/card";
 
 const getBMRStatus = (bmr) => {
   if (bmr < 1400) return "Low BMR";
@@ -18,7 +18,6 @@ const BMRCard = ({ bmr }) => {
             BMR (Basal Metabolic Rate)
           </h2>
           <p className="text-xs leading-none mb-2">{status}</p>
-       
         </div>
         <div className="w-[30%] text-center">
           <div className="text-2xl font-bold">{Math.round(bmr)}</div>

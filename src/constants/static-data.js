@@ -1,13 +1,13 @@
+import Activity from "../assets/icons/activity-icon.svg";
+import AddNew from "../assets/icons/addNew.svg";
+import Profile from "../assets/icons/profile.svg";
+import Report from "../assets/icons/report.svg";
+import Notes from "../assets/icons/workout-notes.svg";
 import Img1 from "../assets/images/onboarding-image1.svg";
 import Img2 from "../assets/images/onboarding-image2.svg";
 import Img3 from "../assets/images/onboarding-image3.svg";
 import Img4 from "../assets/images/onboarding-image4.svg";
 
-import Activity from "../assets/icons/activity-icon.svg";
-import Profile from "../assets/icons/profile.svg";
-import Report from "../assets/icons/report.svg";
-import AddNew from "../assets/icons/addNew.svg";
-import Notes from "../assets/icons/workout-notes.svg";
 
 export const onboardingContent = [
   {
@@ -195,4 +195,3 @@ export const workoutClassData = [
   { label: "Cardio", value: "cardio" },
   { label: "CrossFit", value: "crossfit" },
 ];
-

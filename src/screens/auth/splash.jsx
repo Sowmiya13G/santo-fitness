@@ -1,7 +1,7 @@
-import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
+import { useAuth } from "@/hooks/useAuth";
 
 const SplashScreen = () => {
   const [progress, setProgress] = useState(0);

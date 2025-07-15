@@ -18,7 +18,8 @@ function MobileWrapper({ children }) {
     return (
       <div className="h-screen flex items-center justify-center text-center px-4 bg-font_primary text-white">
         <p className="text-lg">
-          🚫 This app is only supported on mobile devices.<br />
+          🚫 This app is only supported on mobile devices.
+          <br />
           Please switch to a smaller screen to continue.
         </p>
       </div>

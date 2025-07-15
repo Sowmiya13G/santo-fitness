@@ -1,5 +1,5 @@
-import { Outlet } from 'react-router-dom'
-import BottomNav from '../components/BottomNav'
+import { Outlet } from "react-router-dom";
+import BottomNav from "../components/BottomNav";
 
 export default function DashboardLayout() {
   return (
@@ -7,5 +7,5 @@ export default function DashboardLayout() {
       <Outlet />
       <BottomNav />
     </div>
-  )
+  );
 }

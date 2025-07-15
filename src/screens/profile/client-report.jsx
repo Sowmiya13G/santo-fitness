@@ -1,6 +1,6 @@
+import { BiSolidFilePdf } from "react-icons/bi";
 import { GradientIcon } from "@/components/gradient-icon";
 import ScreenHeader from "@/components/screen-header";
-import { BiSolidFilePdf } from "react-icons/bi";
 
 const samplePDFs = [
   {

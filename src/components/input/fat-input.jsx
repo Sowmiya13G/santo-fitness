@@ -12,7 +12,6 @@ const FatInput = ({
   editable = true,
 }) => {
   const {
-    register,
     setValue,
     getValues,
     formState: { errors },
@@ -73,16 +72,10 @@ const FatInput = ({
           <div className="flex flex-row justify-center items-center space-y-0">
             <span className={`text-xs ${deltaColor} mr-2`}>{deltaDisplay}</span>
             <div className="flex flex-col justify-center items-center space-y-0 ">
-              <button
-                type="button"
-                onClick={increment}
-              >
+              <button type="button" onClick={increment}>
                 <FaChevronUp size={14} color="#8E8E93" />
               </button>
-              <button
-                type="button"
-                onClick={decrement}
-              >
+              <button type="button" onClick={decrement}>
                 <FaChevronDown size={14} color="#8E8E93" />
               </button>
             </div>

@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 // components
-import SuccessPage from "@/components/success";
 import Success from "../../assets/images/logged-in.svg";
+import SuccessPage from "@/components/success";
 
 function LoggedIn() {
   const { userData } = useSelector((state) => state.auth);

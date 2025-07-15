@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import Button from "./Button";
 import InputDatePicker from "./input/date-picker";
 import Dropdown from "./input/dropdown";
+import FatInput from "./input/fat-input";
 import Input from "./input/input";
 // others
 import {
@@ -20,15 +21,14 @@ import {
   getUsersList,
   updateUser,
 } from "@/features/user/userAPI";
-import FatInput from "./input/fat-input";
 
-function chunkArray(array, size) {
-  const result = [];
-  for (let i = 0; i < array.length; i += size) {
-    result.push(array.slice(i, i + size));
-  }
-  return result;
-}
+// function chunkArray(array, size) {
+//   const result = [];
+//   for (let i = 0; i < array.length; i += size) {
+//     result.push(array.slice(i, i + size));
+//   }
+//   return result;
+// }
 
 const roleOptions = [
   { label: "Client", value: "client" },
@@ -121,7 +121,7 @@ function UserData({ isCreate = false }) {
     console.log("🚀 ~ UserData ~ data:", data);
 
     const formatted = `${data?.DOB.getFullYear()}-${String(
-      data?.DOB.getMonth() + 1
+      data?.DOB.getMonth() + 1,
     ).padStart(2, "0")}-${String(data?.DOB.getDate()).padStart(2, "0")}`;
 
     console.log("🚀 ~ onSubmit ~ formatted:", formatted);
@@ -200,7 +200,7 @@ function UserData({ isCreate = false }) {
                     placeholder={`Enter ${label?.toLowerCase()}`}
                     editable={editable}
                   />
-                )
+                ),
               )}
             </div>
           ))}
@@ -227,7 +227,7 @@ function UserData({ isCreate = false }) {
                       editable={editable}
                       placeholder={`Enter ${field?.label.toLowerCase()}`}
                     />
-                  )
+                  ),
                 )}
               </div>
             </div>

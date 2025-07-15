@@ -8,7 +8,7 @@ const AddNewPerson = () => {
       title="Personal Data"
       image={import.meta.env.VITE_AVATAR_API_URL}
     >
-      <UserData isCreate/>
+      <UserData isCreate />
     </ProfileWrapper>
   );
 };

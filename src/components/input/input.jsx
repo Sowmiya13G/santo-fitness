@@ -31,8 +31,8 @@ const Input = ({
         ? "text"
         : "password"
       : type === "numeric"
-      ? "text"
-      : type;
+        ? "text"
+        : type;
 
   const toggleVisibility = () => setShowPassword((prev) => !prev);
 

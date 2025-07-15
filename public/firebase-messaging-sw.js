@@ -1,9 +1,9 @@
 /* eslint-disable no-undef */
 importScripts(
-  "https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"
+  "https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js",
 );
 importScripts(
-  "https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js"
+  "https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js",
 );
 
 firebase.initializeApp({
@@ -34,7 +34,7 @@ self.addEventListener("notificationclick", function (event) {
         if (clients.openWindow) {
           return clients.openWindow("http://localhost:5173/onboarding");
         }
-      })
+      }),
   );
 });
 

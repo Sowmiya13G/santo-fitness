@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-import { getUsersList } from "@/features/user/userAPI";
 // components
 import Button from "@/components/Button";
 import Dropdown from "@/components/input/dropdown";
 import UploadInput from "@/components/input/upload";
 import ScreenHeader from "@/components/screen-header";
+import { getUsersList } from "@/features/user/userAPI";
 
 const TrainerPostReport = () => {
   const navigate = useNavigate();

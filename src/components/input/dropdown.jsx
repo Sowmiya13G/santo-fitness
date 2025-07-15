@@ -1,5 +1,5 @@
-import { useFormContext } from "react-hook-form";
 import { useState, useRef, useEffect } from "react";
+import { useFormContext } from "react-hook-form";
 import { FiChevronDown } from "react-icons/fi";
 
 const Dropdown = ({
@@ -13,7 +13,11 @@ const Dropdown = ({
   wrapperClassName = "",
   inputClassName = "",
 }) => {
-  const { register, setValue, formState: { errors } } = useFormContext();
+  const {
+    register,
+    setValue,
+    formState: { errors },
+  } = useFormContext();
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
@@ -31,8 +35,8 @@ const Dropdown = ({
   }, []);
 
   const handleSelect = (val) => {
-    setValue(name, val); 
-    onChange?.(val);   
+    setValue(name, val);
+    onChange?.(val);
     setOpen(false);
   };
 
@@ -50,7 +54,9 @@ const Dropdown = ({
           className={`h-10 flex items-center justify-between cursor-pointer text-font_primary ${inputClassName}`}
         >
           <span className={`${!value ? "text-icon" : ""}`}>
-            {value ? options.find((o) => o.value === value)?.label : placeholder}
+            {value
+              ? options.find((o) => o.value === value)?.label
+              : placeholder}
           </span>
           <FiChevronDown className="text-icon" />
         </div>

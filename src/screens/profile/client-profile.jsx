@@ -4,7 +4,6 @@ import { FiBell, FiChevronRight, FiLogOut } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 // redux
-import { setToken } from "@/features/auth/authSlice";
 // component
 import ProfileCard from "@/components/card/profile-card";
 import { GradientIcon } from "@/components/gradient-icon";
@@ -14,6 +13,7 @@ import ShadowView from "@/components/shadow-view";
 import Switch from "@/components/switch";
 
 import { clientAccountItems } from "@/constants/staticData";
+import { setToken } from "@/features/auth/authSlice";
 
 const ClientProfile = () => {
   const navigate = useNavigate();

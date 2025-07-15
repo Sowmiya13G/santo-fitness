@@ -16,14 +16,16 @@ export const forgotPasswordSchema = yup.object().shape({
 });
 
 export const setPasswordSchema = yup.object().shape({
-    password: yup.string()
-      .required("Password is required")
-      .min(6, "Password must be at least 6 characters")
-      .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/,
-        "Must include uppercase, lowercase, number, and special character"
-      ),
-    confirmPassword: yup.string()
-      .required("Please confirm your password")
-      .oneOf([yup.ref("password"), null], "Passwords do not match"),
-  });
+  password: yup
+    .string()
+    .required("Password is required")
+    .min(6, "Password must be at least 6 characters")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/,
+      "Must include uppercase, lowercase, number, and special character",
+    ),
+  confirmPassword: yup
+    .string()
+    .required("Please confirm your password")
+    .oneOf([yup.ref("password"), null], "Passwords do not match"),
+});

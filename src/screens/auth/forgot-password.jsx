@@ -10,7 +10,6 @@ import { showToast } from "@/components/toast";
 import { forgotPassword } from "@/features/auth/authAPI";
 import { forgotPasswordSchema } from "@/utils/validation";
 
-
 function ForgotPassword() {
   const methods = useForm({
     resolver: yupResolver(forgotPasswordSchema),
@@ -36,7 +35,7 @@ function ForgotPassword() {
     } catch (err) {
       showToast(
         "error",
-        err?.response?.data?.message || "Something went wrong"
+        err?.response?.data?.message || "Something went wrong",
       );
     }
   };

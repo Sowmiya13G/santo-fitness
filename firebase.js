@@ -8,7 +8,7 @@ const firebaseConfig = {
   projectId: "santo-fcm",
   storageBucket: "santo-fcm.firebasestorage.app",
   messagingSenderId: "803941658163",
-  appId: "1:803941658163:web:41b70107c8f032cb577d46"
+  appId: "1:803941658163:web:41b70107c8f032cb577d46",
 };
 
 const firebaseApp = initializeApp(firebaseConfig);

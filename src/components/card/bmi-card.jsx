@@ -1,6 +1,6 @@
-import { Card } from "@/components/card/card";
 import GaugeChart from "react-gauge-chart";
 import Button from "../Button";
+import { Card } from "@/components/card/card";
 
 const getBMIStatus = (bmi) => {
   if (bmi < 18.5) return "Underweight";
@@ -21,7 +21,6 @@ const BMICard = ({ bmi }) => {
             BMI (Body Mass Index)
           </h2>
           <p className="text-xs leading-none mb-2">{status}</p>
-         
         </div>
         <div className="w-[30%]  ">
           <GaugeChart

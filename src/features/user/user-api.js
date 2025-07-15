@@ -4,7 +4,7 @@ import API_ENDPOINTS from "../../apiService/endpoints";
 export const sendFCMToken = async (data) => {
   const response = await axiosInstance.post(
     API_ENDPOINTS.USER.SAVE_FCM_TOKEN,
-    data
+    data,
   );
   return response.data;
 };
@@ -31,7 +31,7 @@ export const createUser = async (data) => {
 export const updateUser = async (id, data) => {
   const response = await axiosInstance.get(
     `${API_ENDPOINTS.USER.USER}/${id}`,
-    data
+    data,
   );
   return response.data;
 };

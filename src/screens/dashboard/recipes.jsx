@@ -1,6 +1,5 @@
 function Recipes() {
-    return <div className="p-4 "></div>;
-  }
-  
-  export default Recipes;
-  
+  return <div className="p-4 "></div>;
+}
+
+export default Recipes;

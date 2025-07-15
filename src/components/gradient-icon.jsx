@@ -9,14 +9,13 @@ export const GradientIcon = ({ Icon, size = 24 }) => {
       let markup = "";
 
       if (typeof Icon === "function") {
-        markup = ReactDOMServer.renderToStaticMarkup(<Icon size={size} color="black" />);
-      }
-
-      else if (typeof Icon === "string") {
+        markup = ReactDOMServer.renderToStaticMarkup(
+          <Icon size={size} color="black" />,
+        );
+      } else if (typeof Icon === "string") {
         if (Icon.startsWith("data:image/svg+xml,")) {
           markup = decodeURIComponent(Icon.replace("data:image/svg+xml,", ""));
-        }
-        else if (Icon.endsWith(".svg")) {
+        } else if (Icon.endsWith(".svg")) {
           try {
             const res = await fetch(Icon);
             markup = await res.text();
@@ -37,7 +36,6 @@ export const GradientIcon = ({ Icon, size = 24 }) => {
 
     loadSvg();
   }, [Icon, size]);
-
 
   return (
     <div

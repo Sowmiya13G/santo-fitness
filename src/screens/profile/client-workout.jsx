@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { FaCheckCircle, FaRegCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 // components
+import Workout from "../../assets/images/workout.svg";
 import Button from "@/components/Button";
 import ProfileWrapper from "@/components/profile-wrapper";
-import Workout from "../../assets/images/workout.svg";
 
 const sampleExercises = [
   { id: 1, name: "Push Ups", sets: 3, reps: 12 },
@@ -25,7 +25,7 @@ const ClientWorkoutNotes = () => {
 
   const toggleComplete = (id) => {
     setCompleted((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
     );
   };
 
