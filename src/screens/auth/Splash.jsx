@@ -16,28 +16,22 @@ const SplashScreen = () => {
   }, [isLoggedIn, navigate]);
 
   useEffect(() => {
-    if (isLoggedIn) {
-      const timer = setInterval(() => {
-        setProgress((prev) => {
-          if (prev >= 100) {
-            clearInterval(timer);
-            setTimeout(() => navigate("/home"), 200);
-            return 100;
-          }
-          return prev + 1;
-        });
-      }, 10);
+    const timer = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(timer);
+          setTimeout(() => navigate(isLoggedIn ? "/home" : "onboarding"), 200);
+          return 100;
+        }
+        return prev + 1;
+      });
+    }, 10);
 
-      return () => clearInterval(timer);
-    }
+    return () => clearInterval(timer);
   }, [isLoggedIn, navigate]);
 
-  const handleStart = () => {
-    navigate("/onboarding");
-  };
-
   return (
-    <div className="h-screen-dynamic overflow-hidden w-screen fixed inset-0 bg-primary-gradient text-white flex flex-col items-center justify-between p-8 z-50">
+    <div className="h-screen-dynamic overflow-hidden m-auto max-w-md fixed inset-0 bg-primary-gradient text-white flex flex-col items-center justify-between p-8 ">
       <div className="flex flex-col items-center justify-center mt-2 h-[70%]">
         <img
           src={logo}
@@ -48,20 +42,12 @@ const SplashScreen = () => {
         <h2 className="text-xl text-bg_primary  mt-5">Everybody Can Train</h2>
       </div>
 
-      {!isLoggedIn ? (
-        <Button
-          onClick={handleStart}
-          variant="secondary"
-          label={"Get Started"}
-        />
-      ) : (
-        <div className="w-full h-3 bg-white/30 rounded-full overflow-hidden mt-4">
-          <div
-            className="h-full bg-white rounded-full transition-all duration-75"
-            style={{ width: `${progress}%` }}
-          ></div>
-        </div>
-      )}
+      <div className="w-full h-3 bg-white/30 rounded-full overflow-hidden mt-4">
+        <div
+          className="h-full bg-white rounded-full transition-all duration-75"
+          style={{ width: `${progress}%` }}
+        ></div>
+      </div>
     </div>
   );
 };

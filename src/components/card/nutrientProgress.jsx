@@ -1,0 +1,64 @@
+// NutrientProgress.jsx
+import React from "react";
+
+export default function NutrientProgress({
+  label,
+  consumed,
+  total,
+  color = "#b30000",
+  bgColor = "#f3a9a9",
+}) {
+  const radius = 60;
+  const stroke = 10;
+  const normalizedRadius = radius - stroke / 2;
+  const circumference = 2 * Math.PI * normalizedRadius;
+  const progress = Math.min(consumed / total, 1);
+  const strokeDashoffset = circumference - progress * circumference;
+  const remaining = total - consumed;
+
+  return (
+    <div className="bg-white shadow-lg rounded-xl border border-b-gray-300 p-4">
+      <div className="text-gray-800 font-medium text-sm">{label}</div>
+
+      <div className={`text-2xl font-bold `} style={{ color }}>
+        {consumed}g
+      </div>
+      <div className="relative max-w-[250px] max-h-[250px]  w-[100px] h-[100px] flex flex-col items-center justify-center  mx-auto mt-2">
+        <svg
+          height={radius * 2}
+          width={radius * 2}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform -rotate-90"
+        >
+          <circle
+            stroke={bgColor}
+            fill="none"
+            strokeWidth={stroke}
+            cx={radius}
+            cy={radius}
+            r={normalizedRadius}
+          />
+          <circle
+            stroke={color}
+            fill="none"
+            strokeWidth={stroke}
+            strokeLinecap="round"
+            strokeDasharray={circumference}
+            strokeDashoffset={strokeDashoffset}
+            cx={radius}
+            cy={radius}
+            r={normalizedRadius}
+          />
+        </svg>
+
+        <div
+          className={`z-10 text-center flex items-center justify-center w-[90%] h-[90%] rounded-full`}
+          style={{ background: bgColor }}
+        >
+          <div className="text-sm mt-1" style={{ color }}>
+            {remaining}g left
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

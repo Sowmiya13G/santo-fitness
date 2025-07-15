@@ -23,19 +23,19 @@ export default function Onboarding() {
   };
 
   return (
-    <div className="h-full overflow-hidden w-screen flex flex-col justify-between bg-white">
+    <div className="h-full overflow-hidden  w-screen  flex flex-col justify-between bg-white">
       <img
         src={image}
         alt={title}
         className="object-contain w-full max-h-[60%]"
       />
 
-      <div className="mx-5">
+      <div className="mx-5 max-w-md ">
         <h2 className="text-font_primary text-2xl font-bold mb-2">{title}</h2>
         <p className="text-gray-600">{content}</p>
       </div>
 
-      <div className="flex justify-end items-center p-5">
+      <div className="flex justify-end items-center p-5 max-w-md">
         <div className="relative w-16 h-16">
           <svg
             className="absolute top-0 left-0 w-full h-full"

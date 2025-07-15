@@ -31,19 +31,7 @@ export default function AppRoutes() {
   console.log("userData: ", userData?.role);
   return (
     <Routes>
-      <Route
-        path="/"
-        element={
-          isLoggedIn ? (
-            <Navigate
-              to={location.pathname === "/" ? "/home" : location.pathname}
-              replace
-            />
-          ) : (
-            <SplashScreen />
-          )
-        }
-      />
+      <Route path="/" element={<SplashScreen />} />
 
       {!isLoggedIn && (
         <>
@@ -71,10 +59,7 @@ export default function AppRoutes() {
             path="/profile/testing-reports-trainer"
             element={<TrainerPostReport />}
           />
-          <Route
-            path="/profile/add-new-person"
-            element={<AddNewPerson />}
-          />
+          <Route path="/profile/add-new-person" element={<AddNewPerson />} />
           <Route path="/profile/workout-done" element={<WorkoutDone />} />
           <Route element={<DashboardLayout />}>
             <Route path="/home" element={<Home />} />

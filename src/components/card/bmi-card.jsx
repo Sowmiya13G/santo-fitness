@@ -21,12 +21,7 @@ const BMICard = ({ bmi }) => {
             BMI (Body Mass Index)
           </h2>
           <p className="text-xs leading-none mb-2">{status}</p>
-          {/* <Button
-            onClick={() => {}}
-            label="View More"
-            variant=""
-            customClassName="p-0 h-8 w-[44%] mt-6 text-xs"
-          /> */}
+         
         </div>
         <div className="w-[30%]  ">
           <GaugeChart

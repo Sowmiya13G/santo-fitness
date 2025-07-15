@@ -18,12 +18,7 @@ const BMRCard = ({ bmr }) => {
             BMR (Basal Metabolic Rate)
           </h2>
           <p className="text-xs leading-none mb-2">{status}</p>
-          {/* <Button
-            onClick={() => {}}
-            label="View More"
-            variant=""
-            customClassName="py-0 h-8 w-[60%] mt-3 text-xs"
-          /> */}
+       
         </div>
         <div className="w-[30%] text-center">
           <div className="text-2xl font-bold">{Math.round(bmr)}</div>

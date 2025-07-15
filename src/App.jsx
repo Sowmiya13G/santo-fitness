@@ -64,7 +64,7 @@ const App = () => {
   }
 
   return (
-    <div className="h-screen-dynamic  hide-scrollbar">
+    <div className="h-screen-dynamic  hide-scrollbar w-full">
       <AppRoutes />
       <ToastContainer position="top-center" autoClose={3000} />
     </div>
