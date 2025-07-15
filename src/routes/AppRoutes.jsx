@@ -4,13 +4,18 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
 // auth screens
-import ForgotPassword from "../screens/auth/forgot-password";
-import Login from "../screens/auth/login";
-import Onboarding from "../screens/auth/oboarding";
-import SetPassword from "../screens/auth/set-password";
-import SplashScreen from "../screens/auth/splash";
+import ForgotPassword from "@/screens/auth/forgot-password";
+import Login from "@/screens/auth/login";
+import Onboarding from "@/screens/auth/oboarding";
+import SetPassword from "@/screens/auth/set-password";
+import SplashScreen from "@/screens/auth/splash";
 
+import Profile from "@/screens/dashboard/Profile";
+import Camera from "@/screens/dashboard/camera";
+import Graph from "@/screens/dashboard/graph";
+import Home from "@/screens/dashboard/home";
 import LoggedIn from "@/screens/dashboard/logged-in";
+import Recipes from "@/screens/dashboard/recipes";
 import AddNewPerson from "@/screens/profile/add-new-person";
 import ClientReport from "@/screens/profile/client-report";
 import ClientWorkoutNotes from "@/screens/profile/client-workout";
@@ -18,11 +23,6 @@ import PersonalData from "@/screens/profile/personal-data";
 import TrainerPostReport from "@/screens/profile/trainer-report";
 import TrainerWorkoutNotes from "@/screens/profile/trainer-workout";
 import WorkoutDone from "@/screens/profile/workout-done";
-import Camera from "../screens/dashboard/camera";
-import Graph from "../screens/dashboard/graph";
-import Home from "../screens/dashboard/home";
-import Profile from "../screens/dashboard/profile";
-import Recipes from "../screens/dashboard/recipes";
 import DashboardLayout from "./DashboardLayout";
 
 export default function AppRoutes() {
