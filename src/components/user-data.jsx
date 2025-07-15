@@ -1,10 +1,12 @@
 // packages
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 // components
 import Button from "./Button";
 import InputDatePicker from "./input/date-picker";
+import Dropdown from "./input/dropdown";
 import Input from "./input/input";
 // others
 import {
@@ -13,9 +15,7 @@ import {
   sectionedFields,
   subscriptionPlanData,
 } from "@/constants/staticData";
-import { getUserData } from "@/features/user/userAPI";
-import { useEffect } from "react";
-import Dropdown from "./input/dropdown";
+import { getUserData, getUsersList } from "@/features/user/userAPI";
 
 function chunkArray(array, size) {
   const result = [];
@@ -28,65 +28,98 @@ function chunkArray(array, size) {
 const roleOptions = [
   { label: "Client", value: "client" },
   { label: "Trainer", value: "trainer" },
-  { label: "Admin", value: "admin" },
+  // { label: "Admin", value: "admin" },
 ];
 
-function UserData() {
+function UserData({ isCreate = false }) {
   const { userData } = useSelector((state) => state.auth);
   const methods = useForm({
-    resolver: yupResolver(),
+    // resolver: yupResolver(),
   });
 
   const {
     handleSubmit,
     reset,
+    watch,
     formState: { isSubmitting },
   } = methods;
+  const [list, setList] = useState([]);
 
   const isClient = userData?.role === "client";
+  const isAdmin = userData?.role === "admin";
   const editable = !isClient;
 
+  const isTrainerRole = watch("role") === "trainer";
   // ---------------------------------- functionalites ---------------------------------- //
+
+  const fetchUsersList = async (role = "client") => {
+    try {
+      const response = await getUsersList(role);
+      if (response?.status === 200) {
+        const res = response?.users?.map((x) => ({
+          value: x?._id,
+          label: x?.name,
+        }));
+        setList(res);
+      }
+    } catch (err) {
+      console.error("Failed to fetch clients list:", err);
+    }
+  };
+
   const fetchUserData = async (id) => {
     try {
       const response = await getUserData(id);
       if (response?.status === 200) {
         const client = response.user;
-        reset({
-          clientName: client.name ?? "",
-          userId: client.sfcId ?? "",
+
+        const resetData = {
+          name: client.name ?? "",
+          sfcId: client.sfcId ?? "",
           age: client.age ?? "",
           height: client.height ?? "",
           weight: client.weight ?? "",
           bodyAge: client.age ?? "",
           bmi: client.BMI ?? "",
           fat: client.FAT ?? "",
-          "v.fat": client.VFat ?? "",
-          "s.fat": client.SFat ?? "",
-          kcal: client.kCal ?? "",
-          "fullbody.s.fat": client.fullBodySFat ?? "",
-          "fullbody.muscle": client.fullBodyMuscle ?? "",
-          "arms.s.fat": client.armSFat ?? "",
-          "arms.muscle": client.armsMuscle ?? "",
-          "trunck.s.fat": client.trunkSFat ?? "",
-          "trunck.muscle": client.trunkMuscle ?? "",
-          "legs.s.fat": client.legsSFat ?? "",
-          "legs.muscle": client.legsMuscle ?? "",
-          dob: client.DOB ? new Date(client.DOB) : null,
-          subscription: client?.subscriptionPlan,
-        });
+          VFat: client.VFat ?? "",
+          SFat: client.SFat ?? "",
+          kCal: client.kCal ?? "",
+          fullBodySFat: client.fullBodySFat ?? "",
+          fullBodyMuscle: client.fullBodyMuscle ?? "",
+          armSFat: client.armSFat ?? "",
+          armsMuscle: client.armsMuscle ?? "",
+          trunkSFat: client.trunkSFat ?? "",
+          trunkMuscle: client.trunkMuscle ?? "",
+          legsSFat: client.legsSFat ?? "",
+          legsMuscle: client.legsMuscle ?? "",
+          DOB: client.DOB ? new Date(client.DOB) : null,
+          subscriptionPlan: client?.subscriptionPlan,
+        };
+
+        if (isAdmin) {
+          const currentRole = methods.getValues("role");
+          const currentPerson = methods.getValues("person");
+          resetData.role = currentRole;
+          resetData.person = currentPerson;
+        }
+
+        reset(resetData);
       }
     } catch (err) {
       console.error("Failed to fetch user data:", err);
     }
   };
-  const onSubmit = async (data) => {};
+
+  const onSubmit = async (data) => {
+    console.log("🚀 ~ UserData ~ data:", data);
+  };
   // ---------------------------------- use effects ---------------------------------- //
+
   useEffect(() => {
-    if (isClient && userData?._id) {
-      fetchUserData(userData?._id);
-    }
+    fetchUsersList(isTrainerRole ? "trainer" : "client");
   }, []);
+
   // ---------------------------------- render ui ---------------------------------- //
 
   return (
@@ -96,6 +129,34 @@ function UserData() {
           onSubmit={handleSubmit(onSubmit)}
           className="w-full max-w-md space-y-4 mt-5 pb-5"
         >
+          {isAdmin && (
+            <Dropdown
+              name="role"
+              label="Role"
+              options={roleOptions}
+              value={methods.watch("role")}
+              onChange={(val) => {
+                reset({
+                  role: val,
+                });
+                fetchUsersList(val);
+              }}
+              placeholder="Select role"
+            />
+          )}
+          {!isClient && (
+            <Dropdown
+              name="person"
+              label={`Select ${isTrainerRole ? "Trainer" : "Client"}`}
+              options={list}
+              value={methods.watch("person")}
+              onChange={(val) => {
+                methods.setValue("person", val);
+                fetchUserData(val);
+              }}
+              placeholder={`Select ${isTrainerRole ? "trainer" : "client"}`}
+            />
+          )}
           {basicFields.map((field) => (
             <Input key={field.name} {...field} editable={editable} />
           ))}
@@ -129,18 +190,18 @@ function UserData() {
             </div>
           ))}
           <InputDatePicker
-            name="dob"
+            name="DOB"
             label="Date of Birth"
             editable={isClient ? false : true}
           />
 
           <Dropdown
-            name="subscription"
+            name="subscriptionPlan"
             label="Subscription"
             options={subscriptionPlanData}
-            value={methods.watch("subscription")}
-            onChange={(val) => methods.setValue("subscription", val)}
-            placeholder="Select subscription"
+            value={methods.watch("subscriptionPlan")}
+            onChange={(val) => methods.setValue("subscriptionPlan", val)}
+            placeholder="Select subscriptionPlan"
             editable={!isClient}
           />
           {!isClient && (
@@ -148,9 +209,8 @@ function UserData() {
               type="submit"
               disabled={isSubmitting}
               loading={isSubmitting}
-            >
-              Create
-            </Button>
+              label={!isCreate ? "Update" : "Create"}
+            />
           )}
         </form>
       </FormProvider>

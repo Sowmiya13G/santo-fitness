@@ -25,7 +25,7 @@ const ClientProfile = () => {
     <div className="h-full bg-white space-y-6">
       <ScreenHeader title="Profile" />
       <ProfileCard
-        image="https://avatar.iran.liara.run/public"
+        image={import.meta.env.VITE_AVATAR_API_URL}
         name={userData?.name}
         program="Lose a Fat Program"
         height={180}

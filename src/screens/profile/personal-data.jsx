@@ -6,7 +6,7 @@ const PersonalData = () => {
   return (
     <ProfileWrapper
       title="Personal Data"
-      image={"https://avatar.iran.liara.run/public"}
+      image={import.meta.env.VITE_AVATAR_API_URL}
     >
       <UserData />
     </ProfileWrapper>

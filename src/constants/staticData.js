@@ -106,9 +106,9 @@ export const trainerAccountItems = [
 ];
 
 export const basicFields = [
-  { name: "clientName", label: "Name", placeholder: "Enter client name" },
+  { name: "name", label: "Name", placeholder: "Enter client name" },
   {
-    name: "userId",
+    name: "sfcId",
     label: "User ID",
     placeholder: "Enter user ID",
   },
@@ -135,38 +135,38 @@ export const basicFields = [
 
 export const fatFields = [
   { name: "fat", label: "Fat" },
-  { name: "v.fat", label: "V.Fat" },
-  { name: "s.fat", label: "S.Fat" },
-  { name: "kcal", label: "Kcal" },
+  { name: "VFat", label: "V.Fat" },
+  { name: "SFat", label: "S.Fat" },
+  { name: "kCal", label: "KCal" },
 ];
 
 export const sectionedFields = [
   {
     title: "Full body",
     fields: [
-      { name: "fullbody.s.fat", label: "S.Fat" },
-      { name: "fullbody.muscle", label: "Muscle" },
+      { name: "fullBodySFat", label: "S.Fat" },
+      { name: "fullBodyMuscle", label: "Muscle" },
     ],
   },
   {
     title: "Arms",
     fields: [
-      { name: "arms.s.fat", label: "S.Fat" },
-      { name: "arms.muscle", label: "Muscle" },
+      { name: "armSFat", label: "S.Fat" },
+      { name: "armsMuscle", label: "Muscle" },
     ],
   },
   {
     title: "Trunck",
     fields: [
-      { name: "trunck.s.fat", label: "S.Fat" },
-      { name: "trunck.muscle", label: "Muscle" },
+      { name: "trunkSFat", label: "S.Fat" },
+      { name: "trunkMuscle", label: "Muscle" },
     ],
   },
   {
     title: "Legs",
     fields: [
-      { name: "legs.s.fat", label: "S.Fat" },
-      { name: "legs.muscle", label: "Muscle" },
+      { name: "legsSFat", label: "S.Fat" },
+      { name: "legsMuscle", label: "Muscle" },
     ],
   },
 ];
