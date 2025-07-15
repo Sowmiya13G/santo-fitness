@@ -22,3 +22,16 @@ export const getUsersList = async (role) => {
   });
   return response.data;
 };
+
+export const createUser = async (data) => {
+  const response = await axiosInstance.get(API_ENDPOINTS.USER.USER, data);
+  return response.data;
+};
+
+export const updateUser = async (id, data) => {
+  const response = await axiosInstance.get(
+    `${API_ENDPOINTS.USER.USER}/${id}`,
+    data
+  );
+  return response.data;
+};

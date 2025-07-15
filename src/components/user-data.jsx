@@ -1,5 +1,4 @@
 // packages
-import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
@@ -15,7 +14,13 @@ import {
   sectionedFields,
   subscriptionPlanData,
 } from "@/constants/staticData";
-import { getUserData, getUsersList } from "@/features/user/userAPI";
+import {
+  createUser,
+  getUserData,
+  getUsersList,
+  updateUser,
+} from "@/features/user/userAPI";
+import FatInput from "./input/fat-input";
 
 function chunkArray(array, size) {
   const result = [];
@@ -77,6 +82,7 @@ function UserData({ isCreate = false }) {
           name: client.name ?? "",
           sfcId: client.sfcId ?? "",
           age: client.age ?? "",
+          email: client?.email ?? "",
           height: client.height ?? "",
           weight: client.weight ?? "",
           bodyAge: client.age ?? "",
@@ -113,6 +119,21 @@ function UserData({ isCreate = false }) {
 
   const onSubmit = async (data) => {
     console.log("🚀 ~ UserData ~ data:", data);
+
+    const formatted = `${data?.DOB.getFullYear()}-${String(
+      data?.DOB.getMonth() + 1
+    ).padStart(2, "0")}-${String(data?.DOB.getDate()).padStart(2, "0")}`;
+
+    console.log("🚀 ~ onSubmit ~ formatted:", formatted);
+
+    return;
+    if (isCreate) {
+      const response = await updateUser(watch("person"), data);
+      console.log("🚀 ~ onSubmit ~ response:", response);
+    } else {
+      const response = await createUser(data);
+      console.log("🚀 ~ onSubmit ~ response:", response);
+    }
   };
   // ---------------------------------- use effects ---------------------------------- //
 
@@ -144,7 +165,7 @@ function UserData({ isCreate = false }) {
               placeholder="Select role"
             />
           )}
-          {!isClient && (
+          {!isClient && !isCreate && (
             <Dropdown
               name="person"
               label={`Select ${isTrainerRole ? "Trainer" : "Client"}`}
@@ -160,16 +181,27 @@ function UserData({ isCreate = false }) {
           {basicFields.map((field) => (
             <Input key={field.name} {...field} editable={editable} />
           ))}
-          {chunkArray(fatFields, 2).map((group, idx) => (
-            <div key={idx} className="w-full flex space-x-4">
-              {group.map((field) => (
-                <Input
-                  key={field.name}
-                  {...field}
-                  placeholder={`Enter ${field.label.toLowerCase()}`}
-                  editable={editable}
-                />
-              ))}
+          {fatFields.map((row, index) => (
+            <div key={index} className="w-full flex space-x-4 mt-4">
+              {row.map(({ name, label, isFat }) =>
+                isFat ? (
+                  <FatInput
+                    key={name}
+                    name={name}
+                    label={label}
+                    placeholder={`Enter ${label.toLowerCase()}`}
+                    editable={editable}
+                  />
+                ) : (
+                  <Input
+                    key={name}
+                    name={name}
+                    label={label}
+                    placeholder={`Enter ${label.toLowerCase()}`}
+                    editable={editable}
+                  />
+                )
+              )}
             </div>
           ))}
           {sectionedFields.map((section) => (
@@ -178,17 +210,29 @@ function UserData({ isCreate = false }) {
                 {section.title}
               </p>
               <div className="w-full flex space-x-4">
-                {section.fields.map((field) => (
-                  <Input
-                    key={field.name}
-                    {...field}
-                    placeholder={`Enter ${field.label.toLowerCase()}`}
-                    editable={editable}
-                  />
-                ))}
+                {section.fields.map((field) =>
+                  field.isFat ? (
+                    <FatInput
+                      key={field.name}
+                      name={field.name}
+                      label={field.label}
+                      editable={editable}
+                      placeholder="0"
+                    />
+                  ) : (
+                    <Input
+                      key={field.name}
+                      name={field.name}
+                      label={field.label}
+                      editable={editable}
+                      placeholder={`Enter ${field.label.toLowerCase()}`}
+                    />
+                  )
+                )}
               </div>
             </div>
           ))}
+
           <InputDatePicker
             name="DOB"
             label="Date of Birth"

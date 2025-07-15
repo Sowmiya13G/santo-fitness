@@ -11,6 +11,7 @@ import SetPassword from "../screens/auth/set-password";
 import SplashScreen from "../screens/auth/splash";
 
 import LoggedIn from "@/screens/dashboard/logged-in";
+import AddNewPerson from "@/screens/profile/add-new-person";
 import ClientReport from "@/screens/profile/client-report";
 import ClientWorkoutNotes from "@/screens/profile/client-workout";
 import PersonalData from "@/screens/profile/personal-data";
@@ -69,6 +70,10 @@ export default function AppRoutes() {
           <Route
             path="/profile/testing-reports-trainer"
             element={<TrainerPostReport />}
+          />
+          <Route
+            path="/profile/add-new-person"
+            element={<AddNewPerson />}
           />
           <Route path="/profile/workout-done" element={<WorkoutDone />} />
           <Route element={<DashboardLayout />}>

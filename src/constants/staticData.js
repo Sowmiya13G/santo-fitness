@@ -45,7 +45,7 @@ export const adminAccountItems = [
   {
     title: "Add New Person",
     icon: AddNew,
-    toPath: "/profile/testing-reports",
+    toPath: "/profile/add-new-person",
   },
   {
     title: "Testing Reports",
@@ -113,6 +113,7 @@ export const basicFields = [
     placeholder: "Enter user ID",
   },
   { name: "age", label: "Age", placeholder: "Enter age" },
+  { name: "email", label: "Email", placeholder: "Enter email" },
   {
     name: "height",
     label: "Height",
@@ -134,39 +135,43 @@ export const basicFields = [
 ];
 
 export const fatFields = [
-  { name: "fat", label: "Fat" },
-  { name: "VFat", label: "V.Fat" },
-  { name: "SFat", label: "S.Fat" },
-  { name: "kCal", label: "KCal" },
+  [
+    { name: "fat", label: "Fat", isFat: true },
+    { name: "VFat", label: "V.Fat", isFat: true },
+  ],
+  [
+    { name: "SFat", label: "S.Fat", isFat: true },
+    { name: "kCal", label: "KCal", isFat: false },
+  ],
 ];
 
 export const sectionedFields = [
   {
     title: "Full body",
     fields: [
-      { name: "fullBodySFat", label: "S.Fat" },
-      { name: "fullBodyMuscle", label: "Muscle" },
+      { name: "fullBodySFat", label: "S.Fat", isFat: true },
+      { name: "fullBodyMuscle", label: "Muscle", isFat: false },
     ],
   },
   {
     title: "Arms",
     fields: [
-      { name: "armSFat", label: "S.Fat" },
-      { name: "armsMuscle", label: "Muscle" },
+      { name: "armSFat", label: "S.Fat", isFat: true },
+      { name: "armsMuscle", label: "Muscle", isFat: false },
     ],
   },
   {
     title: "Trunck",
     fields: [
-      { name: "trunkSFat", label: "S.Fat" },
-      { name: "trunkMuscle", label: "Muscle" },
+      { name: "trunkSFat", label: "S.Fat", isFat: true },
+      { name: "trunkMuscle", label: "Muscle", isFat: false },
     ],
   },
   {
     title: "Legs",
     fields: [
-      { name: "legsSFat", label: "S.Fat" },
-      { name: "legsMuscle", label: "Muscle" },
+      { name: "legsSFat", label: "S.Fat", isFat: true },
+      { name: "legsMuscle", label: "Muscle", isFat: false },
     ],
   },
 ];
