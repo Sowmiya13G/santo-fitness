@@ -2,10 +2,16 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 import tsconfigPaths from "vite-tsconfig-paths";
+import path from "path";
 export default defineConfig({
   server: {
     host: true, // or "0.0.0.0"
     port: 5173,
+  },
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "src"),
+    },
   },
   plugins: [
     react(),
@@ -14,9 +20,9 @@ export default defineConfig({
       registerType: "autoUpdate",
       includeAssets: ["favicon.svg", "robots.txt", "apple-touch-icon.png"],
       manifest: {
-        name: "My Vite PWA",
-        short_name: "VitePWA",
-        description: "A PWA using Vite and React",
+        name: "Santo Fiteness Centre",
+        short_name: "FItness",
+        description: "Diet Monitoring",
         theme_color: "#ffffff",
         background_color: "#ffffff",
         display: "standalone",
