@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 // components
-import Button from "./Button";
+import Button from "./button";
 import InputDatePicker from "./input/date-picker";
 import Dropdown from "./input/dropdown";
 import FatInput from "./input/fat-input";

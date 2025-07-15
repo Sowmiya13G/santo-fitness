@@ -1,4 +1,4 @@
-import Button from "./Button";
+import Button from "./button";
 // constants
 
 export default function SuccessPage({

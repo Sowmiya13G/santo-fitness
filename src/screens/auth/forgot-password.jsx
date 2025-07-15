@@ -3,7 +3,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { FormProvider, useForm } from "react-hook-form";
 import { FiMail } from "react-icons/fi";
 // components
-import Button from "@/components/Button";
+import Button from "@/components/button";
 import Input from "@/components/input/input";
 import { showToast } from "@/components/toast";
 // others

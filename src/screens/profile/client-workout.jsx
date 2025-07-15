@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { FaCheckCircle, FaRegCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 // components
-import Workout from "../../assets/images/workout.svg";
 import Button from "@/components/button";
 import ProfileWrapper from "@/components/profile-wrapper";
+import Workout from "../../assets/images/workout.svg";
 
 const sampleExercises = [
   { id: 1, name: "Push Ups", sets: 3, reps: 12 },

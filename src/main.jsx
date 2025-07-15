@@ -6,8 +6,8 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react";
 import { registerSW } from "virtual:pwa-register";
-import { queryClient } from "./app/query-client";
 import App from "./App.jsx";
+import { queryClient } from "./app/query-client";
 import { persistor, store } from "./features/store.js";
 import "./index.css";
 // ✅ Register the service worker (provided by vite-plugin-pwa)

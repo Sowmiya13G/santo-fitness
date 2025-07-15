@@ -4,7 +4,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { FiLock } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router-dom";
 // components
-import Button from "@/components/Button";
+import Button from "@/components/button";
 import Input from "@/components/input/input";
 import { showToast } from "@/components/toast";
 // others

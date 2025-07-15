@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { FaTrash } from "react-icons/fa";
 
-import Workout from "../../assets/images/workout.svg";
 import Button from "@/components/button";
+import Workout from "../../assets/images/workout.svg";
 // components
 import Dropdown from "@/components/input/dropdown";
 import Input from "@/components/input/input";
