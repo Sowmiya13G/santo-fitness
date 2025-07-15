@@ -74,7 +74,7 @@ const TrainerWorkoutNotes = () => {
         <FormProvider {...methods}>
           <form
             onSubmit={handleSubmit((data) => {
-              console.log(data); 
+              console.log(data);
             })}
             className="flex flex-col flex-1 justify-between"
           >
@@ -128,9 +128,8 @@ const TrainerWorkoutNotes = () => {
                 type="submit"
                 disabled={isSubmitting}
                 loading={isSubmitting}
-              >
-                Create
-              </Button>
+                label={"Create"}
+              />
             </div>
           </form>
         </FormProvider>

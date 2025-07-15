@@ -14,6 +14,8 @@ import LoggedIn from "@/screens/dashboard/logged-in";
 import ClientReport from "@/screens/profile/client-report";
 import ClientWorkoutNotes from "@/screens/profile/client-workout";
 import PersonalData from "@/screens/profile/personal-data";
+import TrainerPostReport from "@/screens/profile/trainer-report";
+import TrainerWorkoutNotes from "@/screens/profile/trainer-workout";
 import WorkoutDone from "@/screens/profile/workout-done";
 import Camera from "../screens/dashboard/camera";
 import Graph from "../screens/dashboard/graph";
@@ -21,7 +23,6 @@ import Home from "../screens/dashboard/home";
 import Profile from "../screens/dashboard/profile";
 import Recipes from "../screens/dashboard/recipes";
 import DashboardLayout from "./DashboardLayout";
-import TrainerWorkoutNotes from "@/screens/profile/trainer-workout";
 
 export default function AppRoutes() {
   const { isLoggedIn } = useAuth();
@@ -61,14 +62,15 @@ export default function AppRoutes() {
             path="/profile/workout-notes"
             element={<ClientWorkoutNotes />}
           />
-              <Route
+          <Route
             path="/profile/workout-notes-trainer"
             element={<TrainerWorkoutNotes />}
           />
           <Route
-            path="/profile/workout-done"
-            element={<WorkoutDone />}
+            path="/profile/testing-reports-trainer"
+            element={<TrainerPostReport />}
           />
+          <Route path="/profile/workout-done" element={<WorkoutDone />} />
           <Route element={<DashboardLayout />}>
             <Route path="/home" element={<Home />} />
             <Route path="/activity" element={<Graph />} />

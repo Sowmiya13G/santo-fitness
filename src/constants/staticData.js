@@ -67,7 +67,7 @@ export const trainerAccountItems = [
   {
     title: "Testing Reports",
     icon: Report,
-    toPath: "/profile/testing-reports",
+    toPath: "/profile/testing-reports-trainer",
   },
   {
     title: "Activity History",
