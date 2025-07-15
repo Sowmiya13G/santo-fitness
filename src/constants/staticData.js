@@ -6,6 +6,7 @@ import Img4 from "../assets/images/onboarding-image4.svg";
 import Activity from "../assets/icons/activity-icon.svg";
 import Profile from "../assets/icons/profile.svg";
 import Report from "../assets/icons/report.svg";
+import AddNew from "../assets/icons/addNew.svg";
 import Notes from "../assets/icons/workout-notes.svg";
 
 export const onboardingContent = [
@@ -32,6 +33,29 @@ export const onboardingContent = [
     title: "Improve Sleep Quality",
     content:
       "Improve your sleep quality with us. Good sleep brings a great mood every morning.",
+  },
+];
+
+export const adminAccountItems = [
+  {
+    title: "Personal Data",
+    icon: Profile,
+    toPath: "/profile/personal-data",
+  },
+  {
+    title: "Add New Person",
+    icon: AddNew,
+    toPath: "/profile/testing-reports",
+  },
+  {
+    title: "Testing Reports",
+    icon: Report,
+    toPath: "/profile/testing-reports",
+  },
+  {
+    title: "Activity History",
+    icon: Activity,
+    toPath: "/profile/activity-history",
   },
 ];
 

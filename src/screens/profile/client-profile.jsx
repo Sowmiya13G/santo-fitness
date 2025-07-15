@@ -1,7 +1,7 @@
 import { useState } from "react";
 // packages
 import { FiBell, FiChevronRight, FiLogOut } from "react-icons/fi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 // redux
 import { setToken } from "@/features/auth/authSlice";
@@ -19,13 +19,14 @@ const ClientProfile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [enabled, setEnabled] = useState(false);
+  const { userData } = useSelector((state) => state.auth);
 
   return (
     <div className="h-full bg-white space-y-6">
       <ScreenHeader title="Profile" />
       <ProfileCard
         image="https://avatar.iran.liara.run/public"
-        name="Stefani Wong"
+        name={userData?.name}
         program="Lose a Fat Program"
         height={180}
         weight={65}

@@ -14,7 +14,7 @@ export default function ProfileWrapper({
           <img
             src={image}
             alt="Header"
-            className="w-44 h-44 object-contain my-4"
+            className="w-44 h-44 object-fit my-4 rounded-full"
           />
         </div>
       )}
