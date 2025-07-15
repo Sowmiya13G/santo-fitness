@@ -14,6 +14,7 @@ const Input = ({
   label,
   text,
   editable = true,
+  suffixIconAction,
 }) => {
   const {
     register,
@@ -66,7 +67,9 @@ const Input = ({
         ) : (
           <>
             {icon && iconPosition === "suffix" && (
-              <span className="text-icon">{icon}</span>
+              <button className="text-icon" onClick={suffixIconAction}>
+                {icon}
+              </button>
             )}
             {text && <span className="text-sm text-icon">{text}</span>}
           </>

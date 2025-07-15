@@ -15,3 +15,10 @@ export const getUserData = async (data) => {
   });
   return response.data;
 };
+
+export const getUsersList = async (role) => {
+  const response = await axiosInstance.get(API_ENDPOINTS.USER.USERS, {
+    role: role,
+  });
+  return response.data;
+};

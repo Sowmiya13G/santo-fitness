@@ -7,6 +7,7 @@ const API_ENDPOINTS = {
   USER: {
     SAVE_FCM_TOKEN: "/save-token",
     USER: "/users",
+    USERS: "/users-list",
   },
 };
 

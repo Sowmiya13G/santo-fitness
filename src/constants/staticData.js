@@ -35,7 +35,7 @@ export const onboardingContent = [
   },
 ];
 
-export const accountItems = [
+export const clientAccountItems = [
   {
     title: "Personal Data",
     icon: Profile,
@@ -55,6 +55,29 @@ export const accountItems = [
     title: "Workout Notes",
     icon: Notes,
     toPath: "/profile/workout-notes",
+  },
+];
+
+export const trainerAccountItems = [
+  {
+    title: "Personal Data",
+    icon: Profile,
+    toPath: "/profile/personal-data",
+  },
+  {
+    title: "Testing Reports",
+    icon: Report,
+    toPath: "/profile/testing-reports",
+  },
+  {
+    title: "Activity History",
+    icon: Activity,
+    toPath: "/profile/activity-history",
+  },
+  {
+    title: "Workout Notes",
+    icon: Notes,
+    toPath: "/profile/workout-notes-trainer",
   },
 ];
 
@@ -130,4 +153,16 @@ export const subscriptionPlanData = [
   { label: "6 Months", value: "6" },
   { label: "12 Months", value: "12" },
   { label: "15 Months", value: "15" },
+];
+
+export const workoutClassData = [
+  { label: "Chest", value: "chest" },
+  { label: "Shoulder", value: "shoulder" },
+  { label: "Biceps", value: "biceps" },
+  { label: "Triceps", value: "triceps" },
+  { label: "Lats", value: "lats" },
+  { label: "Leg", value: "leg" },
+  { label: "Full Body", value: "full_body" },
+  { label: "Cardio", value: "cardio" },
+  { label: "CrossFit", value: "crossfit" },
 ];

@@ -21,6 +21,7 @@ import Home from "../screens/dashboard/home";
 import Profile from "../screens/dashboard/profile";
 import Recipes from "../screens/dashboard/recipes";
 import DashboardLayout from "./DashboardLayout";
+import TrainerWorkoutNotes from "@/screens/profile/trainer-workout";
 
 export default function AppRoutes() {
   const { isLoggedIn } = useAuth();
@@ -59,6 +60,10 @@ export default function AppRoutes() {
           <Route
             path="/profile/workout-notes"
             element={<ClientWorkoutNotes />}
+          />
+              <Route
+            path="/profile/workout-notes-trainer"
+            element={<TrainerWorkoutNotes />}
           />
           <Route
             path="/profile/workout-done"

@@ -13,7 +13,7 @@ import ScreenHeader from "@/components/screen-header";
 import ShadowView from "@/components/shadow-view";
 import Switch from "@/components/switch";
 
-import { accountItems } from "@/constants/staticData";
+import { clientAccountItems } from "@/constants/staticData";
 
 const ClientProfile = () => {
   const navigate = useNavigate();
@@ -33,7 +33,7 @@ const ClientProfile = () => {
       />
       <ShadowView title="Account">
         <div className="space-y-4">
-          {accountItems?.map(({ title, icon: Icon, toPath }) => (
+          {clientAccountItems?.map(({ title, icon: Icon, toPath }) => (
             <RenderIconRow
               key={title}
               title={title}
