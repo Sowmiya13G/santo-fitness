@@ -11,7 +11,7 @@ import SetPassword from "@/screens/auth/set-password";
 import SplashScreen from "@/screens/auth/splash";
 
 
-import Profile from "@/screens/dashboard/Profile";
+import Profile from "@/screens/dashboard/profile";
 import Camera from "@/screens/dashboard/camera";
 import Graph from "@/screens/dashboard/graph";
 import Home from "@/screens/dashboard/home";
