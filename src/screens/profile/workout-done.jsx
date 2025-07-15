@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 // components
-import SuccessPage from "@/components/success";
 import Success from "../../assets/images/workout-done.svg";
+import SuccessPage from "@/components/success";
 
 function WorkoutDone() {
   // const { userData } = useSelector((state) => state.auth);
