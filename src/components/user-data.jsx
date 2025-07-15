@@ -21,7 +21,6 @@ import {
   getUsersList,
   updateUser,
 } from "@/features/user/user-api";
-import FatInput from "./input/fat-input";
 
 // function chunkArray(array, size) {
 //   const result = [];
@@ -122,7 +121,7 @@ function UserData({ isCreate = false }) {
     console.log("🚀 ~ UserData ~ data:", data);
 
     const formatted = `${data?.DOB.getFullYear()}-${String(
-      data?.DOB.getMonth() + 1,
+      data?.DOB.getMonth() + 1
     ).padStart(2, "0")}-${String(data?.DOB.getDate()).padStart(2, "0")}`;
 
     console.log("🚀 ~ onSubmit ~ formatted:", formatted);
@@ -201,7 +200,7 @@ function UserData({ isCreate = false }) {
                     placeholder={`Enter ${label?.toLowerCase()}`}
                     editable={editable}
                   />
-                ),
+                )
               )}
             </div>
           ))}
@@ -228,7 +227,7 @@ function UserData({ isCreate = false }) {
                       editable={editable}
                       placeholder={`Enter ${field?.label.toLowerCase()}`}
                     />
-                  ),
+                  )
                 )}
               </div>
             </div>

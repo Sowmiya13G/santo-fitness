@@ -1,4 +1,4 @@
-import NutrientProgress from "../card/nutrientProgress";
+import NutrientProgress from "../card/nutrient-progress";
 
 const nutrients = [
   {
