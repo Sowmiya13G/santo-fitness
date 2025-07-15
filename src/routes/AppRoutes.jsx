@@ -10,6 +10,7 @@ import Onboarding from "@/screens/auth/oboarding";
 import SetPassword from "@/screens/auth/set-password";
 import SplashScreen from "@/screens/auth/splash";
 
+
 import Profile from "@/screens/dashboard/Profile";
 import Camera from "@/screens/dashboard/camera";
 import Graph from "@/screens/dashboard/graph";
