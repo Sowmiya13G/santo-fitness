@@ -189,7 +189,7 @@ function UserData({ isCreate = false }) {
                     key={name}
                     name={name}
                     label={label}
-                    placeholder={`Enter ${label.toLowerCase()}`}
+                    placeholder={`Enter ${label?.toLowerCase()}`}
                     editable={editable}
                   />
                 ) : (
@@ -197,7 +197,7 @@ function UserData({ isCreate = false }) {
                     key={name}
                     name={name}
                     label={label}
-                    placeholder={`Enter ${label.toLowerCase()}`}
+                    placeholder={`Enter ${label?.toLowerCase()}`}
                     editable={editable}
                   />
                 )
@@ -225,7 +225,7 @@ function UserData({ isCreate = false }) {
                       name={field.name}
                       label={field.label}
                       editable={editable}
-                      placeholder={`Enter ${field.label.toLowerCase()}`}
+                      placeholder={`Enter ${field?.label.toLowerCase()}`}
                     />
                   )
                 )}
