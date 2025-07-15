@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./index.css";
-import AppRoutes from "./routes/AppRoutes";
+import AppRoutes from "./routes/app-routes";
 import InstallSplashScreen from "./screens/auth/installSplash";
 const App = () => {
   const [deferredPrompt, setDeferredPrompt] = useState(null);

@@ -4,11 +4,11 @@ import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 // components
-import Button from "@/components/Button";
+import Button from "@/components/button";
 import Dropdown from "@/components/input/dropdown";
 import UploadInput from "@/components/input/upload";
 import ScreenHeader from "@/components/screen-header";
-import { getUsersList } from "@/features/user/userAPI";
+import { getUsersList } from "@/features/user/user-api";
 
 const TrainerPostReport = () => {
   const navigate = useNavigate();

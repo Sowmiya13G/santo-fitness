@@ -10,11 +10,10 @@ import Button from "@/components/Button";
 import Input from "@/components/input/input";
 import { showToast } from "@/components/toast";
 // others
-import { login } from "@/features/auth/authAPI";
-import { setToken, setUserData } from "@/features/auth/authSlice";
-import { sendFCMToken } from "@/features/user/userAPI";
-import { setFCMToken } from "@/features/user/userSlice";
-import { requestForToken } from "@/utils/pushNotification";
+import { login } from "@/features/auth/auth-api";
+import { sendFCMToken } from "@/features/user/user-api";
+import { setFCMToken } from "@/features/user/user-slice";
+import { requestForToken } from "@/utils/push-notification";
 import { loginSchema } from "@/utils/validation";
 
 function Login() {

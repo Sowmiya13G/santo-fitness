@@ -3,14 +3,14 @@ import { useEffect, useState } from "react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { FaTrash } from "react-icons/fa";
 
-import Button from "@/components/Button";
+import Button from "@/components/button";
 import Workout from "../../assets/images/workout.svg";
 // components
 import Dropdown from "@/components/input/dropdown";
 import Input from "@/components/input/input";
 import ProfileWrapper from "@/components/profile-wrapper";
-import { workoutClassData } from "@/constants/staticData";
-import { getUsersList } from "@/features/user/userAPI";
+import { workoutClassData } from "@/constants/static-data";
+import { getUsersList } from "@/features/user/user-api";
 
 
 const TrainerWorkoutNotes = () => {

@@ -12,8 +12,8 @@ import ScreenHeader from "@/components/screen-header";
 import ShadowView from "@/components/shadow-view";
 import Switch from "@/components/switch";
 
-import { trainerAccountItems } from "@/constants/staticData";
-import { setToken } from "@/features/auth/authSlice";
+import { trainerAccountItems } from "@/constants/static-data";
+import { setToken } from "@/features/auth/auth-api";
 
 const TrainerProfile = () => {
   const navigate = useNavigate();

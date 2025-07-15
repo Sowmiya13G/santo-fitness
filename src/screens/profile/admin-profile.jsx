@@ -12,8 +12,8 @@ import ScreenHeader from "@/components/screen-header";
 import ShadowView from "@/components/shadow-view";
 import Switch from "@/components/switch";
 
-import { adminAccountItems } from "@/constants/staticData";
-import { setToken } from "@/features/auth/authSlice";
+import { adminAccountItems } from "@/constants/static-data";
+import { setToken } from "@/features/auth/auth-slice";
 
 const AdminProfile = () => {
   const navigate = useNavigate();

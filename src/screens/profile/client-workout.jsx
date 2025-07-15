@@ -3,7 +3,7 @@ import { FaCheckCircle, FaRegCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 // components
 import Workout from "../../assets/images/workout.svg";
-import Button from "@/components/Button";
+import Button from "@/components/button";
 import ProfileWrapper from "@/components/profile-wrapper";
 
 const sampleExercises = [

@@ -12,8 +12,8 @@ import ScreenHeader from "@/components/screen-header";
 import ShadowView from "@/components/shadow-view";
 import Switch from "@/components/switch";
 
-import { clientAccountItems } from "@/constants/staticData";
-import { setToken } from "@/features/auth/authSlice";
+import { clientAccountItems } from "@/constants/static-data";
+import { setToken } from "@/features/auth/auth-slice";
 
 const ClientProfile = () => {
   const navigate = useNavigate();
