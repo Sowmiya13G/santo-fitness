@@ -10,7 +10,9 @@ import Onboarding from "@/screens/auth/oboarding";
 import SetPassword from "@/screens/auth/set-password";
 import SplashScreen from "@/screens/auth/splash";
 
+import DashboardLayout from "@/routes/dashboard-layout";
 import Camera from "@/screens/dashboard/camera";
+
 import Graph from "@/screens/dashboard/graph";
 import Home from "@/screens/dashboard/home";
 import LoggedIn from "@/screens/dashboard/logged-in";
@@ -60,7 +62,7 @@ export default function AppRoutes() {
           />
           <Route path="/profile/add-new-person" element={<AddNewPerson />} />
           <Route path="/profile/workout-done" element={<WorkoutDone />} />
-          <Route element={<DashboardLayout />}>
+          <Route element={<DashboardLayout/>}>
             <Route path="/home" element={<Home />} />
             <Route path="/activity" element={<Graph />} />
             <Route path="/camera" element={<Camera />} />
