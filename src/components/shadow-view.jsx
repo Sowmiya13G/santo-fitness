@@ -3,6 +3,7 @@ import React from "react";
 export default function ShadowView({ title, children, icon, onAction }) {
   const hasChildren = React.Children.count(children) > 0;
 
+  
   return (
     <div className="bg-white shadow-md rounded-xl px-4 py-5">
       {title && (
