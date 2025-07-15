@@ -49,7 +49,7 @@ export default function BottomNav() {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50">
-      <div className="absolute inset-x-0 bottom-10 flex justify-center z-50 pointer-events-auto">
+      <div className="absolute left-1/2 -translate-x-1/2  bottom-10 flex justify-center z-50 pointer-events-auto">
         <button className="bg-primary-gradient w-16 h-16 rounded-full flex items-center justify-center shadow-xl pointer-events-auto">
           <img src={FoodIcon} alt="Food" className="w-6 h-6" />
         </button>
