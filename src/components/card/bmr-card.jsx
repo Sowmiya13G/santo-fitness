@@ -1,4 +1,3 @@
-import Button from "../button";
 import { Card } from "@/components/card/card";
 
 const getBMRStatus = (bmr) => {
