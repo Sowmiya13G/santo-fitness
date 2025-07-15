@@ -195,3 +195,4 @@ export const workoutClassData = [
   { label: "Cardio", value: "cardio" },
   { label: "CrossFit", value: "crossfit" },
 ];
+
