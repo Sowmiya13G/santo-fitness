@@ -21,7 +21,6 @@ import {
   getUsersList,
   updateUser,
 } from "@/features/user/user-api";
-import FatInput from "./input/fat-input";
 
 // function chunkArray(array, size) {
 //   const result = [];
