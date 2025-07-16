@@ -5,6 +5,11 @@ import { useNavigate } from "react-router-dom";
 import Button from "@/components/button";
 import ProfileWrapper from "@/components/profile-wrapper";
 import Workout from "../../assets/images/workout.svg";
+import {
+  getClientWorkout,
+  updateWorkout,
+} from "@/features/workout/workout-api";
+import { showToast } from "@/components/toast";
 
 const sampleExercises = [
   { id: 1, name: "Push Ups", sets: 3, reps: 12 },
@@ -17,29 +22,69 @@ const sampleExercises = [
 
 const ClientWorkoutNotes = () => {
   const navigate = useNavigate();
-  const INITIAL_TIMER = 10 * 60;
-
   const [completed, setCompleted] = useState([]);
-  const [started, setStarted] = useState(false);
-  const [timer, setTimer] = useState(INITIAL_TIMER);
+  const [workoutData, setWorkoutData] = useState(null);
 
-  const toggleComplete = (id) => {
-    setCompleted((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
+  const [started, setStarted] = useState(false);
+  const [timer, setTimer] = useState(0);
+
+  const toggleComplete = async (id) => {
+    const targetExercise = workoutData?.workoutVariation?.find(
+      (x) => x._id === id
     );
+    if (targetExercise?.isCompleted) return; 
+
+    const updatedVariations = workoutData?.workoutVariation?.map((x) => ({
+      ...x,
+      isCompleted: x._id === id ? true : x.isCompleted,
+    }));
+
+    const updatedWorkout = {
+      ...workoutData,
+      workoutVariation: updatedVariations,
+    };
+
+    setWorkoutData(updatedWorkout);
+
+    try {
+      const response = await updateWorkout(workoutData?._id, {
+        workoutVariation: updatedVariations,
+      });
+
+      if (response?.success !== 201) {
+        setWorkoutData(workoutData); 
+      }
+    } catch (e) {
+      console.error("Update failed", e);
+      setWorkoutData(workoutData);
+    }
+  };
+
+  const fetchClientWorkout = async () => {
+    try {
+      const response = await getClientWorkout();
+      if (response?.status === 200) {
+        setWorkoutData(response?.notes[0]);
+      }
+    } catch (err) {
+      console.error("Failed to fetch user data:", err);
+    }
   };
 
   useEffect(() => {
+    fetchClientWorkout();
+  }, []);
+
+  useEffect(() => {
     let interval;
-    if (started && timer > 0) {
+    if (started) {
       interval = setInterval(() => {
-        setTimer((prev) => prev - 1);
+        setTimer((prev) => prev + 1);
       }, 1000);
-    } else if (started && timer === 0) {
-      setCompleted(sampleExercises.map((e) => e.id));
     }
     return () => clearInterval(interval);
-  }, [started, timer]);
+  }, [started]);
+  
 
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60)
@@ -49,8 +94,16 @@ const ClientWorkoutNotes = () => {
     return `${mins}:${secs}`;
   };
 
-  const handleStart = () => {
+  const handleStart = async () => {
     setStarted(true);
+    try {
+      const response = await updateWorkout(workoutData?._id, { isStart: true });
+      if (response?.status === 200) {
+        showToast("success", "Workout Started!");
+      }
+    } catch (err) {
+      console.error("Failed to fetch user data:", err);
+    }
   };
 
   const handleComplete = () => {
@@ -61,9 +114,12 @@ const ClientWorkoutNotes = () => {
   return (
     <ProfileWrapper title="" image={Workout}>
       <div className="w-screen px-5 py-4">
-        <p className="font-bold text-font_primary mb-2">Fullbody Workout</p>
+        <p className="font-bold text-font_primary mb-2">
+          {workoutData?.workoutName}
+        </p>
         <p className="text-base text-font_primary">
-          {sampleExercises.length} Exercises
+          {workoutData?.workoutVariation?.length}{" "}
+          {workoutData?.workoutVariation?.length > 1 ? "Exercises" : "Exercise"}
         </p>
 
         <div className="bg-primary-gradient my-5 py-4 px-6 rounded-2xl text-white flex flex-row items-center justify-between">
@@ -72,7 +128,10 @@ const ClientWorkoutNotes = () => {
             <span className="text-2xl">
               {sampleExercises.length - completed.length}
             </span>
-            /<span className="text-base">{sampleExercises.length}</span>
+            /
+            <span className="text-base">
+              {workoutData?.workoutVariation?.length}
+            </span>
           </p>
         </div>
 
@@ -89,24 +148,25 @@ const ClientWorkoutNotes = () => {
 
         <p className="font-bold text-font_primary mb-2">Exercises</p>
         <div className="space-y-4">
-          {sampleExercises.map((exercise) => (
+          {workoutData?.workoutVariation?.map((exercise) => (
             <div
-              key={exercise.id}
+              key={exercise._id}
               className="py-3 px-4 rounded-2xl border border-gray-200 flex flex-row items-center justify-between"
             >
               <div className="flex flex-col">
                 <p className="text-base font-medium text-font_primary">
-                  {exercise.name}
+                  {exercise.variationName}
                 </p>
                 <p className="text-sm text-icon">
                   {exercise.sets} sets | {exercise.reps} reps
                 </p>
               </div>
               <button
-                onClick={() => toggleComplete(exercise.id)}
+                onClick={() => toggleComplete(exercise._id)}
                 disabled={!started}
+                className="mt-8"
               >
-                {completed.includes(exercise.id) ? (
+                {exercise.isCompleted ? (
                   <FaCheckCircle className="w-6 h-6 text-green-500" />
                 ) : (
                   <FaRegCircle className="w-6 h-6 text-gray-400" />
