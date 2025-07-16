@@ -8,7 +8,6 @@ import Img2 from "../assets/images/onboarding-image2.svg";
 import Img3 from "../assets/images/onboarding-image3.svg";
 import Img4 from "../assets/images/onboarding-image4.svg";
 
-
 export const onboardingContent = [
   {
     image: Img1,
@@ -136,11 +135,11 @@ export const basicFields = [
 
 export const fatFields = [
   [
-    { name: "fat", label: "Fat", isFat: true },
-    { name: "VFat", label: "V.Fat", isFat: true },
+    { name: "FAT", label: "Fat", isFat: true, value: 0 },
+    { name: "VFat", label: "V.Fat", isFat: true, value: 0 },
   ],
   [
-    { name: "SFat", label: "S.Fat", isFat: true },
+    { name: "SFat", label: "S.Fat", isFat: true, value: 0 },
     { name: "kCal", label: "KCal", isFat: false },
   ],
 ];
@@ -149,28 +148,28 @@ export const sectionedFields = [
   {
     title: "Full body",
     fields: [
-      { name: "fullBodySFat", label: "S.Fat", isFat: true },
+      { name: "fullBodySFat", label: "S.Fat", isFat: true, value: 0 },
       { name: "fullBodyMuscle", label: "Muscle", isFat: false },
     ],
   },
   {
     title: "Arms",
     fields: [
-      { name: "armSFat", label: "S.Fat", isFat: true },
+      { name: "armSFat", label: "S.Fat", isFat: true, value: 0 },
       { name: "armsMuscle", label: "Muscle", isFat: false },
     ],
   },
   {
     title: "Trunck",
     fields: [
-      { name: "trunkSFat", label: "S.Fat", isFat: true },
+      { name: "trunkSFat", label: "S.Fat", isFat: true, value: 0 },
       { name: "trunkMuscle", label: "Muscle", isFat: false },
     ],
   },
   {
     title: "Legs",
     fields: [
-      { name: "legsSFat", label: "S.Fat", isFat: true },
+      { name: "legsSFat", label: "S.Fat", isFat: true, value: 0 },
       { name: "legsMuscle", label: "Muscle", isFat: false },
     ],
   },

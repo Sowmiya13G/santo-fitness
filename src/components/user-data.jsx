@@ -21,6 +21,7 @@ import {
   getUsersList,
   updateUser,
 } from "@/features/user/user-api";
+import { parseFatValue } from "@/utils/helper";
 
 // function chunkArray(array, size) {
 //   const result = [];
@@ -49,7 +50,8 @@ function UserData({ isCreate = false }) {
     formState: { isSubmitting },
   } = methods;
   const [list, setList] = useState([]);
-
+  const [fatFieldData, setFatFieldData] = useState(fatFields);
+  const [fatFieldsData, setFatFieldsData] = useState(sectionedFields);
   const isClient = userData?.role === "client";
   const isAdmin = userData?.role === "admin";
   const editable = !isClient;
@@ -87,27 +89,39 @@ function UserData({ isCreate = false }) {
           weight: client.weight ?? "",
           bodyAge: client.age ?? "",
           bmi: client.BMI ?? "",
-          fat: client.FAT ?? "",
-          VFat: client.VFat ?? "",
-          SFat: client.SFat ?? "",
           kCal: client.kCal ?? "",
-          fullBodySFat: client.fullBodySFat ?? "",
           fullBodyMuscle: client.fullBodyMuscle ?? "",
-          armSFat: client.armSFat ?? "",
           armsMuscle: client.armsMuscle ?? "",
-          trunkSFat: client.trunkSFat ?? "",
           trunkMuscle: client.trunkMuscle ?? "",
-          legsSFat: client.legsSFat ?? "",
           legsMuscle: client.legsMuscle ?? "",
           DOB: client.DOB ? new Date(client.DOB) : null,
           subscriptionPlan: client?.subscriptionPlan,
         };
 
-        if (isAdmin) {
-          const currentRole = methods.getValues("role");
+        if (isClient) {
+          resetData.FAT = client.FAT ?? "";
+          resetData.VFat = client.VFat ?? "";
+          resetData.SFat = client.SFat ?? "";
+          resetData.fullBodySFat = client.fullBodySFat ?? "";
+          resetData.armSFat = client.armSFat ?? "";
+          resetData.trunkSFat = client.trunkSFat ?? "";
+          resetData.legsSFat = client.legsSFat ?? "";
+        } else {
+          if (isAdmin) {
+            const currentRole = methods.getValues("role");
+            resetData.role = currentRole;
+          }
           const currentPerson = methods.getValues("person");
-          resetData.role = currentRole;
           resetData.person = currentPerson;
+
+          resetData.FAT = parseFatValue(client.FAT) ?? "";
+          console.log("parseFatValue(client.FAT): ", parseFatValue(client.FAT));
+          resetData.VFat = parseFatValue(client.VFat) ?? "";
+          resetData.SFat = parseFatValue(client.SFat) ?? "";
+          resetData.fullBodySFat = parseFatValue(client.fullBodySFat) ?? "";
+          resetData.armSFat = parseFatValue(client.armSFat) ?? "";
+          resetData.trunkSFat = parseFatValue(client.trunkSFat) ?? "";
+          resetData.legsSFat = parseFatValue(client.legsSFat) ?? "";
         }
 
         reset(resetData);
@@ -138,7 +152,11 @@ function UserData({ isCreate = false }) {
   // ---------------------------------- use effects ---------------------------------- //
 
   useEffect(() => {
-    fetchUsersList(isTrainerRole ? "trainer" : "client");
+    if (!isClient) {
+      fetchUsersList(isTrainerRole ? "trainer" : "client");
+    } else {
+      fetchUserData(userData?._id);
+    }
   }, []);
 
   // ---------------------------------- render ui ---------------------------------- //
@@ -183,7 +201,7 @@ function UserData({ isCreate = false }) {
           ))}
           {fatFields.map((row, index) => (
             <div key={index} className="w-full flex space-x-4 mt-4">
-              {row.map(({ name, label, isFat }) =>
+              {row.map(({ name, label, isFat, value }) =>
                 isFat ? (
                   <FatInput
                     key={name}
@@ -191,6 +209,18 @@ function UserData({ isCreate = false }) {
                     label={label}
                     placeholder={`Enter ${label?.toLowerCase()}`}
                     editable={editable}
+                    currentVal={value}
+                    onChange={(val) => {
+                      setFatFieldData((prev) =>
+                        prev.map((row) =>
+                          row.map((field) =>
+                            field.name === name
+                              ? { ...field, value: val }
+                              : field
+                          )
+                        )
+                      );
+                    }}
                   />
                 ) : (
                   <Input
@@ -204,20 +234,35 @@ function UserData({ isCreate = false }) {
               )}
             </div>
           ))}
-          {sectionedFields.map((section) => (
+          {sectionedFields.map((section, sectionIdx) => (
             <div key={section.title}>
               <p className="text-base font-bold text-font_primary mb-2">
                 {section.title}
               </p>
               <div className="w-full flex space-x-4">
-                {section.fields.map((field) =>
+                {section.fields.map((field, fieldIdx) =>
                   field.isFat ? (
                     <FatInput
                       key={field.name}
                       name={field.name}
                       label={field.label}
                       editable={editable}
-                      placeholder="0"
+                      placeholder={`Enter ${field?.label.toLowerCase()}`}
+                      onChange={(val) => {
+                        setFatFieldsData((prev) =>
+                          prev.map((sec, i) =>
+                            i === sectionIdx
+                              ? {
+                                  ...sec,
+                                  fields: sec.fields.map((f, j) =>
+                                    j === fieldIdx ? { ...f, value: val } : f
+                                  ),
+                                }
+                              : sec
+                          )
+                        );
+                      }}
+                      currentVal={field?.value}
                     />
                   ) : (
                     <Input

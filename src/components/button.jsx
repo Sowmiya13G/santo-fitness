@@ -13,7 +13,6 @@ const Button = ({
   iconColor = "text-white",
 }) => {
   const isPrimary = variant === "primary";
-  console.log("isPrimary: ", isPrimary);
 
   const baseStyles =
     "px-6 py-3 rounded-full font-semibold shadow-md w-full flex items-center justify-center gap-2 h-16 focus:outline-none hover:border-0 focus:ring-0 hover:outline-none active:outline-none transition-opacity duration-300";

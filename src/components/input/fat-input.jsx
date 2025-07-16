@@ -10,18 +10,21 @@ const FatInput = ({
   maxLength,
   label,
   editable = true,
+  onChange,
+  currentVal = 0,
 }) => {
   const {
     setValue,
     getValues,
     formState: { errors },
   } = useFormContext();
+  console.log('getValues: ', getValues());
 
   const error = errors?.[name]?.message;
   const baseBorder = error ? "border-red-500" : "border-gray-300";
 
   const [initialValue, setInitialValue] = useState(0);
-  const [currentValue, setCurrentValue] = useState(0);
+  const [currentValue, setCurrentValue] = useState(currentVal);
 
   useEffect(() => {
     const formVal = parseInt(getValues(name));
@@ -32,6 +35,9 @@ const FatInput = ({
 
   useEffect(() => {
     setValue(name, currentValue);
+    if (typeof onChange === "function") {
+      onChange(currentValue);
+    }
   }, [currentValue, name, setValue]);
 
   const increment = () => {
@@ -65,7 +71,6 @@ const FatInput = ({
           className={`flex-1 outline-none text-font_primary bg-feild_primay w-full h-10 ${
             !editable ? "cursor-not-allowed" : ""
           } ${FatInputClassName}`}
-          type="number"
         />
 
         {editable && (
