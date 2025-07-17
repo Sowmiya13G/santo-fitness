@@ -137,7 +137,7 @@ const ClientWorkoutNotes = () => {
 
   return (
     <ProfileWrapper title="" image={Workout}>
-      <div className="w-screen px-5 py-4">
+      <div className="w-screen h-full px-5 py-4">
         {loading ? (
           <p className="text-center text-gray-500 text-lg font-medium">
             Loading workout...
@@ -178,7 +178,7 @@ const ClientWorkoutNotes = () => {
             </div>
 
             <p className="font-bold text-font_primary mb-2">Exercises</p>
-            <div className="space-y-4">
+            <div className="space-y-4 mb-10">
               {exercises.map((exercise) => (
                 <div
                   key={exercise._id}
@@ -207,7 +207,7 @@ const ClientWorkoutNotes = () => {
               ))}
             </div>
 
-            <div className="my-3">
+            <div className="mb-3 absolute bottom-3 w-80 left-1/2 -translate-x-1/2">
               {!started ? (
                 <Button
                   label="Start Workout"

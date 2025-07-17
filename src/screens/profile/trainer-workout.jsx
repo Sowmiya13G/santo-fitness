@@ -3,7 +3,7 @@ import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-// components 
+// components
 import Button from "@/components/button";
 import InputDatePicker from "@/components/input/date-picker";
 import Dropdown from "@/components/input/dropdown";
@@ -84,8 +84,8 @@ const TrainerWorkoutNotes = () => {
       workoutDate: formatted,
       workoutVariation: data?.exercises?.map((x) => ({
         variationName: x?.value,
-        sets: data?.set,
-        reps: data?.rep,
+        sets: x?.set,
+        reps: x?.rep,
         weight: "25kg",
       })),
       notes: "Focus on upper chest",
@@ -116,7 +116,11 @@ const TrainerWorkoutNotes = () => {
                 onChange={(val) => setValue("clientName", val)}
                 placeholder="Select client name"
               />
-              <InputDatePicker name="workoutDate" label="Workout Date" />
+              <InputDatePicker
+                name="workoutDate"
+                label="Workout Date"
+                minDate={new Date()}
+              />
               <Dropdown
                 name="workoutClass"
                 label="Workout Class"
@@ -128,29 +132,32 @@ const TrainerWorkoutNotes = () => {
                 }}
                 placeholder="Select workout class"
               />
-              <Input
-                name="set"
-                placeholder="Enter set"
-                label="Set"
-                type="number"
-              />
-              <Input
-                name="rep"
-                placeholder="Enter rep"
-                label="Rep"
-                type="number"
-              />
               {selectedWorkoutClass &&
                 fields.map((field, index) => (
-                  <Input
-                    key={field.id}
-                    name={`exercises.${index}.value`}
-                    placeholder="Enter exercise"
-                    label={`Exercise ${index + 1}`}
-                    icon={<FaTrash />}
-                    iconPosition="suffix"
-                    suffixIconAction={() => handleDeleteExercise(index)}
-                  />
+                  <div key={field.id}>
+                    <Input
+                      name={`exercises.${index}.value`}
+                      placeholder="Enter exercise"
+                      label={`Exercise ${index + 1}`}
+                      icon={<FaTrash className="text-red_25" />}
+                      iconPosition="suffix"
+                      suffixIconAction={() => handleDeleteExercise(index)}
+                    />
+                    <div className="flex gap-x-2 mt-2">
+                      <Input
+                        name={`exercises.${index}.sets`}
+                        placeholder="Enter set"
+                        label="Set"
+                        type="number"
+                      />
+                      <Input
+                        name={`exercises.${index}.reps`}
+                        placeholder="Enter rep"
+                        label="Rep"
+                        type="number"
+                      />
+                    </div>
+                  </div>
                 ))}
               {selectedWorkoutClass && (
                 <button

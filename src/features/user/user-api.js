@@ -29,7 +29,7 @@ export const createUser = async (data) => {
 };
 
 export const updateUser = async (id, data) => {
-  const response = await axiosInstance.get(
+  const response = await axiosInstance.put(
     `${API_ENDPOINTS.USER.USER}/${id}`,
     data,
   );

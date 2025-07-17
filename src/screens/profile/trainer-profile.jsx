@@ -28,9 +28,6 @@ const TrainerProfile = () => {
         image={maleProfile}
         name={userData?.name}
         program="Lose a Fat Program"
-        // height={userData.height}
-        // weight={userData.weight}
-        // age={userData.age}
       />
       <ShadowView title="Account">
         <div className="space-y-4">

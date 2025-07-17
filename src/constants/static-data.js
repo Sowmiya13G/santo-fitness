@@ -193,4 +193,5 @@ export const workoutClassData = [
   { label: "Full Body", value: "full_body" },
   { label: "Cardio", value: "cardio" },
   { label: "CrossFit", value: "crossfit" },
+  { label: "HIIT", value: "Hiit" },
 ];

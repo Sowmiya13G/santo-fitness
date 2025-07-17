@@ -30,7 +30,7 @@ const SplashScreen = () => {
   }, [isLoggedIn, navigate]);
 
   return (
-    <div className="h-screen-dynamic overflow-hidden m-auto max-w-md fixed inset-0 bg-primary-gradient text-white flex flex-col items-center justify-between p-8 ">
+    <div className="h-screen-dynamic overflow-hidden m-auto fixed inset-0 bg-primary-gradient text-white flex flex-col items-center justify-between p-8 ">
       <div className="flex flex-col items-center justify-center mt-2 h-[70%]">
         <img
           src={logo}
