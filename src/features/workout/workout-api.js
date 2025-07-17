@@ -22,3 +22,11 @@ export const updateWorkout = async (id, data) => {
   );
   return response.data;
 };
+
+export const deleteWorkout = async (id, data) => {
+  const response = await axiosInstance.delete (
+    `${API_ENDPOINTS.WORKOUT.DELETE_WORKOUT}/${id}`,
+    data
+  );
+  return response.data;
+};
