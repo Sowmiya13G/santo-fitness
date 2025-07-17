@@ -149,28 +149,28 @@ export const sectionedFields = [
     title: "Full body",
     fields: [
       { name: "fullBodySFat", label: "S.Fat", isFat: true, value: 0 },
-      { name: "fullBodyMuscle", label: "Muscle", isFat: false },
+      { name: "fullBodyMuscle", label: "Muscle", isFat: true },
     ],
   },
   {
     title: "Arms",
     fields: [
       { name: "armSFat", label: "S.Fat", isFat: true, value: 0 },
-      { name: "armsMuscle", label: "Muscle", isFat: false },
+      { name: "armsMuscle", label: "Muscle", isFat: true },
     ],
   },
   {
     title: "Trunck",
     fields: [
       { name: "trunkSFat", label: "S.Fat", isFat: true, value: 0 },
-      { name: "trunkMuscle", label: "Muscle", isFat: false },
+      { name: "trunkMuscle", label: "Muscle", isFat: true },
     ],
   },
   {
     title: "Legs",
     fields: [
       { name: "legsSFat", label: "S.Fat", isFat: true, value: 0 },
-      { name: "legsMuscle", label: "Muscle", isFat: false },
+      { name: "legsMuscle", label: "Muscle", isFat: true },
     ],
   },
 ];

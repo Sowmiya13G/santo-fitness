@@ -26,7 +26,7 @@ const FatInput = ({
   const [currentValue, setCurrentValue] = useState(currentVal);
 
   useEffect(() => {
-    const formVal = parseInt(getValues(name));
+    const formVal = parseFloat(getValues(name));
     const numericVal = isNaN(formVal) ? 0 : formVal;
     setInitialValue(numericVal);
     setCurrentValue(numericVal);
@@ -37,19 +37,28 @@ const FatInput = ({
     if (typeof onChange === "function") {
       onChange(currentValue);
     }
-  }, [currentValue, name, setValue]);
+  }, [currentValue, name, setValue, onChange]);
 
   const increment = () => {
     if (!editable) return;
-    setCurrentValue((prev) => prev + 1);
+    setCurrentValue((prev) => parseFloat((prev + 0.1).toFixed(1)));
   };
 
   const decrement = () => {
     if (!editable) return;
-    setCurrentValue((prev) => prev - 1);
+    setCurrentValue((prev) => parseFloat((prev - 0.1).toFixed(1)));
   };
 
-  const delta = currentValue - initialValue;
+  const handleInputChange = (e) => {
+    const val = parseFloat(e.target.value);
+    if (!isNaN(val)) {
+      setCurrentValue(val);
+    } else if (e.target.value === "") {
+      setCurrentValue("");
+    }
+  };
+
+  const delta = parseFloat((currentValue - initialValue).toFixed(1));
   const deltaDisplay = delta === 0 ? "0" : `${delta > 0 ? "+" : ""}${delta}`;
   const deltaColor =
     delta > 0 ? "text-green-500" : delta < 0 ? "text-red-500" : "text-gray-500";
@@ -64,6 +73,11 @@ const FatInput = ({
         }`}
       >
         <input
+          type="number"
+          step="0.1"
+          value={currentValue}
+          onChange={handleInputChange}
+          name={name}
           placeholder={placeholder}
           maxLength={maxLength}
           disabled={!editable}
@@ -75,7 +89,7 @@ const FatInput = ({
         {editable && (
           <div className="flex flex-row justify-center items-center space-y-0">
             <span className={`text-xs ${deltaColor} mr-2`}>{deltaDisplay}</span>
-            <div className="flex flex-col justify-center items-center space-y-0 ">
+            <div className="flex flex-col justify-center items-center space-y-0">
               <button type="button" onClick={increment}>
                 <FaChevronUp size={14} color="#8E8E93" />
               </button>

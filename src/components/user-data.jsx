@@ -1,14 +1,11 @@
-// packages
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-// components
 import Button from "./button";
 import InputDatePicker from "./input/date-picker";
 import Dropdown from "./input/dropdown";
 import FatInput from "./input/fat-input";
 import Input from "./input/input";
-// others
 import {
   basicFields,
   fatFields,
@@ -23,44 +20,30 @@ import {
 } from "@/features/user/user-api";
 import { parseFatValue } from "@/utils/helper";
 
-// function chunkArray(array, size) {
-//   const result = [];
-//   for (let i = 0; i < array.length; i += size) {
-//     result.push(array.slice(i, i + size));
-//   }
-//   return result;
-// }
-
 const roleOptions = [
   { label: "Client", value: "client" },
   { label: "Trainer", value: "trainer" },
-  // { label: "Admin", value: "admin" },
 ];
 
 function UserData({ isCreate = false }) {
   const { userData } = useSelector((state) => state.auth);
-  const methods = useForm({
-    // resolver: yupResolver(),
-  });
-
+  const methods = useForm();
   const {
     handleSubmit,
     reset,
     watch,
     formState: { isSubmitting },
   } = methods;
+
   const [list, setList] = useState([]);
-  const [fatFieldData, setFatFieldData] = useState(fatFields);
-  const [fatFieldsData, setFatFieldsData] = useState(sectionedFields);
+  const [loading, setLoading] = useState(false);
   const isClient = userData?.role === "client";
   const isAdmin = userData?.role === "admin";
-  const editable = !isClient;
-
   const isTrainerRole = watch("role") === "trainer";
-  // ---------------------------------- functionalites ---------------------------------- //
 
   const fetchUsersList = async (role = "client") => {
     try {
+      setLoading(true);
       const response = await getUsersList(role);
       if (response?.status === 200) {
         const res = response?.users?.map((x) => ({
@@ -71,11 +54,14 @@ function UserData({ isCreate = false }) {
       }
     } catch (err) {
       console.error("Failed to fetch clients list:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
   const fetchUserData = async (id) => {
     try {
+      setLoading(true);
       const response = await getUserData(id);
       if (response?.status === 200) {
         const client = response.user;
@@ -84,7 +70,7 @@ function UserData({ isCreate = false }) {
           name: client.name ?? "",
           sfcId: client.sfcId ?? "",
           age: client.age ?? "",
-          email: client?.email ?? "",
+          email: client.email ?? "",
           height: client.height ?? "",
           weight: client.weight ?? "",
           bodyAge: client.age ?? "",
@@ -94,62 +80,54 @@ function UserData({ isCreate = false }) {
           armsMuscle: client.armsMuscle ?? "",
           trunkMuscle: client.trunkMuscle ?? "",
           legsMuscle: client.legsMuscle ?? "",
+          FAT: client.FAT,
+          VFat: parseFatValue(client.VFat),
+          SFat: parseFatValue(client.SFat),
+          fullBodySFat: parseFatValue(client.fullBodySFat),
+          armSFat: parseFatValue(client.armSFat),
+          trunkSFat: parseFatValue(client.trunkSFat),
+          legsSFat: parseFatValue(client.legsSFat),
           DOB: client.DOB ? new Date(client.DOB) : null,
-          subscriptionPlan: client?.subscriptionPlan,
+          subscriptionPlan: client.subscriptionPlan ?? "",
         };
 
-        if (isClient) {
-          resetData.FAT = client.FAT ?? "";
-          resetData.VFat = client.VFat ?? "";
-          resetData.SFat = client.SFat ?? "";
-          resetData.fullBodySFat = client.fullBodySFat ?? "";
-          resetData.armSFat = client.armSFat ?? "";
-          resetData.trunkSFat = client.trunkSFat ?? "";
-          resetData.legsSFat = client.legsSFat ?? "";
-        } else {
-          if (isAdmin) {
-            const currentRole = methods.getValues("role");
-            resetData.role = currentRole;
-          }
-          const currentPerson = methods.getValues("person");
-          resetData.person = currentPerson;
-
-          resetData.FAT = parseFatValue(client.FAT) ?? "";
-          console.log("parseFatValue(client.FAT): ", parseFatValue(client.FAT));
-          resetData.VFat = parseFatValue(client.VFat) ?? "";
-          resetData.SFat = parseFatValue(client.SFat) ?? "";
-          resetData.fullBodySFat = parseFatValue(client.fullBodySFat) ?? "";
-          resetData.armSFat = parseFatValue(client.armSFat) ?? "";
-          resetData.trunkSFat = parseFatValue(client.trunkSFat) ?? "";
-          resetData.legsSFat = parseFatValue(client.legsSFat) ?? "";
+        if (!isClient) {
+          if (isAdmin) resetData.role = methods.getValues("role");
+          resetData.person = methods.getValues("person");
         }
 
         reset(resetData);
       }
     } catch (err) {
       console.error("Failed to fetch user data:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
   const onSubmit = async (data) => {
-    console.log("🚀 ~ UserData ~ data:", data);
-
-    const formatted = `${data?.DOB.getFullYear()}-${String(
+    const formattedDOB = `${data?.DOB.getFullYear()}-${String(
       data?.DOB.getMonth() + 1
     ).padStart(2, "0")}-${String(data?.DOB.getDate()).padStart(2, "0")}`;
 
-    console.log("🚀 ~ onSubmit ~ formatted:", formatted);
+    const payload = {
+      ...data,
+      DOB: formattedDOB,
+    };
 
-    return;
-    if (isCreate) {
-      const response = await updateUser(watch("person"), data);
-      console.log("🚀 ~ onSubmit ~ response:", response);
-    } else {
-      const response = await createUser(data);
-      console.log("🚀 ~ onSubmit ~ response:", response);
+    try {
+      setLoading(true);
+      if (isCreate) {
+        await createUser(payload);
+      } else {
+        await updateUser(watch("person"), payload);
+      }
+    } catch (err) {
+      console.error("Submission failed:", err);
+    } finally {
+      setLoading(false);
     }
   };
-  // ---------------------------------- use effects ---------------------------------- //
 
   useEffect(() => {
     if (!isClient) {
@@ -158,11 +136,11 @@ function UserData({ isCreate = false }) {
       fetchUserData(userData?._id);
     }
   }, []);
-
-  // ---------------------------------- render ui ---------------------------------- //
-
+  console.log(watch());
   return (
     <div className="h-full w-screen bg-white flex flex-col items-center px-6">
+      {loading && <p className="text-center text-gray-500">Loading...</p>}
+
       <FormProvider {...methods}>
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -173,22 +151,21 @@ function UserData({ isCreate = false }) {
               name="role"
               label="Role"
               options={roleOptions}
-              value={methods.watch("role")}
+              value={watch("role")}
               onChange={(val) => {
-                reset({
-                  role: val,
-                });
+                reset({ role: val });
                 fetchUsersList(val);
               }}
               placeholder="Select role"
             />
           )}
+
           {!isClient && !isCreate && (
             <Dropdown
               name="person"
               label={`Select ${isTrainerRole ? "Trainer" : "Client"}`}
               options={list}
-              value={methods.watch("person")}
+              value={watch("person")}
               onChange={(val) => {
                 methods.setValue("person", val);
                 fetchUserData(val);
@@ -196,81 +173,57 @@ function UserData({ isCreate = false }) {
               placeholder={`Select ${isTrainerRole ? "trainer" : "client"}`}
             />
           )}
+
           {basicFields.map((field) => (
-            <Input key={field.name} {...field} editable={editable} />
+            <Input key={field.name} {...field} editable={!isClient} />
           ))}
+
           {fatFields.map((row, index) => (
             <div key={index} className="w-full flex space-x-4 mt-4">
-              {row.map(({ name, label, isFat, value }) =>
-                isFat ? (
+              {row.map((field) =>
+                field.isFat&& !isClient ? (
                   <FatInput
-                    key={name}
-                    name={name}
-                    label={label}
-                    placeholder={`Enter ${label?.toLowerCase()}`}
-                    editable={editable}
-                    currentVal={value}
-                    onChange={(val) => {
-                      setFatFieldData((prev) =>
-                        prev.map((row) =>
-                          row.map((field) =>
-                            field.name === name
-                              ? { ...field, value: val }
-                              : field
-                          )
-                        )
-                      );
-                    }}
+                    key={field.name}
+                    name={field.name}
+                    label={field.label}
+                    placeholder={`Enter ${field.label.toLowerCase()}`}
+                    editable={!isClient}
                   />
                 ) : (
                   <Input
-                    key={name}
-                    name={name}
-                    label={label}
-                    placeholder={`Enter ${label?.toLowerCase()}`}
-                    editable={editable}
+                    key={field.name}
+                    name={field.name}
+                    label={field.label}
+                    placeholder={`Enter ${field.label.toLowerCase()}`}
+                    editable={!isClient}
                   />
                 )
               )}
             </div>
           ))}
-          {sectionedFields.map((section, sectionIdx) => (
+
+          {sectionedFields.map((section) => (
             <div key={section.title}>
               <p className="text-base font-bold text-font_primary mb-2">
                 {section.title}
               </p>
               <div className="w-full flex space-x-4">
-                {section.fields.map((field, fieldIdx) =>
-                  field.isFat ? (
+                {section.fields.map((field) =>
+                  field.isFat && !isClient ? (
                     <FatInput
                       key={field.name}
                       name={field.name}
                       label={field.label}
-                      editable={editable}
-                      placeholder={`Enter ${field?.label.toLowerCase()}`}
-                      onChange={(val) => {
-                        setFatFieldsData((prev) =>
-                          prev.map((sec, i) =>
-                            i === sectionIdx
-                              ? {
-                                  ...sec,
-                                  fields: sec.fields.map((f, j) =>
-                                    j === fieldIdx ? { ...f, value: val } : f
-                                  ),
-                                }
-                              : sec
-                          )
-                        );
-                      }}
-                      currentVal={field?.value}
+                      editable={!isClient}
+                      placeholder={`Enter ${field.label.toLowerCase()}`}
                     />
                   ) : (
                     <Input
                       key={field.name}
                       name={field.name}
                       label={field.label}
-                      editable={editable}
-                      placeholder={`Enter ${field?.label.toLowerCase()}`}
+                      editable={!isClient}
+                      placeholder={`Enter ${field.label.toLowerCase()}`}
                     />
                   )
                 )}
@@ -281,23 +234,24 @@ function UserData({ isCreate = false }) {
           <InputDatePicker
             name="DOB"
             label="Date of Birth"
-            editable={isClient ? false : true}
+            editable={!isClient}
           />
 
           <Dropdown
             name="subscriptionPlan"
             label="Subscription"
             options={subscriptionPlanData}
-            value={methods.watch("subscriptionPlan")}
+            value={watch("subscriptionPlan")}
             onChange={(val) => methods.setValue("subscriptionPlan", val)}
-            placeholder="Select subscriptionPlan"
+            placeholder="Select subscription"
             editable={!isClient}
           />
+
           {!isClient && (
             <Button
               type="submit"
-              disabled={isSubmitting}
-              loading={isSubmitting}
+              disabled={isSubmitting || loading}
+              loading={isSubmitting || loading}
               label={!isCreate ? "Update" : "Create"}
             />
           )}
