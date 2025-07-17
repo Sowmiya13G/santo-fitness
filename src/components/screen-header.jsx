@@ -17,7 +17,7 @@ export default function ScreenHeader({
       {isBack && (
         <button
           onClick={handleBack}
-          className="absolute left-3 flex items-center bg-white text-gray-700 p-3 rounded-lg shadow-md ml-3"
+          className="absolute left-3 flex items-center bg-white text-gray-700 p-1 rounded-lg shadow-md ml-3"
         >
           <FaAngleLeft className="w-5 h-5" />
         </button>

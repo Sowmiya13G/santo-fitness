@@ -4,9 +4,9 @@ export default function ProfileCard({
   image,
   name,
   program,
-  height,
-  weight,
-  age,
+  height = "",
+  weight = "",
+  age = "",
 }) {
   const stats = [
     { label: "Height", value: `${height}cm` },
@@ -14,6 +14,7 @@ export default function ProfileCard({
     { label: "Age", value: `${age}yo` },
   ];
 
+  console.log("stats: ", stats);
   return (
     <div className="bg-white rounded-2xl p-4 space-y-4">
       <div className="flex items-center space-x-4">
@@ -29,15 +30,18 @@ export default function ProfileCard({
       </div>
 
       <div className="flex justify-between">
-        {stats.map(({ label, value }) => (
-          <div
-            key={label}
-            className="flex flex-col items-center bg-white shadow-md rounded-xl px-4 py-3 min-w-[90px]"
-          >
-            <span className="text-primary font-semibold">{value}</span>
-            <span className="text-xs text-gray-500 mt-1">{label}</span>
-          </div>
-        ))}
+        {height &&
+          weight &&
+          age &&
+          stats.map(({ label, value }) => (
+            <div
+              key={label}
+              className={` flex flex-col items-center bg-white shadow-md rounded-xl px-4 py-3 min-w-[90px]`}
+            >
+              <span className="text-primary font-semibold">{value}</span>
+              <span className="text-xs text-gray-500 mt-1">{label}</span>
+            </div>
+          ))}
       </div>
     </div>
   );

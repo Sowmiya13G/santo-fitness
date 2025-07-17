@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// Create a custom Axios instance
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
@@ -7,7 +8,7 @@ const axiosInstance = axios.create({
   },
 });
 
-// Attach auth token from localStorage to every request
+// Automatically attach token from localStorage to every request
 axiosInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
@@ -16,12 +17,14 @@ axiosInstance.interceptors.request.use((config) => {
   return config;
 });
 
-// ------------- API METHODS WITH SUPPORT FOR DYNAMIC QUERIES, HEADERS, BODY, ETC. -------------
-
+// API service wrapper
 const apiService = {
   get: (url, params = {}, config = {}) =>
-    axiosInstance.get(url, { params, ...config }),
-
+    axiosInstance.get(url, {
+      ...config,
+      params,
+    }),
+    
   post: (url, data = {}, config = {}) => axiosInstance.post(url, data, config),
 
   put: (url, data = {}, config = {}) => axiosInstance.put(url, data, config),

@@ -4,8 +4,12 @@ import ActivityGrid from "@/components/ui/active-grid";
 import BestDietMeals from "@/components/ui/best-diet-meals";
 import DietProgress from "@/components/ui/diet-progress";
 import Header from "@/components/ui/header";
+import { useEffect } from "react";
 
 const ClientDashboard = () => {
+  useEffect(()=>{
+
+  },[])
   return (
     <div className="w-full space-y-6 text-gray-800 hide-scrollbar ">
       <Header name="Stefani Wong" />

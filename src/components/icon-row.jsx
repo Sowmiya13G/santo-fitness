@@ -8,7 +8,7 @@ const RenderIconRow = ({
   onAction,
 }) => {
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between" onClick={onAction}>
       <div className="flex items-center space-x-2">
         {leftIcon && <span className="text-gradient">{leftIcon}</span>}
         <h2 className="text-base font-medium text-icon">{title}</h2>

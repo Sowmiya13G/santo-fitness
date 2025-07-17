@@ -13,8 +13,9 @@ export default function ProfileWrapper({
         <div className="flex justify-center">
           <img
             src={image}
-            alt="Header"
-            className="w-44 h-44 object-fit my-4 rounded-full"
+            alt="profile"
+          
+            className="w-44 min-h-44 object-cover  my-4 rounded-full"
           />
         </div>
       )}

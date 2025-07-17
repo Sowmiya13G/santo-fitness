@@ -18,7 +18,6 @@ const FatInput = ({
     getValues,
     formState: { errors },
   } = useFormContext();
-  console.log('getValues: ', getValues());
 
   const error = errors?.[name]?.message;
   const baseBorder = error ? "border-red-500" : "border-gray-300";

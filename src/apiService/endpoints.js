@@ -12,7 +12,11 @@ const API_ENDPOINTS = {
   WORKOUT: {
     CREATE_WORKOUT: "/create-workout-notes",
     GET_CLIENT_WORKOUT: "/get-all-workouts",
-    UPDATE_WORKOUT:"/update-workout"
+    UPDATE_WORKOUT: "/update-workout",
+  },
+  DAILY_LOGS: {
+    GET_DIET_PROGRESS: "/diet-progress",
+    CREATE_DAILY_LOGS: "/daily-logs",
   },
 };
 

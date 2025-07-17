@@ -11,7 +11,7 @@ import RenderIconRow from "@/components/icon-row";
 import ScreenHeader from "@/components/screen-header";
 import ShadowView from "@/components/shadow-view";
 import Switch from "@/components/switch";
-
+import maleProfile from "../../assets/icons/male-profile.svg";
 import { trainerAccountItems } from "@/constants/static-data";
 import { setToken } from "@/features/auth/auth-slice";
 
@@ -25,12 +25,12 @@ const TrainerProfile = () => {
     <div className="h-full bg-white space-y-6">
       <ScreenHeader title="Profile" />
       <ProfileCard
-        image={import.meta.env.VITE_AVATAR_API_URL}
+        image={maleProfile}
         name={userData?.name}
         program="Lose a Fat Program"
-        height={180}
-        weight={65}
-        age={22}
+        // height={userData.height}
+        // weight={userData.weight}
+        // age={userData.age}
       />
       <ShadowView title="Account">
         <div className="space-y-4">
