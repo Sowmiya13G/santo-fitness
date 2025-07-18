@@ -22,8 +22,8 @@ export default function BottomNav() {
       },
     },
     {
-      to: "/activity",
-      label: "Graph",
+      to: "/recipes",
+      label: "Recipes",
       icon: {
         active: GraphActive,
         inactive: GraphInactive,
