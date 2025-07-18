@@ -137,11 +137,21 @@ export default function DietProgress() {
           data={chartData}
           margin={{ top: 10, right: 10, left: -15, bottom: 0 }}
         >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="day" />
-          <YAxis domain={[0, 100]} tickFormatter={(value) => `${value}%`} />
+          <CartesianGrid vertical={false} stroke="#e5e7eb" strokeDasharray="" />
+
+          <XAxis dataKey="day" axisLine={false} tickLine={false}
+            tick={{ fontSize: 12 }} />
+          <YAxis
+            domain={[0, 100]}
+            tickFormatter={(value) => `${value}%`}
+            axisLine={false}
+            tickLine={false}
+            tick={{ fontSize: 12 }}
+          />
+
           <Tooltip formatter={(value) => `${value}%`} />
           <Legend />
+
           <Line
             type="monotone"
             dataKey="thisWeek"
@@ -155,9 +165,10 @@ export default function DietProgress() {
             type="monotone"
             dataKey="lastWeek"
             name="Last Week"
-            stroke="#3b82f6"
-            strokeDasharray="5 5"
+            stroke="#ccc"
             strokeWidth={2}
+            dot={{ r: 2 }}
+            activeDot={{ r: 6 }}
           />
         </LineChart>
       </ResponsiveContainer>
