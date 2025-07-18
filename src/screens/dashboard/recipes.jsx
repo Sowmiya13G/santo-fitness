@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 // redux
 // component
+import HorizontalCalendar from "@/components/horizontal-calendar";
 import ScreenHeader from "@/components/screen-header";
 import DietProgress from "@/components/ui/diet-progress";
 import FilterBar from "@/components/ui/filter-bar";
@@ -14,7 +15,7 @@ const Recipes = () => {
   const dispatch = useDispatch();
   const { userData } = useSelector((state) => state.auth);
   const [selectedFilter, setSelectedFilter] = useState("All");
-
+  const [selected, setSelected] = useState(null);
   const nutritionData = [
     {
       type: "Calories",
@@ -54,7 +55,9 @@ const Recipes = () => {
     <div className="h-full w-screen bg-white space-y-6 py-5 px-5 overflow-y-auto overflow-hidden">
       <ScreenHeader title="Meals Tracker" />
       <DietProgress />
+
       <div className="h-4" />
+      <HorizontalCalendar onSelectDate={(date) => setSelected(date)} />
       <FilterBar
         filters={filterItems}
         onSelect={(value) => setSelectedFilter(value)}
