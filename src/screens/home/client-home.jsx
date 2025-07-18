@@ -1,5 +1,6 @@
 import BMICard from "@/components/card/bmi-card";
 import BMRCard from "@/components/card/bmr-card";
+import ScreenHeader from "@/components/screen-header";
 import ActivityGrid from "@/components/ui/active-grid";
 import BestDietMeals from "@/components/ui/best-diet-meals";
 import DietProgress from "@/components/ui/diet-progress";
@@ -12,7 +13,7 @@ const ClientDashboard = () => {
   },[])
   return (
     <div className="w-full space-y-6 text-gray-800 hide-scrollbar ">
-      <Header name="Stefani Wong" />
+      <ScreenHeader isHome />
       <div className="flex gap-4 overflow-x-auto hide-scrollbar px-1 snap-x snap-mandatory">
         <div className="min-w-[100%] snap-center snap-always">
           <BMICard bmi="20.1" />

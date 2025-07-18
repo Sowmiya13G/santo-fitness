@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
 
-
 import { useAuth } from "@/hooks/use-auth";
 // auth screens
 import ForgotPassword from "@/screens/auth/forgot-password";
@@ -25,6 +24,7 @@ import PersonalData from "@/screens/profile/personal-data";
 import TrainerPostReport from "@/screens/profile/trainer-report";
 import TrainerWorkoutNotes from "@/screens/profile/trainer-workout";
 import WorkoutDone from "@/screens/profile/workout-done";
+import Notification from "@/screens/dashboard/notification";
 
 export default function AppRoutes() {
   const { isLoggedIn } = useAuth();
@@ -62,7 +62,9 @@ export default function AppRoutes() {
           />
           <Route path="/profile/add-new-person" element={<AddNewPerson />} />
           <Route path="/profile/workout-done" element={<WorkoutDone />} />
-          <Route element={<DashboardLayout/>}>
+          <Route path="/notification" element={<Notification />} />
+
+          <Route element={<DashboardLayout />}>
             <Route path="/home" element={<Home />} />
             <Route path="/activity" element={<Graph />} />
             <Route path="/camera" element={<Camera />} />
