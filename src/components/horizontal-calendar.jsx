@@ -1,62 +1,69 @@
 import { useEffect, useState } from "react";
-
 import {
-  addMonths,
-  eachDayOfInterval,
-  endOfMonth,
+  addDays,
   format,
-  startOfMonth,
-  subMonths,
+  subDays,
+  isSameDay,
 } from "date-fns";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 const HorizontalCalendar = ({ onSelectDate }) => {
-  const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [days, setDays] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [days, setDays] = useState([]);
 
   useEffect(() => {
-    const start = startOfMonth(currentMonth);
-    const end = endOfMonth(currentMonth);
-    const allDays = eachDayOfInterval({ start, end });
-    setDays(allDays);
-  }, [currentMonth]);
+    // Show 2 days before and 2 days after selectedDate
+    const start = subDays(selectedDate, 2);
+    const end = addDays(selectedDate, 2);
+    const generatedDays = [];
 
-  const handlePrevMonth = () => {
-    setCurrentMonth((prev) => subMonths(prev, 1));
-  };
+    for (let d = start; d <= end; d = addDays(d, 1)) {
+      generatedDays.push(d);
+    }
 
-  const handleNextMonth = () => {
-    setCurrentMonth((prev) => addMonths(prev, 1));
-  };
+    setDays(generatedDays);
+  }, [selectedDate]);
 
   const handleDateSelect = (day) => {
     setSelectedDate(day);
     onSelectDate?.(day);
   };
 
+  const handlePrev = () => {
+    setSelectedDate((prev) => {
+      const prevMonth = new Date(prev.getFullYear(), prev.getMonth() - 1, 1);
+      return prevMonth;
+    });
+  };
+  
+  const handleNext = () => {
+    setSelectedDate((prev) => {
+      const nextMonth = new Date(prev.getFullYear(), prev.getMonth() + 1, 1);
+      return nextMonth;
+    });
+  };
+  
   return (
     <div className="w-full">
       <div className="flex items-center justify-center space-x-6 px-4 mb-2">
-        <button onClick={handlePrevMonth} className="text-icon">
-          <FiChevronLeft size={30}/>
+        <button onClick={handlePrev} className="text-icon">
+          <FiChevronLeft size={30} />
         </button>
         <span className="text-lg font-medium text-icon">
-          {format(currentMonth, "MMMM yyyy")}
+          {format(selectedDate, "MMMM yyyy")}
         </span>
-        <button onClick={handleNextMonth} className="text-icon">
-          <FiChevronRight size={30}/>
+        <button onClick={handleNext} className="text-icon">
+          <FiChevronRight size={30} />
         </button>
       </div>
 
-      <div className="flex overflow-x-auto px-2 py-1 space-x-3 hide-scrollbar">
+      <div className="flex overflow-x-auto px-2 py-1 space-x-3 hide-scrollbar justify-center">
         {days.map((day) => {
-          const isSelected =
-            format(day, "yyyy-MM-dd") === format(selectedDate, "yyyy-MM-dd");
+          const isSelected = isSameDay(day, selectedDate);
 
           return (
             <button
-              key={day}
+              key={day.toISOString()}
               onClick={() => handleDateSelect(day)}
               className={`flex flex-col items-center justify-center w-16 p-6 rounded-xl text-sm ${
                 isSelected

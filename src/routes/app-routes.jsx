@@ -15,6 +15,8 @@ import Camera from "@/screens/dashboard/camera";
 import Graph from "@/screens/dashboard/graph";
 import Home from "@/screens/dashboard/home";
 import LoggedIn from "@/screens/dashboard/logged-in";
+import MealsDetails from "@/screens/dashboard/meals-details";
+import Notification from "@/screens/dashboard/notification";
 import Profile from "@/screens/dashboard/profile";
 import Recipes from "@/screens/dashboard/recipes";
 import AddNewPerson from "@/screens/profile/add-new-person";
@@ -24,7 +26,6 @@ import PersonalData from "@/screens/profile/personal-data";
 import TrainerPostReport from "@/screens/profile/trainer-report";
 import TrainerWorkoutNotes from "@/screens/profile/trainer-workout";
 import WorkoutDone from "@/screens/profile/workout-done";
-import Notification from "@/screens/dashboard/notification";
 
 export default function AppRoutes() {
   const { isLoggedIn } = useAuth();
@@ -63,7 +64,7 @@ export default function AppRoutes() {
           <Route path="/profile/add-new-person" element={<AddNewPerson />} />
           <Route path="/profile/workout-done" element={<WorkoutDone />} />
           <Route path="/notification" element={<Notification />} />
-
+          <Route path="/meals-details" element={<MealsDetails />} />
           <Route element={<DashboardLayout />}>
             <Route path="/home" element={<Home />} />
             <Route path="/activity" element={<Graph />} />

@@ -66,7 +66,7 @@ const Recipes = () => {
         <p className="text-lg font-medium text-font_primary">
           Meals Nutritions
         </p>
-        <button onClick={() => {}}>
+        <button onClick={() => navigate("/meals-details")}>
           <p className="text-base font-medium text-gradient">View More</p>
         </button>
       </div>
