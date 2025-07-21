@@ -21,13 +21,13 @@ const MealsDetails = () => {
                 {meal.type} - {meal.name}
               </p>
 
-              <div className="flex overflow-x-auto space-x-3 mt-3 hide-scrollbar">
+              <div className="flex overflow-x-auto snap-x  snap-mandatory  space-x-3 mt-3 hide-scrollbar">
                 {meal.images.map((imgUrl, idx) => (
                   <img
                     key={idx}
                     src={imgUrl}
                     alt={`Meal ${idx}`}
-                    className="h-[200px] w-[100%] rounded-lg object-cover flex-shrink-0"
+                    className="h-[200px] w-[100%]  snap-center rounded-lg object-cover flex-shrink-0"
                   />
                 ))}
               </div>
