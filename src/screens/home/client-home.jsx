@@ -6,17 +6,18 @@ import BestDietMeals from "@/components/ui/best-diet-meals";
 import DietProgress from "@/components/ui/diet-progress";
 import Header from "@/components/ui/header";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const ClientDashboard = () => {
-  useEffect(()=>{
-
-  },[])
+  const { userData } = useSelector((state) => state.auth);
+  console.log("userData: ", userData);
+  useEffect(() => {}, []);
   return (
     <div className="w-full space-y-6 text-gray-800 hide-scrollbar ">
       <ScreenHeader isHome />
       <div className="flex gap-4 overflow-x-auto hide-scrollbar px-1 snap-x snap-mandatory">
         <div className="min-w-[100%] snap-center snap-always">
-          <BMICard bmi="20.1" />
+          <BMICard bmi={userData.BMI} />
         </div>
         <div className="min-w-[100%] snap-center snap-always">
           <BMRCard bmr={1630} />

@@ -17,7 +17,6 @@ import { useSelector } from "react-redux";
 import Button from "./button";
 import InputDatePicker from "./input/date-picker";
 import Dropdown from "./input/dropdown";
-import FatInput from "./input/fat-input";
 import Input from "./input/input";
 import { showToast } from "./toast";
 
@@ -120,7 +119,7 @@ function UserData({ isCreate = false }) {
       setLoading(true);
       if (isCreate) {
         await createUser(payload);
-        showToast("success", "User Details Created Successfully"  );
+        showToast("success", "User Details Created Successfully");
       } else {
         await updateUser(watch("person"), payload);
         showToast("success", "User Details Updated Successfully");

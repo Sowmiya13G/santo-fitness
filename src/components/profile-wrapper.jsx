@@ -6,6 +6,7 @@ export default function ProfileWrapper({
   isBack = true,
   children,
   bgColor = "bg-primary-gradient",
+  imgClass,
 }) {
   return (
     <div className={`flex flex-col h-full ${bgColor} relative`}>
@@ -17,7 +18,7 @@ export default function ProfileWrapper({
           <img
             src={image}
             alt="profile"
-            className="w-44 min-h-44 object-cover my-4 rounded-full"
+            className={` ${imgClass} w-44 min-h-44 object-cover my-4 rounded-full`}
           />
         </div>
       )}

@@ -17,7 +17,7 @@ const BMICard = ({ bmi }) => {
       <div className="flex w-full  items-center justify-between h-full">
         <div className="w-[70%]">
           <h2 className="text-base font-medium leading-tight mb-1">
-            BMI (Body Mass Index)
+            BMI {bmi} (Body Mass Index)
           </h2>
           <p className="text-xs leading-none mb-2">{status}</p>
         </div>
