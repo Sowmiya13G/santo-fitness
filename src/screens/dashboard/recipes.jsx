@@ -9,14 +9,39 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
+const initialNutritionData = [
+  {
+    type: "Calories",
+    value: `0 kCal`,
+    percentage: 0, // example max = 2000
+    icon: "🔥",
+  },
+  {
+    type: "Proteins",
+    value: `0g`,
+    percentage: 0,
+    icon: "🥩",
+  },
+  {
+    type: "Carbs",
+    value: `0g`,
+    percentage: 0,
+    icon: "🌾",
+  },
+  {
+    type: "Fats",
+    value: `0g`,
+    percentage: 0,
+    icon: "🥚",
+  },
+];
 const Recipes = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { userData } = useSelector((state) => state.auth);
   const [selectedFilter, setSelectedFilter] = useState("All");
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [nutritionData, setNutritionData] = useState([]);
-  console.log('nutritionData: ', nutritionData);
+  const [nutritionData, setNutritionData] = useState(initialNutritionData);
   const [mealsData, setMealsData] = useState([]);
 
   const filterItems = [
