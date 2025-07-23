@@ -1,30 +1,39 @@
-// store.js
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import authReducer from "./auth/auth-slice";
-
+import dailyLogsReducer from "./daily-logs/daily-logs-slice";
 import {
+  persistStore,
+  persistReducer,
   FLUSH,
   PAUSE,
   PERSIST,
   PURGE,
   REGISTER,
   REHYDRATE,
-  persistReducer,
-  persistStore,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage
 
+// 1. Combine all reducers
+const rootReducer = combineReducers({
+  auth: authReducer,
+  dailyLogs: dailyLogsReducer,
+});
+
+// 2. Create a persist config for the root
 const persistConfig = {
-  key: "auth",
+  key: "root",
   storage,
+  // Optional: blacklist or whitelist reducers
+  // blacklist: ['someTransientReducer'],
 };
 
-const persistedAuthReducer = persistReducer(persistConfig, authReducer);
+// 3. Wrap rootReducer with persistReducer
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
+// 4. Create store with persisted reducer
 export const store = configureStore({
-  reducer: {
-    auth: persistedAuthReducer,
-  },
+  reducer: persistedReducer,
+
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
@@ -33,4 +42,5 @@ export const store = configureStore({
     }),
 });
 
+// 5. Export persistor
 export const persistor = persistStore(store);

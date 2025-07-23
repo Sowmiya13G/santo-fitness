@@ -34,7 +34,7 @@ export default function ScreenHeader({
           </button>
         </div>
       ) : (
-        <div className="w-full flex items-center justify-center mt-3 px-4">
+        <div className="w-full flex items-center justify-center mt-3 px-4 ">
           {isBack && (
             <button
               onClick={handleBack}

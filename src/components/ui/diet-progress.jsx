@@ -10,6 +10,7 @@ import {
   YAxis,
 } from "recharts";
 import { getDietProgress } from "@/features/daily-logs/daily-logs-api";
+import { useSelector } from "react-redux";
 
 const daysShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -19,6 +20,7 @@ const formatDay = (dateStr) => {
 };
 
 export default function DietProgress() {
+  const { weeklyLogs } = useSelector((state) => state.dailyLogs);
   const initialData = [
     {
       day: "Sun",
@@ -57,75 +59,55 @@ export default function DietProgress() {
     },
   ];
   const [chartData, setChartData] = useState(initialData);
-  console.log("chartData: ", chartData);
   console.log();
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const params = {
-          days: 14,
-        };
+    const raw = weeklyLogs;
+    if (!Array.isArray(raw) || raw.length === 0) return;
 
-        const raw = await getDietProgress(params);
+    // Step 1: Sort by date ascending
+    const sorted = [...raw].sort((a, b) => new Date(a.date) - new Date(b.date));
 
-        if (!Array.isArray(raw) || raw.length === 0) return;
+    // Step 2: Define date ranges
+    const today = new Date();
+    const thisWeekStart = new Date(today);
+    thisWeekStart.setDate(today.getDate() - 6); // 6 days ago
 
-        // Step 1: Sort by date ascending
-        const sorted = [...raw].sort(
-          (a, b) => new Date(a.date) - new Date(b.date)
-        );
+    const lastWeekStart = new Date(thisWeekStart);
+    lastWeekStart.setDate(thisWeekStart.getDate() - 7);
 
-        // Step 2: Define date ranges
-        const today = new Date();
-        const thisWeekStart = new Date(today);
-        thisWeekStart.setDate(today.getDate() - 6); // 6 days ago
+    const lastWeekEnd = new Date(thisWeekStart);
+    lastWeekEnd.setDate(thisWeekStart.getDate() - 1);
 
-        const lastWeekStart = new Date(thisWeekStart);
-        lastWeekStart.setDate(thisWeekStart.getDate() - 7);
+    // Step 3: Filter data by date ranges
+    const lastWeekRaw = sorted.filter((entry) => {
+      const entryDate = new Date(entry.date);
+      return entryDate >= lastWeekStart && entryDate <= lastWeekEnd;
+    });
 
-        const lastWeekEnd = new Date(thisWeekStart);
-        lastWeekEnd.setDate(thisWeekStart.getDate() - 1);
+    const thisWeekRaw = sorted.filter((entry) => {
+      const entryDate = new Date(entry.date);
+      return entryDate >= thisWeekStart && entryDate <= today;
+    });
 
-        // Step 3: Filter data by date ranges
-        const lastWeekRaw = sorted.filter((entry) => {
-          const entryDate = new Date(entry.date);
-          return entryDate >= lastWeekStart && entryDate <= lastWeekEnd;
-        });
+    // Step 4: Normalize into 7-day structure
+    const allDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const combined = allDays.map((day) => {
+      const thisWeekEntry = thisWeekRaw.find(
+        (entry) => formatDay(entry.date) === day
+      );
+      const lastWeekEntry = lastWeekRaw.find(
+        (entry) => formatDay(entry.date) === day
+      );
 
-        const thisWeekRaw = sorted.filter((entry) => {
-          const entryDate = new Date(entry.date);
-          return entryDate >= thisWeekStart && entryDate <= today;
-        });
+      return {
+        day,
+        thisWeek: thisWeekEntry ? Math.round(thisWeekEntry.calories / 20) : 0,
+        lastWeek: lastWeekEntry ? Math.round(lastWeekEntry.calories / 20) : 0,
+      };
+    });
 
-        // Step 4: Normalize into 7-day structure
-        const allDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-        const combined = allDays.map((day) => {
-          const thisWeekEntry = thisWeekRaw.find(
-            (entry) => formatDay(entry.date) === day
-          );
-          const lastWeekEntry = lastWeekRaw.find(
-            (entry) => formatDay(entry.date) === day
-          );
-
-          return {
-            day,
-            thisWeek: thisWeekEntry
-              ? Math.round(thisWeekEntry.calories / 20)
-              : 0,
-            lastWeek: lastWeekEntry
-              ? Math.round(lastWeekEntry.calories / 20)
-              : 0,
-          };
-        });
-
-        setChartData(combined);
-      } catch (error) {
-        console.error("Failed to fetch diet progress:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
+    setChartData(combined);
+  }, [weeklyLogs]);
 
   return (
     <div className="w-full h-[300px]  rounded-xl pb-10">
@@ -139,8 +121,12 @@ export default function DietProgress() {
         >
           <CartesianGrid vertical={false} stroke="#e5e7eb" strokeDasharray="" />
 
-          <XAxis dataKey="day" axisLine={false} tickLine={false}
-            tick={{ fontSize: 12 }} />
+          <XAxis
+            dataKey="day"
+            axisLine={false}
+            tickLine={false}
+            tick={{ fontSize: 12 }}
+          />
           <YAxis
             domain={[0, 100]}
             tickFormatter={(value) => `${value}%`}
@@ -151,21 +137,20 @@ export default function DietProgress() {
 
           <Tooltip formatter={(value) => `${value}%`} />
           <Legend />
-
-          <Line
-            type="monotone"
-            dataKey="thisWeek"
-            name="This Week"
-            stroke="#ef4444"
-            strokeWidth={2}
-            dot={{ r: 2 }}
-            activeDot={{ r: 6 }}
-          />
           <Line
             type="monotone"
             dataKey="lastWeek"
             name="Last Week"
             stroke="#ccc"
+            strokeWidth={2}
+            dot={{ r: 1 }}
+            activeDot={{ r: 6 }}
+          />
+          <Line
+            type="monotone"
+            dataKey="thisWeek"
+            name="This Week"
+            stroke="#ef4444"
             strokeWidth={2}
             dot={{ r: 2 }}
             activeDot={{ r: 6 }}

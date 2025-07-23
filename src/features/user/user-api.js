@@ -35,3 +35,24 @@ export const updateUser = async (id, data) => {
   );
   return response.data;
 };
+
+export const getUserReport = async () => {
+  const response = await axiosInstance.get(
+    `${API_ENDPOINTS.REPORT.GET_REPORT}`,
+  );
+  return response.data;
+};
+
+export const uploadFile = async (formData) => {
+  const response = await axiosInstance.post(
+    API_ENDPOINTS.FILE.UPLOAD_FILE,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return response.data;
+};
+

@@ -4,14 +4,45 @@ import ScreenHeader from "@/components/screen-header";
 import ActivityGrid from "@/components/ui/active-grid";
 import BestDietMeals from "@/components/ui/best-diet-meals";
 import DietProgress from "@/components/ui/diet-progress";
-import Header from "@/components/ui/header";
+import { getDietProgress } from "@/features/daily-logs/daily-logs-api";
+import { setTodayLogs, setWeekLogs } from "@/features/daily-logs/daily-logs-slice";
+import { format } from "date-fns";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const ClientDashboard = () => {
   const { userData } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   console.log("userData: ", userData);
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const params = {
+          days: 14,
+        };
+
+        const raw = await getDietProgress(params);
+        console.log('raw: ', raw);
+
+        dispatch(setWeekLogs(raw));
+         const today = format(new Date(), "yyyy-MM-dd");
+         console.log('today: ', today);
+      const todayLog = raw.find((log) => log.date === today);
+
+      if (todayLog) {
+        dispatch(setTodayLogs(todayLog));
+      } else {
+        dispatch(setTodayLogs(null)); // or handle missing log case
+      }
+
+      } catch (error) {
+        console.error("Failed to fetch diet progress:", error);
+      }
+    };
+
+    fetchData();
+  }, [dispatch]);
+
   return (
     <div className="w-full space-y-6 text-gray-800 hide-scrollbar ">
       <ScreenHeader isHome />

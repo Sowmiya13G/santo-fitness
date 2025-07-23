@@ -4,17 +4,17 @@ const dailySlice = createSlice({
   name: "dailyLogs",
   initialState: {
     todayLogs: [],
-    weekProgress: [],
+    weeklyLogs: [],
   },
   reducers: {
     setTodayLogs(state, action) {
       state.todayLogs = action.payload;
     },
-    setWeekProgress(state, action) {
-      state.weekProgress = action.payload;
+    setWeekLogs(state, action) {
+      state.weeklyLogs = action.payload;
     },
   },
 });
 
-export const { setTodayLogs, setWeekProgress } = dailySlice.actions;
+export const { setTodayLogs, setWeekLogs } = dailySlice.actions;
 export default dailySlice.reducer;

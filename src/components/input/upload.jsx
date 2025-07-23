@@ -1,12 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
-
-// icons
 import { AiOutlineFileImage, AiOutlineFilePdf } from "react-icons/ai";
 import { MdCancel } from "react-icons/md";
 import { GradientIcon } from "../gradient-icon";
-
-// components
+import { uploadFile } from "@/features/user/user-api";
 
 const getFileType = (extension) => {
   if (["pdf"].includes(extension)) return "pdf";
@@ -18,7 +15,7 @@ const UploadInput = ({
   name = "file",
   placeholder,
   error,
-  acceptFormat = [".pdf", ".doc", ".docx"],
+  acceptFormat = [".pdf", ".doc", ".docx", ".jpg", ".jpeg", ".png"],
 }) => {
   const {
     setValue,
@@ -33,16 +30,30 @@ const UploadInput = ({
 
   const previewUrl = useMemo(() => {
     if (!file) return null;
-    if (typeof file === "string") return file;
-    return URL.createObjectURL(file);
+    if (typeof file === "string") return file; // URL from API
+    return URL.createObjectURL(file); // Local preview
   }, [file]);
 
-  useEffect(() => {
-    if (file && typeof file !== "string") {
-      const extension = file.name.split(".").pop()?.toLowerCase() || "";
-      setFileType(getFileType(extension));
+useEffect(() => {
+  if (!file) return;
+
+  let extension = "";
+
+  if (typeof file === "string") {
+    try {
+      const url = new URL(file);
+      const pathname = url.pathname;
+      extension = pathname.split(".").pop()?.toLowerCase();
+    } catch {
+      extension = file.split(".").pop()?.toLowerCase(); // fallback
     }
-  }, [file]);
+  } else {
+    extension = file.name.split(".").pop()?.toLowerCase() || "";
+  }
+
+  setFileType(getFileType(extension));
+}, [file]);
+
 
   const handleFileChange = async (e) => {
     const selectedFile = e.target.files[0];
@@ -50,18 +61,23 @@ const UploadInput = ({
 
     const extension = selectedFile.name.split(".").pop()?.toLowerCase();
     if (!acceptFormat.includes("." + extension)) {
-      //   toast.error("Invalid file type.");
+      // Optionally add toast or error message
       return;
     }
 
     setLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("files", selectedFile);
 
-    // Simulate async upload (replace with actual upload logic if needed)
-    setTimeout(() => {
-      setValue(name, selectedFile);
+      const response = await uploadFile(formData); // API call
+      setValue(name, response.data.url);
       clearErrors(name);
+    } catch (err) {
+      console.error("File upload failed:", err);
+    } finally {
       setLoading(false);
-    }, 1000);
+    }
   };
 
   const handleRemove = () => {
@@ -71,13 +87,13 @@ const UploadInput = ({
 
   return (
     <div className="flex flex-col gap-2">
+      {/* Upload Dropzone */}
       <div className="border-dashed border-red border-[1px] w-full h-[118px] bg-opacity_primary rounded-xl flex items-center justify-center">
         <label
           htmlFor={`file-input-${name}`}
-          className={
-            ("text-icon cursor-pointer text-10 flex flex-col items-center justify-center",
-            { "opacity-50 cursor-not-allowed": !!file })
-          }
+          className={`text-icon text-10 flex flex-col items-center justify-center cursor-pointer ${
+            file ? "opacity-50 cursor-not-allowed" : ""
+          }`}
         >
           {loading ? (
             <span className="flex items-center justify-center w-full h-full space-x-1">
@@ -105,6 +121,7 @@ const UploadInput = ({
         />
       </div>
 
+      {/* File Preview Info */}
       {previewUrl && (
         <div className="relative mt-2 flex items-center gap-2 px-3 py-4 rounded-lg bg-opacity_primary">
           <GradientIcon
@@ -112,8 +129,8 @@ const UploadInput = ({
           />
           <span className="text-base text-gradient">
             {typeof file === "string"
-              ? file
-              : file?.name?.slice(0, 20) || "File"}
+              ? file.split("/").pop()?.split("?")[0] || "Uploaded file"
+              : file?.name?.slice(0, 30) || "File"}
           </span>
           <button
             type="button"
@@ -125,6 +142,23 @@ const UploadInput = ({
         </div>
       )}
 
+      {/* Optional: Inline Image or PDF Preview */}
+      {previewUrl && fileType === "image" && (
+        <img
+          src={previewUrl}
+          alt="Preview"
+          className="w-full max-h-64 object-contain mt-2 rounded"
+        />
+      )}
+      {previewUrl && fileType === "pdf" && (
+        <iframe
+          src={previewUrl}
+          title="PDF Preview"
+          className="w-full h-64 mt-2 rounded"
+        />
+      )}
+
+      {/* Error Message */}
       {!file && (error || errors?.[name]) && (
         <span className="text-red-500 text-sm">
           {errors?.[name]?.message || error}
