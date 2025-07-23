@@ -16,6 +16,7 @@ const Recipes = () => {
   const [selectedFilter, setSelectedFilter] = useState("All");
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [nutritionData, setNutritionData] = useState([]);
+  console.log('nutritionData: ', nutritionData);
   const [mealsData, setMealsData] = useState([]);
 
   const filterItems = [
@@ -48,7 +49,6 @@ const Recipes = () => {
         };
 
         const res = await getDietProgress(params);
-        console.log("res: ", res);
         const data = res?.[0] || {
           calories: 0,
           protein: 0,

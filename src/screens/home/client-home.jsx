@@ -13,7 +13,6 @@ import { useDispatch, useSelector } from "react-redux";
 const ClientDashboard = () => {
   const { userData } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  console.log("userData: ", userData);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -22,11 +21,9 @@ const ClientDashboard = () => {
         };
 
         const raw = await getDietProgress(params);
-        console.log('raw: ', raw);
 
         dispatch(setWeekLogs(raw));
          const today = format(new Date(), "yyyy-MM-dd");
-         console.log('today: ', today);
       const todayLog = raw.find((log) => log.date === today);
 
       if (todayLog) {

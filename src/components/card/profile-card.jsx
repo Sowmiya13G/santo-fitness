@@ -14,7 +14,6 @@ export default function ProfileCard({
     { label: "Age", value: `${age}yo` },
   ];
 
-  console.log("stats: ", stats);
   return (
     <div className="bg-white rounded-2xl p-4 space-y-4">
       <div className="flex items-center space-x-4">

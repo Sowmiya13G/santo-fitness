@@ -18,7 +18,6 @@ registerSW({
     }
   },
   onOfflineReady() {
-    console.log("✅ App ready to work offline (PWA)");
   },
 });
 

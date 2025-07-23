@@ -137,8 +137,7 @@ function UserData({ isCreate = false }) {
     } else {
       fetchUserData(userData?._id);
     }
-  }, []);
-  console.log(watch());
+  }, [fetchUserData, isClient, isTrainerRole, userData?._id]);
   return (
     <div className="h-full w-screen bg-white flex flex-col items-center px-6">
       {loading && <p className="text-center text-gray-500">Loading...</p>}

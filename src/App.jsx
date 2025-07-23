@@ -6,9 +6,7 @@ import AppRoutes from "./routes/app-routes";
 import InstallSplashScreen from "./screens/auth/install-splash";
 const App = () => {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
-  console.log("deferredPrompt: ", deferredPrompt);
   const [isPWAInstalled, setIsPWAInstalled] = useState(false);
-  console.log("isPWAInstalled: ", isPWAInstalled);
   useEffect(() => {
     const setVH = () => {
       document.documentElement.style.setProperty(
@@ -32,14 +30,12 @@ const App = () => {
     const handler = (e) => {
       e.preventDefault();
       setDeferredPrompt(e); // Save the event
-      console.log("✅ beforeinstallprompt fired");
     };
 
     window.addEventListener("beforeinstallprompt", handler);
 
     // Listen for install success
     window.addEventListener("appinstalled", () => {
-      console.log("✅ App was installed");
       toast.success("App successfully installed!");
       setDeferredPrompt(null);
       setIsPWAInstalled(true);
@@ -54,8 +50,6 @@ const App = () => {
   const handleInstallClick = async () => {
     if (deferredPrompt) {
       deferredPrompt.prompt(); // Show install prompt
-      const result = await deferredPrompt.userChoice;
-      console.log("Install result:", result.outcome);
       setDeferredPrompt(null);
     }
   };

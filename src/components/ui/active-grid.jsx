@@ -4,7 +4,6 @@ import NutrientProgress from "../card/nutrient-progress";
 
 const ActivityGrid = () => {
   const { todayLogs } = useSelector((state) => state.dailyLogs);
-  console.log("todayLogs: ", todayLogs);
 
   const initialData = [
     {

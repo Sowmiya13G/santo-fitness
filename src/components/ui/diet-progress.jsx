@@ -59,7 +59,6 @@ export default function DietProgress() {
     },
   ];
   const [chartData, setChartData] = useState(initialData);
-  console.log();
   useEffect(() => {
     const raw = weeklyLogs;
     if (!Array.isArray(raw) || raw.length === 0) return;

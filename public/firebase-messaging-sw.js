@@ -18,7 +18,6 @@ firebase.initializeApp({
 firebase.messaging();
 
 self.addEventListener("notificationclick", function (event) {
-  console.log("Notification click received");
 
   event.notification.close();
 
@@ -49,7 +48,6 @@ self.addEventListener("notificationclick", function (event) {
 // });
 
 // messaging.onBackgroundMessage((payload) => {
-//   console.log("Received background message: ", payload);
 
 //   const { title, body } = payload.notification;
 

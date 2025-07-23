@@ -5,9 +5,7 @@ import TrainerDashboard from "../home/trainer-home";
 
 const Home = () => {
   const { userData } = useSelector((state) => state.auth);
-  console.log("userData: ", userData);
   const renderHome = (role) => {
-    console.log("role: ", role);
     switch (role) {
       case "admin":
         return <AdminDashboard />;

@@ -65,7 +65,6 @@ const TrainerPostReport = () => {
 
   // Submit handler
   const onSubmit = async (data) => {
-    console.log("Form submitted:", data);
 
     const formData = new FormData();
     formData.append("clientId", data.clientName.value);
@@ -74,7 +73,6 @@ const TrainerPostReport = () => {
     // 👉 Replace this with actual API call
     try {
       // const res = await uploadReport(formData); // e.g., POST API
-      console.log("FormData to submit:", formData);
       navigate(-1); // Go back after success
     } catch (err) {
       console.error("Error submitting report:", err);

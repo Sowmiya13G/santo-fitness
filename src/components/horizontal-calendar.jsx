@@ -4,9 +4,7 @@ import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 const HorizontalCalendar = ({ onSelectDate }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
-  console.log('selectedDate: ', selectedDate);
   const [days, setDays] = useState([]);
-  console.log("days: ", days);
   const dateRefs = useRef({});
 
   useEffect(() => {

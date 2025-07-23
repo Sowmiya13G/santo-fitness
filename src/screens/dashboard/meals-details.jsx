@@ -5,7 +5,6 @@ import Workout from "../../assets/images/panCake.svg";
 const MealsDetails = () => {
   const location = useLocation();
   const meals = location.state || [];
-  console.log("meals: ", meals);
 
   const isEmpty = !meals || meals.length === 0;
 

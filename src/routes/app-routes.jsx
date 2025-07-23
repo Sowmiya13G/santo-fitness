@@ -30,7 +30,6 @@ import WorkoutDone from "@/screens/profile/workout-done";
 export default function AppRoutes() {
   const { isLoggedIn } = useAuth();
   const { userData } = useSelector((state) => state.auth);
-  console.log("userData: ", userData?.role);
   return (
     <Routes>
       <Route path="/" element={<SplashScreen />} />
