@@ -4,14 +4,20 @@ import "react-toastify/dist/ReactToastify.css";
 import "./index.css";
 import AppRoutes from "./routes/app-routes";
 import InstallSplashScreen from "./screens/auth/install-splash";
+// import { logoutUser } from "./utils/helper";
+// import { useDispatch, useSelector } from "react-redux";
+// import { useNavigate } from "react-router-dom";
 const App = () => {
+  // const navigate = useNavigate();
+  // const dispatch = useDispatch();
+  // logoutUser(dispatch, navigate);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [isPWAInstalled, setIsPWAInstalled] = useState(false);
   useEffect(() => {
     const setVH = () => {
       document.documentElement.style.setProperty(
         "--vh",
-        `${window.innerHeight * 0.01}px`,
+        `${window.innerHeight * 0.01}px`
       );
     };
     setVH();

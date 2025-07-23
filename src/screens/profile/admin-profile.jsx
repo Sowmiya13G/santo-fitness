@@ -56,11 +56,7 @@ const AdminProfile = () => {
       <ShadowView
         title="Logout"
         icon={<FiLogOut />}
-        onAction={() => {
-          dispatch(setToken(""));
-          localStorage.removeItem("token");
-          navigate("/login");
-        }}
+        onAction={() => logoutUser(dispatch, navigate)}
       />
     </div>
   );

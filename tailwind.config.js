@@ -11,7 +11,9 @@ export default {
         // common
         primary: "#9C0707",
         secondary: "#E54D4D",
-        red_25:"#B1252590",
+        red_25: "#B1252590",
+        red_50: "#B1252450",
+        red_30: "#B1252430",
         // background
         bg_primary: "#ADA4A5",
         bg_secondary: "#ADA4A5",
