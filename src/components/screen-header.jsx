@@ -18,7 +18,7 @@ export default function ScreenHeader({
   return (
     <div>
       {isHome ? (
-        <div className="flex w-full items-center justify-between px-4 mt-3">
+        <div className="flex w-full items-center justify-between px-2 mt-3">
           <div>
             <p className="text-base text-icon">Welcome Back,</p>
             <h1 className={`text-xl font-semibold ${titleColor}`}>

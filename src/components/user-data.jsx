@@ -11,7 +11,7 @@ import {
   updateUser,
 } from "@/features/user/user-api";
 import { parseFatValue } from "@/utils/helper";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import Button from "./button";
@@ -59,7 +59,7 @@ function UserData({ isCreate = false }) {
     }
   };
 
-  const fetchUserData = async (id) => {
+  const fetchUserData = useCallback(async (id) => {
     try {
       setLoading(true);
       const response = await getUserData(id);
@@ -103,7 +103,7 @@ function UserData({ isCreate = false }) {
     } finally {
       setLoading(false);
     }
-  };
+  },[isAdmin, isClient, methods, reset]);
 
   const onSubmit = async (data) => {
     const formattedDOB = `${data?.DOB.getFullYear()}-${String(

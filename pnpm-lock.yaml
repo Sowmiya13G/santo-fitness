@@ -26,6 +26,9 @@ importers:
       dotenv:
         specifier: ^17.1.0
         version: 17.2.0
+      fast-average-color:
+        specifier: ^9.5.0
+        version: 9.5.0
       firebase:
         specifier: ^11.10.0
         version: 11.10.0
@@ -2015,6 +2018,10 @@ packages:
 
   eventemitter3@5.0.1:
     resolution: {integrity: sha512-GWkBvjiSZK87ELrYOSESUYeVIc9mvLLf/nXalMOS5dYrgZq9o5OVkbZAVM06CVxYsCwH9BDZFPlQTlPA1j4ahA==}
+
+  fast-average-color@9.5.0:
+    resolution: {integrity: sha512-nC6x2YIlJ9xxgkMFMd1BNoM1ctMjNoRKfRliPmiEWW3S6rLTHiQcy9g3pt/xiKv/D0NAAkhb9VyV+WJFvTqMGg==}
+    engines: {node: '>= 12'}
 
   fast-deep-equal@3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
@@ -5601,6 +5608,8 @@ snapshots:
   esutils@2.0.3: {}
 
   eventemitter3@5.0.1: {}
+
+  fast-average-color@9.5.0: {}
 
   fast-deep-equal@3.1.3: {}
 

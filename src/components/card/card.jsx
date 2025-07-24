@@ -1,7 +1,9 @@
 // src/components/ui/card.jsx
 
-export const Card = ({ children, className = "" }) => {
+export const Card = ({ children, className = "", style }) => {
   return (
-    <div className={`rounded-xl shadow bg-white  ${className}`}>{children}</div>
+    <div className={`${className} bg-white  `} style={style}>
+      {children}
+    </div>
   );
 };

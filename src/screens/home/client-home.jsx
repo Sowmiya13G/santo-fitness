@@ -41,7 +41,7 @@ const ClientDashboard = () => {
   }, [dispatch]);
 
   return (
-    <div className="w-full space-y-6 text-gray-800 hide-scrollbar ">
+    <div className="w-full space-y-6 px-3 text-gray-800 hide-scrollbar ">
       <ScreenHeader isHome />
       <div className="flex gap-4 overflow-x-auto hide-scrollbar px-1 snap-x snap-mandatory">
         <div className="min-w-[100%] snap-center snap-always">

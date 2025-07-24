@@ -12,6 +12,7 @@ export default {
         primary: "#9C0707",
         secondary: "#E54D4D",
         red_25:"#B1252590",
+        primaryOpacity:"#f4b1a79e",
         // background
         bg_primary: "#ADA4A5",
         bg_secondary: "#ADA4A5",
