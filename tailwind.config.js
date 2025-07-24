@@ -13,6 +13,8 @@ export default {
         secondary: "#E54D4D",
         red_25:"#B1252590",
         primaryOpacity:"#f4b1a79e",
+        red_50: "#B1252450",
+        red_30: "#B1252430",
         // background
         bg_primary: "#ADA4A5",
         bg_secondary: "#ADA4A5",

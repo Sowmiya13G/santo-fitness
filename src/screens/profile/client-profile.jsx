@@ -11,9 +11,9 @@ import RenderIconRow from "@/components/icon-row";
 import ScreenHeader from "@/components/screen-header";
 import ShadowView from "@/components/shadow-view";
 import Switch from "@/components/switch";
-import maleProfile from "../../assets/icons/male-profile.svg";
 import { clientAccountItems } from "@/constants/static-data";
-import { setToken } from "@/features/auth/auth-slice";
+import { logoutUser } from "@/utils/helper";
+import maleProfile from "../../assets/icons/male-profile.svg";
 
 const ClientProfile = () => {
   const navigate = useNavigate();
@@ -56,11 +56,7 @@ const ClientProfile = () => {
       <ShadowView
         title="Logout"
         icon={<FiLogOut />}
-        onAction={() => {
-          dispatch(setToken(""));
-          localStorage.removeItem("token");
-          navigate("/login");
-        }}
+        onAction={() => logoutUser(dispatch, navigate)}
       />
     </div>
   );
