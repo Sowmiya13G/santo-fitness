@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { FastAverageColor } from "fast-average-color";
 import { Card } from "@/components/card/card";
-import PendingAlert from "../../assets/images/Pending-alert.svg"; // 🟡 Make sure the path is correct
+import PendingAlert from "../../assets/images/pending-alert.svg"; // 🟡 Make sure the path is correct
 
 const users = [
   {
