@@ -12,6 +12,7 @@ const FatInput = ({
   editable = true,
   onChange,
   currentVal = 0,
+  isLoading = false, // <-- New prop
 }) => {
   const {
     setValue,
@@ -40,12 +41,12 @@ const FatInput = ({
   }, [currentValue, name, setValue, onChange]);
 
   const increment = () => {
-    if (!editable) return;
+    if (!editable || isLoading) return;
     setCurrentValue((prev) => parseFloat((prev + 0.1).toFixed(1)));
   };
 
   const decrement = () => {
-    if (!editable) return;
+    if (!editable || isLoading) return;
     setCurrentValue((prev) => parseFloat((prev - 0.1).toFixed(1)));
   };
 
@@ -62,6 +63,7 @@ const FatInput = ({
   const deltaDisplay = delta === 0 ? "0" : `${delta > 0 ? "+" : ""}${delta}`;
   const deltaColor =
     delta > 0 ? "text-green-500" : delta < 0 ? "text-red-500" : "text-gray-500";
+  const isInputDisabled = !editable || isLoading;
 
   return (
     <div className="w-full space-y-1">
@@ -69,24 +71,24 @@ const FatInput = ({
 
       <div
         className={`flex items-center rounded-xl px-4 py-1 shadow-sm bg-feild_primay gap-2 w-full border ${baseBorder} ${wrapperClassName} ${
-          !editable ? "opacity-60" : ""
-        }`}
+          !editable || isLoading ? "opacity-60" : ""
+        } ${isLoading ? "shimmer" : ""}`}
       >
         <input
           type="number"
           step="0.1"
-          value={currentValue}
+          value={isLoading ? "" : currentValue}
           onChange={handleInputChange}
           name={name}
-          placeholder={placeholder}
+          placeholder={isLoading ? "" : placeholder}
           maxLength={maxLength}
-          disabled={!editable}
-          className={`flex-1 outline-none text-font_primary bg-feild_primay w-full h-10 ${
+          disabled={!editable || isLoading}
+          className={`flex-1 outline-none text-font_primary  w-full h-10 ${
             !editable ? "cursor-not-allowed" : ""
           } ${FatInputClassName}`}
         />
 
-        {editable && (
+        {!isLoading && editable && (
           <div className="flex flex-row justify-center items-center space-y-0">
             <span className={`text-xs ${deltaColor} mr-2`}>{deltaDisplay}</span>
             <div className="flex flex-col justify-center items-center space-y-0">
@@ -102,6 +104,29 @@ const FatInput = ({
       </div>
 
       {error && <p className="text-red-500 text-sm pl-2">{error}</p>}
+
+      {/* Shimmer effect */}
+      <style jsx>{`
+        .shimmer {
+          background: linear-gradient(
+            110deg,
+            #e0e0e0 8%,
+            #f0f0f0 18%,
+            #e0e0e0 33%
+          );
+          background-size: 200% 100%;
+          animation: shimmer 1.5s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+          0% {
+            background-position: -200% 0;
+          }
+          100% {
+            background-position: 200% 0;
+          }
+        }
+      `}</style>
     </div>
   );
 };

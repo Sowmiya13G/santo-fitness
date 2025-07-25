@@ -42,7 +42,7 @@ const InputDatePicker = ({
               placeholderText={isLoading ? "" : placeholder}
               selected={field.value}
               onChange={(date) => !isLoading && field.onChange(date)}
-              className={`w-full pr-10 outline-none text-font_primary bg-feild_primay h-10 ${
+              className={`w-full pr-10 outline-none text-font_primary  h-10 ${
                 isInputDisabled ? "cursor-not-allowed" : ""
               } ${inputClassName}`}
               dateFormat="yyyy-MM-dd"

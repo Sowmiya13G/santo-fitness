@@ -54,8 +54,8 @@ const Input = ({
           disabled={isInputDisabled}
           {...register(name)}
           value={isLoading ? "":undefined}
-          className={`flex-1 outline-none text-font_primary w-full h-10 ${
-            isInputDisabled ? "cursor-not-allowed " : ""
+          className={`flex-1 outline-none  text-font_primary w-full h-10 ${
+            isInputDisabled ? "cursor-not-allowed" : ""
           } ${inputClassName}`}
         />
         {type === "password" ? (
