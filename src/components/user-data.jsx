@@ -107,9 +107,11 @@ function UserData({ isCreate = false }) {
 
         if (isAdmin) {
           const currentRole = methods.getValues("role");
-          const currentPerson = methods.getValues("person");
           resetData.role = currentRole;
+        }else if(!isClient){
+          const currentPerson = methods.getValues("person");
           resetData.person = currentPerson;
+
         }
 
         reset(resetData);
