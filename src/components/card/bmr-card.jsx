@@ -10,8 +10,14 @@ const BMRCard = ({ bmr }) => {
   const status = getBMRStatus(bmr);
 
   return (
-    <Card className="bg-primary-gradient text-white rounded-2xl p-4 shadow-lg w-full h-24">
-      <div className="flex w-full items-center justify-between h-full">
+    <Card className="bg-primary-gradient text-white rounded-2xl p-4 shadow-lg w-full h-32 ">
+      <div className="flex w-full  relative items-center justify-between h-full">
+        <div className="absolute w-16 h-16 bg-gray-200 opacity-20 rounded-full bottom-[-20px] left-[-20px]" />
+        <div className="absolute w-10 h-10 bg-gray-200 opacity-20 rounded-full top-[-10px] right-[-10px]" />
+        <div className="absolute w-3 h-3 bg-gray-200 opacity-20 rounded-full bottom-[10px] left-[30%]" />
+        <div className="absolute w-3 h-3 bg-gray-200 opacity-20 rounded-full top-[10px] right-[40%]" />
+        <div className="absolute w-3 h-3 bg-gray-200 opacity-20 rounded-full top-[30px] left-[20%]" />
+        <div className="absolute w-3 h-3 bg-gray-200 opacity-20 rounded-full bottom-[30px] right-[40%]" />
         <div className="w-[70%]">
           <h2 className="text-base font-medium leading-tight mb-1">
             BMR (Basal Metabolic Rate)

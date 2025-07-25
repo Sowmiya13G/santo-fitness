@@ -1,4 +1,4 @@
-import { setToken } from "@/features/auth/auth-slice";
+import { clearToken } from "@/features/auth/auth-slice";
 
 export const parseFatValue = (val) => {
   const match = val.match(/^(\d+(\.\d+)?)/);
@@ -6,7 +6,8 @@ export const parseFatValue = (val) => {
 };
 
 export const logoutUser = (dispatch, navigate) => {
-  dispatch(setToken(""));
-  localStorage.removeItem("token");
+  dispatch(clearToken(""));
   navigate("/login");
+      window.location.href = "/login";
+
 };

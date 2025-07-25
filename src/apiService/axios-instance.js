@@ -1,6 +1,6 @@
+import { logoutUser } from "@/utils/helper";
 import axios from "axios";
-import { clearToken } from "@/features/auth/auth-slice";
-import {store} from "../features/store"; // ✅ Make sure this path matches your actual store file
+import { store } from "../features/store"; // ✅ Make sure this path matches your actual store file
 
 const dispatch = store.dispatch;
 
@@ -29,13 +29,13 @@ axiosInstance.interceptors.response.use(
       error.response &&
       error.response.data &&
       error.response.data.message === "No token"
-    ) {
-      localStorage.removeItem("token");
-      dispatch(clearToken());
-      window.location.href = "/login";
+    )
+    {
+      logoutUser(dispatch)
     }
 
-    return Promise.reject(error);
+    return Promise.reject(
+      error);
   }
 );
 

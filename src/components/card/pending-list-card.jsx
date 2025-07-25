@@ -24,7 +24,6 @@ const users = [
   },
 ];
 
-
 const PendingUserCard = ({ user }) => {
   return (
     <Card className="relative text-white !bg-primaryOpacity rounded-3xl p-4 shadow-lg w-full h-24 mb-4 overflow-hidden">
@@ -60,18 +59,19 @@ const PendingUserCard = ({ user }) => {
   );
 };
 
-
 const PendingListCard = ({ label }) => {
   return (
-    <div className="w-full px-4">
-     {label && (
-  <div className="flex items-center gap-2 mb-2">
-    <p className="text-gray-600 capitalize text-left">{label}</p>
-    {users.length &&<span className="text-xs bg-primary-gradient text-white px-2 py-0.5 rounded-full">
-      {users.length}
-    </span>}
-  </div>
-)}
+    <div className="w-full px-2">
+      {label && (
+        <div className="flex items-center gap-2 mb-2">
+          <p className="text-gray-600 capitalize text-left">{label}</p>
+          {users.length && (
+            <span className="text-xs bg-primary-gradient text-white px-2 py-0.5 rounded-full">
+              {users.length}
+            </span>
+          )}
+        </div>
+      )}
 
       <div className="flex flex-col gap-3">
         {users.map((user) => (
@@ -81,6 +81,5 @@ const PendingListCard = ({ label }) => {
     </div>
   );
 };
-
 
 export default PendingListCard;

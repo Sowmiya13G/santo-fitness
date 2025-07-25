@@ -1,4 +1,5 @@
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
+import { BsGraphDownArrow, BsGraphUpArrow ,} from "react-icons/bs";
 
 const users = [
   {
@@ -46,9 +47,9 @@ const RankCard = ({ label }) => {
         {users.map((user) => (
           <div
             key={user.id}
-            className="max-w-[80px] snap-center  flex flex-col space-y-1"
+            className="max-w-[90px] snap-center rounded-lg bg-gray-100 flex flex-col space-y-1 p-3"
           >
-            <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-gray-300 shadow-md">
+            <div className="w-16 h-16 rounded-full overflow-hidden  shadow-md">
               <img
                 src={user.img}
                 alt={user.name}
@@ -57,9 +58,9 @@ const RankCard = ({ label }) => {
             </div>
             <div className="flex items-center gap-1 text-xs font-medium text-gray-700">
               {user.trend === "up" ? (
-                <FaArrowUp className="text-green-500 w-4 h-4" />
+                <BsGraphUpArrow className="text-green-500 w-4 h-4" />
               ) : (
-                <FaArrowDown className="text-red-500 w-4 h-4" />
+                <BsGraphDownArrow className="text-red-500 w-4 h-4" />
               )}
               <span>{Math.abs(user.ratio)}%</span>
             </div>
