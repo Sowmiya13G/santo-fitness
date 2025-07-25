@@ -26,7 +26,9 @@ import PersonalData from "@/screens/profile/personal-data";
 import TrainerPostReport from "@/screens/profile/trainer-report";
 import TrainerWorkoutNotes from "@/screens/profile/trainer-workout";
 import WorkoutDone from "@/screens/profile/workout-done";
+import CameraScreen from "@/screens/progress/camera-screen";
 import CompareScreen from "@/screens/progress/compare";
+import ResultScreen from "@/screens/progress/result";
 
 export default function AppRoutes() {
   const { isLoggedIn } = useAuth();
@@ -66,7 +68,8 @@ export default function AppRoutes() {
           <Route path="/notification" element={<Notification />} />
           <Route path="/meals-details" element={<MealsDetails />} />
           <Route path="/compare-progress" element={<CompareScreen />} />
-
+          <Route path="/result" element={<ResultScreen />} />
+          <Route path="/camera-screen" element={<CameraScreen/>} />
           <Route element={<DashboardLayout />}>
             <Route path="/home" element={<Home />} />
             <Route path="/activity" element={<Graph />} />

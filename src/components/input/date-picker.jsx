@@ -11,8 +11,8 @@ const InputDatePicker = ({
   wrapperClassName = "",
   inputClassName = "",
   editable = true,
-  minDate, // ⬅️ add here
-  maxDate, // ⬅️ add here
+  minDate, 
+  maxDate,
 }) => {
   const {
     control,
@@ -44,8 +44,8 @@ const InputDatePicker = ({
               dateFormat="yyyy-MM-dd"
               popperPlacement="bottom-start"
               ref={dateInputRef}
-              minDate={minDate} // ⬅️ apply here
-              maxDate={maxDate} // ⬅️ apply here
+              minDate={minDate} 
+              maxDate={maxDate} 
               dayClassName={(date) =>
                 field.value &&
                 date.toDateString() === field.value.toDateString()

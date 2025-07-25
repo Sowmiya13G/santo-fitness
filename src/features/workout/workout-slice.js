@@ -1,19 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const authSlice = createSlice({
+const wrokoutSlice = createSlice({
   name: "user",
-  initialState: {
-    fcm: null,
-  },
-  reducers: {
-    setFCMToken(state, action) {
-      state.token = action.payload;
-    },
-    clearFCMToken(state) {
-      state.token = null;
-    },
-  },
+  initialState: {},
+  reducers: {},
 });
 
-export const { setFCMToken, clearFCMToken } = authSlice.actions;
-export default authSlice.reducer;
+export const {} = wrokoutSlice.actions;
+export default wrokoutSlice.reducer;

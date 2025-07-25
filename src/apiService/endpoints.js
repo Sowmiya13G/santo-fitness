@@ -19,13 +19,16 @@ const API_ENDPOINTS = {
     GET_DIET_PROGRESS: "/diet-progress",
     CREATE_DAILY_LOGS: "/daily-logs",
   },
-  REPORT:{
-    GET_REPORT:"/reports",
-    ADD_REPORT:"/reports",
+  REPORT: {
+    GET_REPORT: "/reports",
+    ADD_REPORT: "/reports",
   },
-   FILE:{
-    UPLOAD_FILE:"/meals/upload",
-  }
+  FILE: {
+    UPLOAD_FILE: "/meals/upload",
+  },
+  PROGRESS: {
+    BODY_PROGRESS: "/body-progress",
+  },
 };
 
 export default API_ENDPOINTS;

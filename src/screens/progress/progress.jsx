@@ -9,6 +9,7 @@ import Button from "@/components/button";
 import Dropdown from "@/components/input/dropdown";
 import ScreenHeader from "@/components/screen-header";
 // others
+import { getProgressData } from "@/features/progress/progress-api";
 import { getUsersList } from "@/features/user/user-api";
 import Calendar from "../../assets/icons/calendar-icon.svg";
 import ReminderImage from "../../assets/images/reminder-image.svg";
@@ -21,6 +22,9 @@ const ProgressScreen = () => {
 
   const dispatch = useDispatch();
   const [list, setList] = useState([]);
+  const [images, setImages] = useState([]);
+  console.log("images: ", images);
+
   const methods = useForm();
   const {
     watch,
@@ -44,12 +48,35 @@ const ProgressScreen = () => {
     }
   };
 
+  const fetchProgressList = async (role = "client") => {
+    try {
+      const response = await getProgressData();
+      if (response?.progress) {
+        const allImages = response?.progress
+          ?.flatMap((entry) => {
+            console.log("entry: ", entry);
+            return entry?.images || [];
+          })
+          ?.map((img) => ({
+            url: img?.url,
+          }));
+        setImages(allImages);
+      }
+    } catch (err) {
+      console.error("Failed to fetch progress:", err);
+    } finally {
+    }
+  };
+
   useEffect(() => {
-    fetchUsersList();
+    if (!isClient) {
+      fetchUsersList();
+    }
+    fetchProgressList();
   }, []);
 
   return (
-    <div className="w-full space-y-6 text-gray-800 hide-scrollbar">
+    <div className="w-full space-y-6 hide-scrollbar">
       <ScreenHeader title="Progress Photo" />
       {isClient && (
         <div className="relative bg-red_50 p-4 rounded-3xl flex items-center gap-4">
@@ -73,8 +100,8 @@ const ProgressScreen = () => {
           </p>
           <Button
             label={"Compare"}
-            customClassName="w-32 !h-12"
-            onClick={() => navigate("/compare-progress")}
+            customClassName="!w-36 !h-12"
+            onClick={() => navigate("/camera-screen")}
           />
         </div>
         <img src={ReminderImage} alt="Calendar Icon" className="w-15 h-15" />
@@ -94,6 +121,22 @@ const ProgressScreen = () => {
             />
           </form>
         </FormProvider>
+      )}
+      {images?.length > 0 && (
+        <div className="grid grid-cols-2 gap-4 px-4 pb-10">
+          {images.map((img, idx) => (
+            <div
+              key={idx}
+              className="w-full rounded-xl overflow-hidden border border-gray-200"
+            >
+              <img
+                src={img.url}
+                alt={`Progress ${idx + 1}`}
+                className="w-full h-auto object-cover"
+              />
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );
