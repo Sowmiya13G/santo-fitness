@@ -62,7 +62,7 @@ export const clientAccountItems = [
   {
     title: "Personal Data",
     icon: Profile,
-    toPath: "/profile/personal-data",
+    toPath: "/profile/personal-data-client",
   },
   {
     title: "Testing Reports",

@@ -15,59 +15,66 @@ const Input = ({
   text,
   editable = true,
   suffixIconAction,
+  isLoading = false,
 }) => {
   const {
     register,
     formState: { errors },
   } = useFormContext();
-
   const [showPassword, setShowPassword] = useState(false);
   const error = errors?.[name]?.message;
   const baseBorder = error ? "border-red-500" : "border-gray-300";
-
   const inputType =
     type === "password"
       ? showPassword
         ? "text"
         : "password"
       : type === "numeric"
-        ? "text"
-        : type;
-
+      ? "text"
+      : type;
   const toggleVisibility = () => setShowPassword((prev) => !prev);
+
+  const isInputDisabled = !editable || isLoading;
 
   return (
     <div className="w-full space-y-1">
       {label && <p className="text-base text-font_primary">{label}</p>}
-
       <div
         className={`flex items-center rounded-xl px-4 py-1 shadow-sm bg-feild_primay gap-2 w-full border ${baseBorder} ${wrapperClassName} ${
-          !editable ? "opacity-60" : ""
-        }`}
+          isInputDisabled ? "opacity-60" : ""
+        } ${isLoading ? "shimmer" : ""}`}
       >
         {icon && iconPosition === "prefix" && (
           <span className="text-icon">{icon}</span>
         )}
-
         <input
           type={inputType}
-          placeholder={placeholder}
+          placeholder={isLoading ? "" : placeholder}
           maxLength={maxLength}
-          disabled={!editable}
+          disabled={isInputDisabled}
           {...register(name)}
-          className={`flex-1 outline-none text-font_primary bg-feild_primay w-full h-10 ${
-            !editable ? "cursor-not-allowed bg-feild_primay" : ""
+          value={isLoading ? "":undefined}
+          className={`flex-1 outline-none text-font_primary w-full h-10 ${
+            isInputDisabled ? "cursor-not-allowed " : ""
           } ${inputClassName}`}
         />
-
         {type === "password" ? (
-          <span className="text-icon cursor-pointer" onClick={toggleVisibility}>
+          <span
+            className={`text-icon ${
+              isLoading ? "cursor-not-allowed" : "cursor-pointer"
+            }`}
+            onClick={isLoading ? undefined : toggleVisibility}
+          >
             {showPassword ? <FiEyeOff /> : <FiEye />}
           </span>
         ) : (
           <>
             {icon && iconPosition === "suffix" && (
-              <button className="text-icon" onClick={suffixIconAction}>
+              <button
+                className="text-icon"
+                onClick={isLoading ? undefined : suffixIconAction}
+                disabled={isLoading}
+              >
                 {icon}
               </button>
             )}
@@ -75,8 +82,29 @@ const Input = ({
           </>
         )}
       </div>
-
       {error && <p className="text-red-500 text-sm pl-2">{error}</p>}
+
+      <style jsx>{`
+        .shimmer {
+          background: linear-gradient(
+            110deg,
+            #e0e0e0 8%,
+            #f0f0f0 18%,
+            #e0e0e0 33%
+          );
+          background-size: 200% 100%;
+          animation: shimmer 1.5s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+          0% {
+            background-position: -200% 0;
+          }
+          100% {
+            background-position: 200% 0;
+          }
+        }
+      `}</style>
     </div>
   );
 };

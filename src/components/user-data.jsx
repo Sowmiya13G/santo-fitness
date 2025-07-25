@@ -59,51 +59,54 @@ function UserData({ isCreate = false }) {
     }
   };
 
-  const fetchUserData = useCallback(async (id) => {
-    try {
-      setLoading(true);
-      const response = await getUserData(id);
-      if (response?.status === 200) {
-        const client = response.user;
+  const fetchUserData = useCallback(
+    async (id) => {
+      try {
+        setLoading(true);
+        const response = await getUserData(id);
+        if (response?.status === 200) {
+          const client = response.user;
 
-        const resetData = {
-          name: client.name ?? "",
-          sfcId: client.sfcId ?? "",
-          age: client.age ?? "",
-          email: client.email ?? "",
-          height: client.height ?? "",
-          weight: client.weight ?? "",
-          bodyAge: client.age ?? "",
-          bmi: client.BMI ?? "",
-          kCal: client.kCal ?? "",
-          fullBodyMuscle: client.fullBodyMuscle ?? "",
-          armsMuscle: client.armsMuscle ?? "",
-          trunkMuscle: client.trunkMuscle ?? "",
-          legsMuscle: client.legsMuscle ?? "",
-          FAT: client.FAT,
-          VFat: parseFatValue(client.VFat),
-          SFat: parseFatValue(client.SFat),
-          fullBodySFat: parseFatValue(client.fullBodySFat),
-          armSFat: parseFatValue(client.armSFat),
-          trunkSFat: parseFatValue(client.trunkSFat),
-          legsSFat: parseFatValue(client.legsSFat),
-          DOB: client.DOB ? new Date(client.DOB) : null,
-          subscriptionPlan: client.subscriptionPlan ?? "",
-        };
+          const resetData = {
+            name: client.name ?? "",
+            sfcId: client.sfcId ?? "",
+            age: client.age ?? "",
+            email: client.email ?? "",
+            height: client.height ?? "",
+            weight: client.weight ?? "",
+            bodyAge: client.age ?? "",
+            bmi: client.BMI ?? "",
+            kCal: client.kCal ?? "",
+            fullBodyMuscle: client.fullBodyMuscle ?? "",
+            armsMuscle: client.armsMuscle ?? "",
+            trunkMuscle: client.trunkMuscle ?? "",
+            legsMuscle: client.legsMuscle ?? "",
+            FAT: client.FAT,
+            VFat: parseFatValue(client.VFat),
+            SFat: parseFatValue(client.SFat),
+            fullBodySFat: parseFatValue(client.fullBodySFat),
+            armSFat: parseFatValue(client.armSFat),
+            trunkSFat: parseFatValue(client.trunkSFat),
+            legsSFat: parseFatValue(client.legsSFat),
+            DOB: client.DOB ? new Date(client.DOB) : null,
+            subscriptionPlan: client.subscriptionPlan ?? "",
+          };
 
-        if (!isClient) {
-          if (isAdmin) resetData.role = methods.getValues("role");
-          resetData.person = methods.getValues("person");
+          if (!isClient) {
+            if (isAdmin) resetData.role = methods.getValues("role");
+            resetData.person = methods.getValues("person");
+          }
+
+          reset(resetData);
         }
-
-        reset(resetData);
+      } catch (err) {
+        console.error("Failed to fetch user data:", err);
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      console.error("Failed to fetch user data:", err);
-    } finally {
-      setLoading(false);
-    }
-  },[isAdmin, isClient, methods, reset]);
+    },
+    [isAdmin, isClient, methods, reset]
+  );
 
   const onSubmit = async (data) => {
     const formattedDOB = `${data?.DOB.getFullYear()}-${String(
@@ -140,8 +143,6 @@ function UserData({ isCreate = false }) {
   }, [fetchUserData, isClient, isTrainerRole, userData?._id]);
   return (
     <div className="h-full w-screen bg-white flex flex-col items-center px-6">
-      {loading && <p className="text-center text-gray-500">Loading...</p>}
-
       <FormProvider {...methods}>
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -176,7 +177,12 @@ function UserData({ isCreate = false }) {
           )}
 
           {basicFields.map((field) => (
-            <Input key={field.name} {...field} editable={!isClient} />
+            <Input
+              key={field.name}
+              {...field}
+              editable={!isClient}
+              isLoading={loading}
+            />
           ))}
 
           {fatFields.map((row, index) => (
@@ -188,6 +194,7 @@ function UserData({ isCreate = false }) {
                   label={field.label}
                   placeholder={`Enter ${field.label.toLowerCase()}`}
                   editable={!isClient}
+                  isLoading={loading}
                 />
               ))}
             </div>
@@ -205,6 +212,7 @@ function UserData({ isCreate = false }) {
                     name={field.name}
                     label={field.label}
                     editable={!isClient}
+                    isLoading={loading}
                     placeholder={`Enter ${field.label.toLowerCase()}`}
                   />
                 ))}

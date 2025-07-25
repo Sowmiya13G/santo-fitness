@@ -23,6 +23,7 @@ import AddNewPerson from "@/screens/profile/add-new-person";
 import ClientReport from "@/screens/profile/client-report";
 import ClientWorkoutNotes from "@/screens/profile/client-workout";
 import PersonalData from "@/screens/profile/personal-data";
+import PersonalDataClient from "@/screens/profile/personal-data-client";
 import TrainerPostReport from "@/screens/profile/trainer-report";
 import TrainerWorkoutNotes from "@/screens/profile/trainer-workout";
 import WorkoutDone from "@/screens/profile/workout-done";
@@ -50,6 +51,7 @@ export default function AppRoutes() {
         <>
           <Route path="/welcome" element={<LoggedIn />} />
           <Route path="/profile/personal-data" element={<PersonalData />} />
+          <Route path="/profile/personal-data-client" element={<PersonalDataClient />} />
           <Route path="/profile/testing-reports" element={<ClientReport />} />
           <Route
             path="/profile/workout-notes"
