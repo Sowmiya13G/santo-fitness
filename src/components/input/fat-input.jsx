@@ -12,10 +12,10 @@ const FatInput = ({
   editable = true,
   onChange,
   currentVal = 0,
-  isLoading = false, // <-- New prop
+  isLoading = false,
 }) => {
   const {
-    setValue,
+    register,
     getValues,
     formState: { errors },
   } = useFormContext();
@@ -24,46 +24,37 @@ const FatInput = ({
   const baseBorder = error ? "border-red-500" : "border-gray-300";
 
   const [initialValue, setInitialValue] = useState(0);
-  const [currentValue, setCurrentValue] = useState(currentVal);
+  const [adjustedValue, setAdjustedValue] = useState(currentVal);
 
   useEffect(() => {
     const formVal = parseFloat(getValues(name));
     const numericVal = isNaN(formVal) ? 0 : formVal;
     setInitialValue(numericVal);
-    setCurrentValue(numericVal);
-  }, [name, getValues]);
-
-  useEffect(() => {
-    setValue(name, currentValue);
-    if (typeof onChange === "function") {
-      onChange(currentValue);
-    }
-  }, [currentValue, name, setValue, onChange]);
+    setAdjustedValue(numericVal);
+  }, [getValues, name]);
 
   const increment = () => {
     if (!editable || isLoading) return;
-    setCurrentValue((prev) => parseFloat((prev + 0.1).toFixed(1)));
+    setAdjustedValue((prev) => {
+      const updated = parseFloat((prev + 0.1).toFixed(1));
+      if (typeof onChange === "function") onChange(updated);
+      return updated;
+    });
   };
 
   const decrement = () => {
     if (!editable || isLoading) return;
-    setCurrentValue((prev) => parseFloat((prev - 0.1).toFixed(1)));
+    setAdjustedValue((prev) => {
+      const updated = parseFloat((prev - 0.1).toFixed(1));
+      if (typeof onChange === "function") onChange(updated);
+      return updated;
+    });
   };
 
-  const handleInputChange = (e) => {
-    const val = parseFloat(e.target.value);
-    if (!isNaN(val)) {
-      setCurrentValue(val);
-    } else if (e.target.value === "") {
-      setCurrentValue("");
-    }
-  };
-
-  const delta = parseFloat((currentValue - initialValue).toFixed(1));
+  const delta = parseFloat((adjustedValue - initialValue).toFixed(1));
   const deltaDisplay = delta === 0 ? "0" : `${delta > 0 ? "+" : ""}${delta}`;
   const deltaColor =
     delta > 0 ? "text-green-500" : delta < 0 ? "text-red-500" : "text-gray-500";
-  const isInputDisabled = !editable || isLoading;
 
   return (
     <div className="w-full space-y-1">
@@ -77,13 +68,11 @@ const FatInput = ({
         <input
           type="number"
           step="0.1"
-          value={isLoading ? "" : currentValue}
-          onChange={handleInputChange}
-          name={name}
+          {...register(name)}
           placeholder={isLoading ? "" : placeholder}
           maxLength={maxLength}
           disabled={!editable || isLoading}
-          className={`flex-1 outline-none text-font_primary  w-full h-10 ${
+          className={`flex-1 outline-none text-font_primary w-full h-10 ${
             !editable ? "cursor-not-allowed" : ""
           } ${FatInputClassName}`}
         />
