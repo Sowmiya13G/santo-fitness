@@ -26,8 +26,8 @@ const ClientProfile = () => {
       <ScreenHeader title="Profile" />
       <ProfileCard
         name={userData?.name}
-        image={maleProfile}
-        program="Lose a Fat Program"
+        image={userData?.profileImg|| maleProfile}
+        program={userData?.goal}
         height={userData.height}
         weight={userData.weight}
         age={userData.age}
