@@ -7,12 +7,14 @@ export default function ScreenHeader({
   isBack = false,
   titleColor = "text-font_primary",
   isHome = false,
+  onBack,
 }) {
   const navigate = useNavigate();
   const { userData } = useSelector((state) => state.auth);
 
   const handleBack = () => {
     navigate(-1);
+    if (onBack) onBack();
   };
 
   return (

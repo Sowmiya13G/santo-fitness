@@ -1,37 +1,51 @@
 import { useEffect, useRef, useState } from "react";
-import { FaCamera, FaRedo } from "react-icons/fa";
+import {
+  FaCamera,
+  FaRedo,
+  FaUpload,
+} from "react-icons/fa";
 import { IoMdFlash, IoMdFlashOff } from "react-icons/io";
+import { TbEdit } from "react-icons/tb";
 
-import Back from "../../assets/images/back.svg";
-import Front from "../../assets/images/front.svg";
-import FrontActive from "../../assets/images/front-active.svg";
 import BackActive from "../../assets/images/back-active.svg";
+import Back from "../../assets/images/back.svg";
+import FrontActive from "../../assets/images/front-active.svg";
+import Front from "../../assets/images/front.svg";
 import LeftActive from "../../assets/images/left-active.svg";
-import RightActive from "../../assets/images/right-active.svg";
-
 import Left from "../../assets/images/left.svg";
+import RightActive from "../../assets/images/right-active.svg";
 import Right from "../../assets/images/right.svg";
+
+import ScreenHeader from "@/components/screen-header";
+
+const poses = [
+  { active: FrontActive, inactive: Front, pose: "Front" },
+  { active: RightActive, inactive: Right, pose: "Right" },
+  { active: BackActive, inactive: Back, pose: "Back" },
+  { active: LeftActive, inactive: Left, pose: "Left" },
+];
 
 export default function CameraScreen({ onCapture }) {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  const [facingMode, setFacingMode] = useState("environment");
-  const [stream, setStream] = useState(null);
-  const [flashOn, setFlashOn] = useState(false);
-  const [capturedImage, setCapturedImage] = useState(null);
+  const streamRef = useRef(null);
 
-  const poses = [
-    { active: FrontActive, inactive: Front, pose: "Front" },
-    { active: RightActive, inactive: Right, pose: "Right" },
-    { active: BackActive, inactive: Back, pose: "Back" },
-    { active: LeftActive, inactive: Left, pose: "Left" },
-  ];
+  const [facingMode, setFacingMode] = useState("environment");
+  const [flashOn, setFlashOn] = useState(false);
+  const [capturedImages, setCapturedImages] = useState({});
   const [selectedPose, setSelectedPose] = useState("Front");
+
+  const allCaptured = Object.keys(capturedImages).length === poses.length;
+  const isDisabled = allCaptured ? false : capturedImages[selectedPose];
 
   useEffect(() => {
     startCamera();
     return () => stopCamera();
   }, [facingMode]);
+
+  useEffect(() => {
+    return () => stopCamera();
+  }, []);
 
   const startCamera = async () => {
     stopCamera();
@@ -43,25 +57,31 @@ export default function CameraScreen({ onCapture }) {
         videoRef.current.srcObject = newStream;
         videoRef.current.play();
       }
-      setStream(newStream);
+      streamRef.current = newStream;
     } catch (err) {
       console.error("Error accessing camera:", err);
     }
   };
 
   const stopCamera = () => {
-    if (stream) {
-      stream.getTracks().forEach((track) => track.stop());
-      setStream(null);
+    const currentStream = streamRef.current;
+    if (currentStream) {
+      currentStream.getTracks().forEach((track) => track.stop());
+      streamRef.current = null;
     }
-    if (videoRef.current) videoRef.current.srcObject = null;
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
   };
 
   const toggleFlash = async () => {
+    const stream = streamRef.current;
     if (!stream) return;
+
     const videoTrack = stream
       .getVideoTracks()
       .find((track) => track.getSettings().facingMode === facingMode);
+
     if (!videoTrack) return;
 
     const capabilities = videoTrack.getCapabilities();
@@ -83,7 +103,7 @@ export default function CameraScreen({ onCapture }) {
   const capturePhoto = () => {
     const video = videoRef.current;
     const canvas = canvasRef.current;
-    if (!video || !canvas) return;
+    if (!video || !canvas || !selectedPose) return;
 
     const context = canvas.getContext("2d");
     canvas.width = video.videoWidth;
@@ -93,21 +113,33 @@ export default function CameraScreen({ onCapture }) {
     const imageData = canvas.toDataURL("image/png");
 
     stopCamera();
-    setCapturedImage(imageData);
-    if (onCapture) onCapture(imageData);
+
+    setCapturedImages((prev) => ({
+      ...prev,
+      [selectedPose]: imageData,
+    }));
   };
 
   const handleRetake = () => {
-    setCapturedImage(null);
     startCamera();
   };
 
+  const handleUpload = () => {
+    if (onCapture) {
+      onCapture(capturedImages);
+    }
+  };
+
   return (
-    <div className="h-full">
+    <div className="h-full relative">
+      <div className="absolute top-10 left-0 right-0 z-20">
+        <ScreenHeader isBack onBack={stopCamera} />
+      </div>
+
       <div className="w-full h-[90%] relative">
-        {capturedImage ? (
+        {capturedImages[selectedPose] ? (
           <img
-            src={capturedImage}
+            src={capturedImages[selectedPose]}
             alt="Captured"
             className="h-full w-full object-cover scale-x-[-1]"
           />
@@ -116,7 +148,7 @@ export default function CameraScreen({ onCapture }) {
             ref={videoRef}
             autoPlay
             playsInline
-            className={`h-full w-full object-cover scale-x-[-1]`}
+            className="h-full w-full object-cover scale-x-[-1]"
           />
         )}
         <canvas ref={canvasRef} className="hidden" />
@@ -125,14 +157,16 @@ export default function CameraScreen({ onCapture }) {
           <button onClick={toggleFlash} className="text-white text-2xl">
             {flashOn ? <IoMdFlashOff /> : <IoMdFlash />}
           </button>
+
           <button
-            onClick={capturePhoto}
+            onClick={allCaptured ? handleUpload : capturePhoto}
             className="bg-white p-3 rounded-full border-4 border-white text-red-600"
-            aria-label="Capture Photo"
-            disabled={!!capturedImage}
+            aria-label={allCaptured ? "Upload Images" : "Capture Photo"}
+            disabled={isDisabled}
           >
-            <FaCamera size={24} />
+            {allCaptured ? <FaUpload size={23} /> : <FaCamera size={24} />}
           </button>
+
           <button onClick={handleRetake} className="text-white text-xl">
             <FaRedo />
           </button>
@@ -141,23 +175,58 @@ export default function CameraScreen({ onCapture }) {
 
       <div className="w-full absolute bottom-0 flex flex-col left-0 bg-primary-gradient">
         <div className="flex gap-4 px-2 py-5 rounded-full h-full w-full justify-evenly z-10">
-          {poses.map(({ active, inactive, pose }) => (
-            <button
-              key={pose}
-              onClick={() => setSelectedPose(pose)}
-              className={`w-14 h-20 flex items-center justify-center rounded-lg transition-all duration-200 ${
-                selectedPose === pose
-                  ? "bg-feild_primay border-icon border"
-                  : "bg-white/20"
-              }`}
-            >
-              <img
-                src={selectedPose === pose ? active : inactive}
-                alt={pose}
-                className="w-8 h-16 object-contain"
-              />
-            </button>
-          ))}
+          {poses.map(({ active, inactive, pose }) => {
+            const isCaptured = capturedImages[pose];
+            const isSelected = selectedPose === pose;
+
+            const handlePoseClick = () => {
+              if (!isCaptured || isSelected) {
+                setSelectedPose(pose);
+                if (!isCaptured) startCamera();
+              }
+            };
+
+            const handleEditClick = (e) => {
+              e.stopPropagation();
+              setSelectedPose(pose);
+              setCapturedImages((prev) => {
+                const updated = { ...prev };
+                delete updated[pose];
+                return updated;
+              });
+              startCamera();
+            };
+
+            return (
+              <div key={pose} className="relative w-14 h-20">
+                <button
+                  onClick={handlePoseClick}
+                  className={`w-full h-full flex items-center justify-center rounded-lg transition-all duration-200 ${
+                    isSelected
+                      ? "bg-feild_primay border-icon border"
+                      : "bg-white/20"
+                  } ${isCaptured && !isSelected ? "opacity-60" : ""}`}
+                >
+                  <img
+                    src={isSelected ? active : inactive}
+                    alt={pose}
+                    className="w-8 h-16 object-contain"
+                  />
+                </button>
+
+                {isCaptured && (
+                  <div
+                    onClick={handleEditClick}
+                    className={`absolute top-0 right-0 p-1 rounded-full text-xs cursor-pointer ${
+                      isSelected ? "text-icon" : "text-white"
+                    }`}
+                  >
+                    <TbEdit />
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
