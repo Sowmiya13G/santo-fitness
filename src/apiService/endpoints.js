@@ -24,7 +24,7 @@ const API_ENDPOINTS = {
     ADD_REPORT: "/reports",
   },
   FILE: {
-    UPLOAD_FILE: "/meals/upload",
+    UPLOAD_FILE: "/file/upload",
   },
   PROGRESS: {
     BODY_PROGRESS: "/body-progress",
