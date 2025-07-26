@@ -1,14 +1,14 @@
-import { useFormContext } from "react-hook-form";
-import Input from "./input/input";
-import InputDatePicker from "./input/date-picker";
-import Dropdown from "./input/dropdown";
-import Button from "./button";
 import {
   basicFields,
   fatFields,
   sectionedFields,
   subscriptionPlanData,
 } from "@/constants/static-data";
+import { useFormContext } from "react-hook-form";
+import Button from "./button";
+import InputDatePicker from "./input/date-picker";
+import Dropdown from "./input/dropdown";
+import Input from "./input/input";
 
 const roleOptions = [
   { label: "Client", value: "client" },
@@ -17,6 +17,7 @@ const roleOptions = [
 
 function UserData({
   list,
+  trainerList,
   editable,
   isAdmin,
   isClient,
@@ -28,11 +29,10 @@ function UserData({
   fetchUserData,
 }) {
   const { watch, setValue } = useFormContext();
-
   const selectedRole = watch("role");
   const selectedPerson = watch("person");
+  const selectedTrainer = watch("assignedTrainer");
   const isTrainerRole = selectedRole === "trainer";
-  const showPersonSelector = !isClient && !isCreate;
 
   return (
     <>
@@ -49,18 +49,30 @@ function UserData({
           placeholder="Select role"
         />
       )}
-
-      {showPersonSelector && (
+      { isTrainer ||
+        (isAdmin && watch("role") && !isCreate&& (
+          <Dropdown
+            name="person"
+            label={`Select ${isTrainerRole ? "Trainer" : "Client"}`}
+            options={isTrainerRole ? trainerList : list}
+            value={selectedPerson}
+            onChange={(val) => {
+              setValue("person", val);
+              fetchUserData(val);
+            }}
+            placeholder={`Select ${isTrainerRole ? "trainer" : "client"}`}
+          />
+        ))}
+      {selectedRole == "client" && (
         <Dropdown
-          name="person"
-          label={`Select ${isTrainerRole ? "Trainer" : "Client"}`}
-          options={list}
-          value={selectedPerson}
+          name="assignedTrainer"
+          label={`Select Trainer`}
+          options={trainerList}
+          value={selectedTrainer}
           onChange={(val) => {
-            setValue("person", val);
-            fetchUserData(val);
+            setValue("assignedTrainer", val);
           }}
-          placeholder={`Select ${isTrainerRole ? "trainer" : "client"}`}
+          placeholder={`Select trainer`}
         />
       )}
 

@@ -24,7 +24,7 @@ export const getUsersList = async (role) => {
 };
 
 export const createUser = async (data) => {
-  const response = await axiosInstance.get(API_ENDPOINTS.USER.USER, data);
+  const response = await axiosInstance.post(API_ENDPOINTS.USER.CREATE_USER, data);
   return response.data;
 };
 

@@ -37,17 +37,17 @@ export const onboardingContent = [
 
 export const adminAccountItems = [
   {
-    title: "Personal Data",
+    title: "Client Data",
     icon: Profile,
     toPath: "/profile/personal-data",
   },
   {
-    title: "Add New Person",
+    title: "Add New Client",
     icon: AddNew,
     toPath: "/profile/add-new-person",
   },
   {
-    title: "Testing Reports",
+    title: "Client Reports",
     icon: Report,
     toPath: "/profile/testing-reports",
   },
@@ -83,7 +83,7 @@ export const clientAccountItems = [
 
 export const trainerAccountItems = [
   {
-    title: "Personal Data",
+    title: "Client   Data",
     icon: Profile,
     toPath: "/profile/personal-data",
   },
@@ -113,6 +113,7 @@ export const basicFields = [
   },
   { name: "age", label: "Age", placeholder: "Enter age" },
   { name: "email", label: "Email", placeholder: "Enter email" },
+  { name: "phoneNumber", label: "Phone Number", placeholder: "Enter Phone Number" },
   {
     name: "height",
     label: "Height",

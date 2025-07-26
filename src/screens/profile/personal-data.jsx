@@ -13,15 +13,18 @@ import {
   updateUser,
 } from "@/features/user/user-api";
 import { showToast } from "@/components/toast";
+import { useLocation } from "react-router-dom";
 
 const PersonalData = () => {
   const { userData } = useSelector((state) => state.auth);
-  const { userList } = useSelector((state) => state.user);
 
   const methods = useForm();
   const { handleSubmit, reset, watch, setValue } = methods;
 
-  const [list, setList] = useState(userList || []);
+  const { pathname } = useLocation(); // full location info
+  const lastSegment = pathname.split("/").filter(Boolean).pop();
+  const [list, setList] = useState([]);
+  const [trainerList, setTrainerList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -33,7 +36,7 @@ const PersonalData = () => {
   const isTrainer = useMemo(() => userData?.role === "trainer", [userData]);
   const editable = !isClient;
 
-  const isCreate = isAdmin; // or dynamic based on context
+  const isCreate = lastSegment === "personal-data" ? false : true; // or dynamic based on context
 
   const buildResetData = (client) => ({
     name: client.name ?? "",
@@ -58,20 +61,32 @@ const PersonalData = () => {
     legsMuscle: client.legsMuscle ?? "",
     DOB: client.DOB ? new Date(client.DOB) : null,
     profileImg: client?.profileImg ?? "",
+    assignedTrainer: client?.assignedTrainer ?? null,
     subscriptionPlan: client.subscriptionPlan,
+    phoneNumber: client.phoneNumber,
     ...(isAdmin && { role: methods.getValues("role") }),
     ...(!isClient && { person: methods.getValues("person") }),
+    // ...(!isClient && { assignedTrainer: methods.getValues("assignedTrainer") }),
   });
 
   const fetchUsersList = async (role = "client") => {
     try {
-      const response = await getUsersList(role);
+      const response = await getUsersList();
       if (response?.status === 200) {
-        const users = response.users.map((x) => ({
-          value: x._id,
-          label: x.name,
-        }));
+        const users = response.users
+          .filter((x) => x.role == "client")
+          .map((x) => ({
+            value: x._id,
+            label: x.name,
+          }));
+        const trainers = response.users
+          .filter((x) => x.role == "trainer")
+          .map((x) => ({
+            value: x._id,
+            label: x.name,
+          }));
         setList(users);
+        setTrainerList(trainers);
       }
     } catch (err) {
       console.error("Failed to fetch users:", err);
@@ -97,8 +112,9 @@ const PersonalData = () => {
       setIsSubmitting(true);
 
       const userId = selectedPerson;
-      const action =
-        isCreate || !isTrainer ? createUser : () => updateUser(userId, data);
+      const action = isCreate
+        ? createUser(data)
+        : () => updateUser(userId, data);
 
       await action(data);
       showToast(
@@ -123,13 +139,14 @@ const PersonalData = () => {
 
   return (
     <FormProvider {...methods}>
-      <ProfileWrapper title="Personal Data" image={maleProfile} profile>
+      <ProfileWrapper title={isCreate ? "Add New Client":"Personal Data"} image={maleProfile} profile>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="w-full max-w-md space-y-4 pb-5 px-4"
         >
           <UserData
             list={list}
+            trainerList={trainerList}
             setList={setList}
             editable={editable}
             isAdmin={isAdmin}

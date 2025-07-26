@@ -21,9 +21,7 @@ export default function ProfileWrapper({
   const [showModal, setShowModal] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const { userData } = useSelector((state) => state.auth);
-  console.log('userData: ', userData);
   const file = watch("profileImg");
-  console.log("file: ", file);
   const [previewImage, setPreviewImage] = useState(image);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -60,7 +58,7 @@ export default function ProfileWrapper({
         const id = userData._id;
         const data = { profileImg: url };
         const response = await updateUser(id, data);
-        console.log('response: ', response);
+        console.log("response: ", response);
         dispatch(setUserData(response?.user));
         showToast("success", "Profile Photo Updated!");
       } else {
@@ -79,18 +77,15 @@ export default function ProfileWrapper({
     <div className={`flex flex-col h-full ${bgColor} relative`}>
       <div className="h-10" />
       <ScreenHeader title={title} isBack={isBack} titleColor="text-white" />
-
-      {previewImage && (
-        <div className="flex justify-center">
-          <img
-            src={previewImage}
-            alt="profile"
-            onClick={handleImageClick}
-            className={`cursor-pointer ${imgClass} w-44 h-44 object-cover my-4 rounded-full`}
-            style={{ objectPosition: "0% 0%" }}
-          />
-        </div>
-      )}
+      <div className="flex justify-center">
+        <img
+          src={previewImage ? previewImage : image}
+          alt="profile"
+          onClick={handleImageClick}
+          className={`cursor-pointer ${imgClass} w-44 h-44 object-cover my-4 rounded-full`}
+          style={{ objectPosition: "0% 0%" }}
+        />
+      </div>
 
       <div className="flex-1 overflow-y-auto space-y-4 bg-white rounded-t-3xl z-10">
         <div className="flex justify-center pt-2">

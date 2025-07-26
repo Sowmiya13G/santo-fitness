@@ -13,7 +13,8 @@ import ShadowView from "@/components/shadow-view";
 import Switch from "@/components/switch";
 
 import { adminAccountItems } from "@/constants/static-data";
-import { setToken } from "@/features/auth/auth-slice";
+import maleProfile from "../../assets/icons/male-profile.svg";
+import { logoutUser } from "@/utils/helper";
 
 const AdminProfile = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const AdminProfile = () => {
     <div className="h-full bg-white space-y-6">
       <ScreenHeader title="Profile" />
       <ProfileCard
-        image={import.meta.env.VITE_AVATAR_API_URL}
+        image={userData?.profileImg ? userData?.profileImg : maleProfile}
         name={userData?.name}
         program="Admin"
         height={180}

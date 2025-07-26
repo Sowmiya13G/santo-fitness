@@ -8,6 +8,7 @@ const API_ENDPOINTS = {
     SAVE_FCM_TOKEN: "/save-token",
     USER: "/users",
     USERS: "/users-list",
+    CREATE_USER:"/create-user"
   },
   WORKOUT: {
     CREATE_WORKOUT: "/create-workout-notes",
