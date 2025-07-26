@@ -1,6 +1,7 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import authReducer from "./auth/auth-slice";
 import dailyLogsReducer from "./daily-logs/daily-logs-slice";
+import userReducer from "./user/user-slice";
 import {
   persistStore,
   persistReducer,
@@ -17,6 +18,7 @@ import storage from "redux-persist/lib/storage"; // defaults to localStorage
 const rootReducer = combineReducers({
   auth: authReducer,
   dailyLogs: dailyLogsReducer,
+  user:userReducer
 });
 
 // 2. Create a persist config for the root

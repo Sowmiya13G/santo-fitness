@@ -35,6 +35,7 @@ const ActivityGrid = () => {
       return
     }
     const todayData = todayLogs;
+    console.log('todayData: ', todayData);
 
     // You can define "total" values based on user target, or statically for now
     const totals = {

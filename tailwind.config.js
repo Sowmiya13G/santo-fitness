@@ -27,7 +27,8 @@ export default {
         // opacity
         opacity_primary: "#9C070720",
         icon: "#8E8E93",
-        feild_primay: "#F7F8F8",
+        field_primary: "#F7F8F8",
+        field_primaryDisabled:"#ececec",
       },
       backgroundImage: {
         // "primary-gradient": "linear-gradient(to right, #E54D4D, #9C0707)",

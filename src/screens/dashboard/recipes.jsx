@@ -27,8 +27,7 @@ const Recipes = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [nutritionData, setNutritionData] = useState(initialNutritionData);
   const [mealsData, setMealsData] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [userList, setUserList] = useState([]);
+  const { userList } = useSelector((state) => state.user);
 
   const methods = useForm();
   const { watch, setValue } = methods;
@@ -43,25 +42,6 @@ const Recipes = () => {
     "Evening Snacks",
     "Dinner",
   ];
-
-  const fetchUsersList = async (role = "client") => {
-    try {
-      setLoading(true);
-      const response = await getUsersList(role);
-      if (response?.status === 200) {
-        const res = response?.users?.map((x) => ({
-          value: x?._id,
-          label: x?.name,
-        }));
-        setUserList(res);
-        if (res?.length > 0) setValue("person", res[0]?.value);
-      }
-    } catch (err) {
-      console.error("Failed to fetch clients list:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchData = async () => {
@@ -126,13 +106,12 @@ const Recipes = () => {
   };
 
   useEffect(() => {
-    fetchUsersList();
-  }, []);
-
-  useEffect(() => {
     fetchData();
   }, [selectedFilter, selectedDate, selectedUser]);
 
+  useEffect(() => {
+    setValue("person", userList[0].value);
+  }, [setValue, userList]);
   return (
     <div className="h-full w-screen bg-white space-y-6 py-5 px-5 overflow-y-auto overflow-hidden mb-5">
       <FormProvider {...methods}>

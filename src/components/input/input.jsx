@@ -17,6 +17,7 @@ const Input = ({
   suffixIconAction,
   isLoading = false,
 }) => {
+  console.log("inputClassName: ", inputClassName);
   const {
     register,
     formState: { errors },
@@ -40,7 +41,7 @@ const Input = ({
     <div className="w-full space-y-1">
       {label && <p className="text-base text-font_primary">{label}</p>}
       <div
-        className={`flex items-center rounded-xl px-4 py-1 shadow-sm bg-feild_primay gap-2 w-full border ${baseBorder} ${wrapperClassName} ${
+        className={`flex items-center rounded-xl px-4 py-1 shadow-sm !bg-field_primary gap-2 w-full border ${baseBorder} ${wrapperClassName} ${
           isInputDisabled ? "opacity-60" : ""
         } ${isLoading ? "shimmer" : ""}`}
       >
@@ -53,10 +54,9 @@ const Input = ({
           maxLength={maxLength}
           disabled={isInputDisabled}
           {...register(name)}
-          value={isLoading ? "":undefined}
-          className={`flex-1 outline-none  text-font_primary w-full h-10 ${
-            isInputDisabled ? "cursor-not-allowed" : ""
-          } ${inputClassName}`}
+          value={isLoading ? "" : undefined}
+          className={`flex-1 outline-none  text-font_primary w-full h-10 
+          } ${inputClassName} ${isLoading ? "" : "!bg-field_primary"}`}
         />
         {type === "password" ? (
           <span
@@ -71,7 +71,7 @@ const Input = ({
           <>
             {icon && iconPosition === "suffix" && (
               <button
-                className="text-icon"
+                className="text-F7F8F8"
                 onClick={isLoading ? undefined : suffixIconAction}
                 disabled={isLoading}
               >
@@ -88,10 +88,11 @@ const Input = ({
         .shimmer {
           background: linear-gradient(
             110deg,
-            #e0e0e0 8%,
-            #f0f0f0 18%,
-            #e0e0e0 33%
+            #f7f8f8 8%,
+            #f7f8f8 18%,
+            #f7f8f8 33%
           );
+          background: #f7f8f8;
           background-size: 200% 100%;
           animation: shimmer 1.5s ease-in-out infinite;
         }

@@ -5,9 +5,8 @@ export const parseFatValue = (val) => {
   return match[0];
 };
 
-export const logoutUser = (dispatch, navigate) => {
-  dispatch(clearToken(""));
-  navigate("/login");
-      window.location.href = "/login";
+export const logoutUser = (dispatch) => {
 
+  dispatch(clearToken(""));
+  window.location.href = "/login";
 };

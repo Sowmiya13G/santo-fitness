@@ -85,7 +85,7 @@ const HorizontalCalendar = ({ onSelectDate }) => {
               className={`flex flex-col items-center w-16 p-6 rounded-xl text-sm ${
                 isSelected
                   ? "bg-secondary text-white"
-                  : "bg-feild_primay text-icon"
+                  : "bg-field_primary text-icon"
               }`}
             >
               <span className="capitalize">{format(day, "EEE")}</span>

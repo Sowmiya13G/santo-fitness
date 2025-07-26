@@ -48,7 +48,7 @@ const Dropdown = ({
       {label && <p className="text-base text-font_primary">{label}</p>}
 
       <div
-        className={`relative rounded-xl px-4 py-1 shadow-sm bg-feild_primay w-full border ${baseBorder} ${wrapperClassName} ${
+        className={`relative rounded-xl px-4 py-1 shadow-sm bg-field_primary w-full border ${baseBorder} ${wrapperClassName} ${
           isInputDisabled ? "opacity-60" : ""
         } ${isLoading ? "shimmer" : ""}`}
         onClick={() => !isInputDisabled && setOpen(!open)}

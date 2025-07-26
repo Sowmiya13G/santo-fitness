@@ -20,7 +20,7 @@ const ProgressView = ({ data }) => {
           <p className="text-icon font-medium">{data?.value}</p>
         </div>
   
-        <div className="w-full h-3 bg-feild_primay rounded-full overflow-hidden">
+        <div className="w-full h-3 bg-field_primary rounded-full overflow-hidden">
           <div
             className="h-full bg-red-700 rounded-full transition-all duration-1000"
             style={{ width: `${progress}%` }}

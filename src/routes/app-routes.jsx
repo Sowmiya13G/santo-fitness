@@ -19,11 +19,9 @@ import MealsDetails from "@/screens/dashboard/meals-details";
 import Notification from "@/screens/dashboard/notification";
 import Profile from "@/screens/dashboard/profile";
 import Recipes from "@/screens/dashboard/recipes";
-import AddNewPerson from "@/screens/profile/add-new-person";
 import ClientReport from "@/screens/profile/client-report";
 import ClientWorkoutNotes from "@/screens/profile/client-workout";
 import PersonalData from "@/screens/profile/personal-data";
-import PersonalDataClient from "@/screens/profile/personal-data-client";
 import TrainerPostReport from "@/screens/profile/trainer-report";
 import TrainerWorkoutNotes from "@/screens/profile/trainer-workout";
 import WorkoutDone from "@/screens/profile/workout-done";
@@ -51,7 +49,6 @@ export default function AppRoutes() {
         <>
           <Route path="/welcome" element={<LoggedIn />} />
           <Route path="/profile/personal-data" element={<PersonalData />} />
-          <Route path="/profile/personal-data-client" element={<PersonalDataClient />} />
           <Route path="/profile/testing-reports" element={<ClientReport />} />
           <Route
             path="/profile/workout-notes"
@@ -65,7 +62,7 @@ export default function AppRoutes() {
             path="/profile/testing-reports-trainer"
             element={<TrainerPostReport />}
           />
-          <Route path="/profile/add-new-person" element={<AddNewPerson />} />
+          <Route path="/profile/add-new-person" element={<PersonalData />} />
           <Route path="/profile/workout-done" element={<WorkoutDone />} />
           <Route path="/notification" element={<Notification />} />
           <Route path="/meals-details" element={<MealsDetails />} />

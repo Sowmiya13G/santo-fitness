@@ -10,43 +10,26 @@ import Dropdown from "@/components/input/dropdown";
 import ScreenHeader from "@/components/screen-header";
 // others
 import { getProgressData } from "@/features/progress/progress-api";
-import { getUsersList } from "@/features/user/user-api";
 import Calendar from "../../assets/icons/calendar-icon.svg";
 import ReminderImage from "../../assets/images/reminder-image.svg";
 
 const ProgressScreen = () => {
   const { userData } = useSelector((state) => state.auth);
+  const { userList } = useSelector((state) => state.user);
 
   const isClient = userData?.role === "client";
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-  const [list, setList] = useState([]);
   const [images, setImages] = useState([]);
   console.log("images: ", images);
 
   const methods = useForm();
   const {
     watch,
+    setValue,
     formState: { isSubmitting },
   } = methods;
-  const fetchUsersList = async (role = "client") => {
-    try {
-      // setLoading(true);
-      const response = await getUsersList(role);
-      if (response?.status === 200) {
-        const res = response?.users?.map((x) => ({
-          value: x?._id,
-          label: x?.name,
-        }));
-        setList(res);
-      }
-    } catch (err) {
-      console.error("Failed to fetch clients list:", err);
-    } finally {
-      // setLoading(false);
-    }
-  };
 
   const fetchProgressList = async (role = "client") => {
     try {
@@ -64,14 +47,14 @@ const ProgressScreen = () => {
       }
     } catch (err) {
       console.error("Failed to fetch progress:", err);
-    } finally {
     }
   };
 
   useEffect(() => {
-    if (!isClient) {
-      fetchUsersList();
-    }
+    setValue("person", userList[0].value);
+  }, [setValue, userList]);
+
+  useEffect(() => {
     fetchProgressList();
   }, []);
 
@@ -112,7 +95,7 @@ const ProgressScreen = () => {
             <Dropdown
               name="person"
               label="Select Client"
-              options={list}
+              options={userList}
               value={watch("person")}
               onChange={(val) => {
                 methods.setValue("person", val);

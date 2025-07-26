@@ -30,7 +30,7 @@ const InputDatePicker = ({
       {label && <p className="text-base text-font_primary">{label}</p>}
 
       <div
-        className={`relative flex items-center rounded-xl px-4 py-1 shadow-sm bg-feild_primay w-full border ${baseBorder} ${wrapperClassName} ${
+        className={`relative flex items-center rounded-xl px-4 py-1 shadow-sm bg-field_primary w-full border ${baseBorder} ${wrapperClassName} ${
           isInputDisabled ? "opacity-60" : ""
         } ${isLoading ? "shimmer" : ""}`}
       >
@@ -42,7 +42,7 @@ const InputDatePicker = ({
               placeholderText={isLoading ? "" : placeholder}
               selected={field.value}
               onChange={(date) => !isLoading && field.onChange(date)}
-              className={`w-full pr-10 outline-none text-font_primary  h-10 ${
+              className={`w-full pr-10 outline-none text-font_primary bg-field_primary  h-10 ${
                 isInputDisabled ? "cursor-not-allowed" : ""
               } ${inputClassName}`}
               dateFormat="yyyy-MM-dd"

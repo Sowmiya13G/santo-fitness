@@ -1,6 +1,7 @@
 import { logoutUser } from "@/utils/helper";
 import axios from "axios";
 import { store } from "../features/store"; // ✅ Make sure this path matches your actual store file
+import { clearToken } from "@/features/auth/auth-slice";
 
 const dispatch = store.dispatch;
 
@@ -24,14 +25,18 @@ axiosInstance.interceptors.request.use((config) => {
 // Handle token errors in response
 axiosInstance.interceptors.response.use(
   (response) => response,
+  
   (error) => {
+    console.log('response: ', error);
+
     if (
       error.response &&
       error.response.data &&
-      error.response.data.message === "No token"
+      error.response.data.message === "Invalid token" 
     )
     {
-      logoutUser(dispatch)
+        dispatch(clearToken(""));
+        window.location.href = "/login";
     }
 
     return Promise.reject(

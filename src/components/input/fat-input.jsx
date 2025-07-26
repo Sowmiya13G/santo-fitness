@@ -61,7 +61,7 @@ const FatInput = ({
       {label && <p className="text-base text-font_primary">{label}</p>}
 
       <div
-        className={`flex items-center rounded-xl px-4 py-1 shadow-sm bg-feild_primay gap-2 w-full border ${baseBorder} ${wrapperClassName} ${
+        className={`flex items-center rounded-xl px-4 py-1 shadow-sm bg-field_primary gap-2 w-full border ${baseBorder} ${wrapperClassName} ${
           !editable || isLoading ? "opacity-60" : ""
         } ${isLoading ? "shimmer" : ""}`}
       >

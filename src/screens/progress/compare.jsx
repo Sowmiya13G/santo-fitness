@@ -40,7 +40,7 @@ const CompareScreen = () => {
       <div className="space-y-5">
         <button
           onClick={() => setOpenPicker(1)}
-          className="bg-feild_primay w-full px-4 py-5 rounded-lg flex items-center justify-between gap-4"
+          className="bg-field_primary w-full px-4 py-5 rounded-lg flex items-center justify-between gap-4"
         >
           <div className="flex items-center space-x-4">
             <FaCalendarAlt size={20} color="#8E8E93" />
@@ -51,7 +51,7 @@ const CompareScreen = () => {
 
         <button
           onClick={() => setOpenPicker(2)}
-          className="bg-feild_primay w-full px-4 py-5 rounded-lg flex items-center justify-between gap-4"
+          className="bg-field_primary w-full px-4 py-5 rounded-lg flex items-center justify-between gap-4"
         >
           <div className="flex items-center space-x-4">
             <FaCalendarAlt size={20} color="#8E8E93" />

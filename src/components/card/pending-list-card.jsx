@@ -38,7 +38,7 @@ const PendingUserCard = ({ user }) => {
       <div className="flex w-full justify-between h-full relative z-10">
         {/* Avatar */}
         <div className="w-[30%] flex justify-center items-center">
-          <div className="bg-white relative rounded-full w-20 h-20 overflow-hidden p-4 animate-pulse">
+          <div className="bg-white relative rounded-full w-20 h-20 overflow-hidden p-4 ">
             <img
               src={PendingAlert}
               alt="Pending Icon"

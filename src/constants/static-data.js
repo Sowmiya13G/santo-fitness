@@ -62,7 +62,7 @@ export const clientAccountItems = [
   {
     title: "Personal Data",
     icon: Profile,
-    toPath: "/profile/personal-data-client",
+    toPath: "/profile/personal-data",
   },
   {
     title: "Testing Reports",
@@ -135,12 +135,12 @@ export const basicFields = [
 
 export const fatFields = [
   [
-    { name: "FAT", label: "Fat", isFat: true, value: 0 },
-    { name: "VFat", label: "V.Fat", isFat: true, value: 0 },
+    { name: "fat", label: "Fat", },
+    { name: "VFat", label: "V.Fat",  },
   ],
   [
-    { name: "SFat", label: "S.Fat", isFat: true, value: 0 },
-    { name: "kCal", label: "KCal", isFat: false },
+    { name: "SFat", label: "S.Fat",  },
+    { name: "kCal", label: "KCal",  },
   ],
 ];
 
@@ -148,29 +148,29 @@ export const sectionedFields = [
   {
     title: "Full body",
     fields: [
-      { name: "fullBodySFat", label: "S.Fat", isFat: true, value: 0 },
-      { name: "fullBodyMuscle", label: "Muscle", isFat: true },
+      { name: "fullBodySFat", label: "S.Fat",  value: 0 },
+      { name: "fullBodyMuscle", label: "Muscle",  },
     ],
   },
   {
     title: "Arms",
     fields: [
-      { name: "armSFat", label: "S.Fat", isFat: true, value: 0 },
-      { name: "armsMuscle", label: "Muscle", isFat: true },
+      { name: "armSFat", label: "S.Fat",  value: 0 },
+      { name: "armsMuscle", label: "Muscle",  },
     ],
   },
   {
     title: "Trunck",
     fields: [
-      { name: "trunkSFat", label: "S.Fat", isFat: true, value: 0 },
-      { name: "trunkMuscle", label: "Muscle", isFat: true },
+      { name: "trunkSFat", label: "S.Fat", value: 0 },
+      { name: "trunkMuscle", label: "Muscle",  },
     ],
   },
   {
     title: "Legs",
     fields: [
-      { name: "legsSFat", label: "S.Fat", isFat: true, value: 0 },
-      { name: "legsMuscle", label: "Muscle", isFat: true },
+      { name: "legsSFat", label: "S.Fat", value: 0 },
+      { name: "legsMuscle", label: "Muscle",  },
     ],
   },
 ];

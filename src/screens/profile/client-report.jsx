@@ -59,7 +59,7 @@ const ClientReport = () => {
                   <button
                     key={i}
                     onClick={() => openInNewTab(url)}
-                    className="flex w-full space-x-4 items-center bg-feild_primay p-4 rounded-xl shadow-sm hover:shadow-md transition"
+                    className="flex w-full space-x-4 items-center bg-field_primary p-4 rounded-xl shadow-sm hover:shadow-md transition"
                   >
                     <GradientIcon Icon={BiSolidFilePdf} />
                     <p className="text-base font-medium text-gradient truncate">
