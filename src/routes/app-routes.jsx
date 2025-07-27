@@ -62,7 +62,6 @@ export default function AppRoutes() {
           <Route path="/welcome" element={<LoggedIn />} />
 
           {/* Profile */}
-          <Route path="/profile" element={<Profile />} />
           <Route path="/profile/personal-data" element={<PersonalData />} />
           <Route path="/profile/add-new-person" element={<PersonalData />} />
           <Route path="/profile/testing-reports" element={<ClientReport />} />
@@ -98,6 +97,8 @@ export default function AppRoutes() {
             <Route path="/camera" element={<Camera />} />
             <Route path="/recipes" element={<Recipes />} />
             <Route path="/diet-details" element={<DietDetailsScreen />} />
+          <Route path="/profile" element={<Profile />} />
+         
           </Route>
         </>
       )}

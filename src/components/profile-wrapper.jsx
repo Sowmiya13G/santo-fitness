@@ -16,10 +16,9 @@ export default function ProfileWrapper({
   imgClass,
   profile = false,
   isClient,
-  methods,
+  setValue = () => {},
+  watch = () => {},
 }) {
-  const { setValue, watch } = methods;
-
   const [showModal, setShowModal] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const { userData } = useSelector((state) => state.auth);

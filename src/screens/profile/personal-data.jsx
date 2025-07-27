@@ -6,13 +6,13 @@ import ProfileWrapper from "@/components/profile-wrapper";
 import UserData from "@/components/user-data";
 import maleProfile from "../../assets/icons/male-profile.svg";
 
+import { showToast } from "@/components/toast";
 import {
   createUser,
   getUserData,
   getUsersList,
   updateUser,
 } from "@/features/user/user-api";
-import { showToast } from "@/components/toast";
 import { useLocation } from "react-router-dom";
 
 const PersonalData = () => {
@@ -144,7 +144,8 @@ const PersonalData = () => {
     <FormProvider {...methods}>
       <ProfileWrapper title={isCreate ? "Add New Client":"Personal Data"} image={maleProfile} profile 
       isClient={isClient}
-      methods={methods}
+      setValue={setValue}
+      watch={watch}
       >
         <form
           onSubmit={handleSubmit(onSubmit)}
