@@ -5,6 +5,7 @@ const authSlice = createSlice({
   initialState: {
     fcm: null,
     userList: [],
+    trainerList: [],
   },
   reducers: {
     setFCMToken(state, action) {
@@ -13,11 +14,15 @@ const authSlice = createSlice({
     setUserList(state, action) {
       state.userList = action.payload;
     },
+    setTrainerList(state, action) {
+      state.trainerList = action.payload;
+    },
     clearFCMToken(state) {
       state.token = null;
     },
   },
 });
 
-export const { setFCMToken, clearFCMToken ,setUserList} = authSlice.actions;
+export const { setFCMToken, clearFCMToken, setUserList, setTrainerList } =
+  authSlice.actions;
 export default authSlice.reducer;

@@ -87,6 +87,7 @@ const PersonalData = () => {
             label: x.name,
           }));
         setList(users);
+        
         setTrainerList(trainers);
         console.log('trainers: ', trainers);
       }

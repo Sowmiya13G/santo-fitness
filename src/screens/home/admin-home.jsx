@@ -8,7 +8,8 @@ const AdminDashboard = () => {
       <ScreenHeader isHome />
       <RankCard label={"top performed client "} />
       <RankCard label={"top performed trainer "} />
-      <UserDetailsCard label={"My Clients"} />
+      <UserDetailsCard label={"SFC Trainers"} showTrainer/>
+      <UserDetailsCard label={"SFC Clients"}  />
     </div>
   );
 };

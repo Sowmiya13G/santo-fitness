@@ -1,11 +1,10 @@
-import { useSelector } from "react-redux";
+import { getUsersList } from "@/features/user/user-api";
+import { setTrainerList, setUserList } from "@/features/user/user-slice";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import AdminDashboard from "../home/admin-home";
 import ClientDashboard from "../home/client-home";
 import TrainerDashboard from "../home/trainer-home";
-import { getUsersList } from "@/features/user/user-api";
-import { setUserList } from "@/features/user/user-slice";
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
 
 const Home = () => {
   const { userData } = useSelector((state) => state.auth);
@@ -24,19 +23,39 @@ const Home = () => {
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const fetchUsersList = async (role = "client") => {
+  const fetchUsersList = async () => {
     try {
-      const response = await getUsersList(role);
+      const response = await getUsersList();
       if (response?.status === 200) {
-        const res = response?.users?.map((x) => ({
-          value: x?._id,
-          label: x?.name,
-          ...x,
-        }));
-        dispatch(setUserList(res));
+        console.log("users: ", response);
+        const users = response.users
+          .filter((x) => x.role == "client")
+          .map((x) => ({
+            value: x._id,
+            label: x.name,
+            name: x.name,
+            goal: x.goal,
+            profileImg: x.profileImg,
+            ...x
+          }));
+        const trainers = response.users
+          .filter((x) => x.role == "trainer")
+          .map((x) => ({
+            value: x._id,
+            label: x.name,
+            name: x.name,
+            goal: x.goal,
+            profileImg: x.profileImg,
+            ...x
+
+          }));
+        dispatch(setUserList(users));
+        dispatch(setTrainerList(trainers));
+
+        console.log("trainers: ", trainers);
       }
     } catch (err) {
-      console.error("Failed to fetch clients list:", err);
+      console.error("Failed to fetch users:", err);
     }
   };
 
