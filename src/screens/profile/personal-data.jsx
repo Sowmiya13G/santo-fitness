@@ -77,7 +77,7 @@ const PersonalData = () => {
     try {
       const response = await getUsersList();
       if (response?.status === 200) {
-        console.log('users: ', response);
+        console.log("users: ", response);
         const users = response.users
           .filter((x) => x.role == "client")
           .map((x) => ({
@@ -91,9 +91,9 @@ const PersonalData = () => {
             label: x.name,
           }));
         setList(users);
-        
+
         setTrainerList(trainers);
-        console.log('trainers: ', trainers);
+        console.log("trainers: ", trainers);
       }
     } catch (err) {
       console.error("Failed to fetch users:", err);
@@ -146,10 +146,13 @@ const PersonalData = () => {
 
   return (
     <FormProvider {...methods}>
-      <ProfileWrapper title={isCreate ? "Add New Client":"Personal Data"} image={maleProfile} profile 
-      isClient={isClient}
-      setValue={setValue}
-      watch={watch}
+      <ProfileWrapper
+        title={isCreate ? "Add New Client" : "Personal Data"}
+        image={maleProfile}
+        profile
+        isClient={isClient}
+        setValue={setValue}
+        watch={watch}
       >
         <form
           onSubmit={handleSubmit(onSubmit)}

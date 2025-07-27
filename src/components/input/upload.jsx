@@ -1,9 +1,9 @@
+import { uploadFile } from "@/features/user/user-api";
 import { useEffect, useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { AiOutlineFileImage, AiOutlineFilePdf } from "react-icons/ai";
 import { MdCancel } from "react-icons/md";
 import { GradientIcon } from "../gradient-icon";
-import { uploadFile } from "@/features/user/user-api";
 
 const getFileType = (extension) => {
   if (["pdf"].includes(extension)) return "pdf";

@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 // packages
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { FaAngleRight, FaCalendarAlt } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 
 // components
 import Button from "@/components/button";
 import ScreenHeader from "@/components/screen-header";
+import { format } from "date-fns";
 
 const CompareScreen = () => {
   const { userData } = useSelector((state) => state.auth);
@@ -17,8 +18,7 @@ const CompareScreen = () => {
 
   const [month1, setMonth1] = useState(null);
   const [month2, setMonth2] = useState(null);
-  const [openPicker, setOpenPicker] = useState(null); 
-  console.log("openPicker: ", openPicker);
+  const [openPicker, setOpenPicker] = useState(null);
 
   const formatMonth = (date) => {
     return date
@@ -89,9 +89,18 @@ const CompareScreen = () => {
       <div className="w-full absolute bottom-10 left-0 px-6">
         <Button
           label="Compare"
-          onClick={() =>
-            navigate("/result", { state: { month1, month2 } })
-          }
+          onClick={() => {
+            if (month1 && month2) {
+              const startMonth = format(month1, "LLLL");
+              const startYear = format(month1, "yyyy");
+              const endMonth = format(month2, "LLLL");
+              const endYear = format(month2, "yyyy");
+
+              navigate(
+                `/result?startMonth=${startMonth}&startYear=${startYear}&endMonth=${endMonth}&endYear=${endYear}`
+              );
+            }
+          }}
         />
       </div>
     </div>

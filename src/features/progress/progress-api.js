@@ -1,9 +1,10 @@
 import axiosInstance from "../../apiService/axios-instance";
 import API_ENDPOINTS from "../../apiService/endpoints";
 
-export const getProgressData = async (data) => {
+export const getProgressData = async (params) => {
   const response = await axiosInstance.get(
-    API_ENDPOINTS.PROGRESS.BODY_PROGRESS
+    API_ENDPOINTS.PROGRESS.BODY_PROGRESS,
+    params
   );
   return response.data;
 };
