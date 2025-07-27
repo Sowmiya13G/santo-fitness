@@ -69,7 +69,7 @@ const PersonalData = () => {
     // ...(!isClient && { assignedTrainer: methods.getValues("assignedTrainer") }),
   });
 
-  const fetchUsersList = async (role = "client") => {
+  const fetchUsersList = async () => {
     try {
       const response = await getUsersList();
       if (response?.status === 200) {
@@ -139,7 +139,9 @@ const PersonalData = () => {
 
   return (
     <FormProvider {...methods}>
-      <ProfileWrapper title={isCreate ? "Add New Client":"Personal Data"} image={maleProfile} profile>
+      <ProfileWrapper title={isCreate ? "Add New Client":"Personal Data"} image={maleProfile} profile 
+      isClient={isClient}
+      >
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="w-full max-w-md space-y-4 pb-5 px-4"
