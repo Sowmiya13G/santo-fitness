@@ -6,7 +6,7 @@ import femaleProfile from "../../assets/images/femaleProfile.jpeg";
 import maleProfile from "../../assets/images/maleProfile.jpeg";
 import Button from "../button";
 
-const UserCard = ({ user, onClick }) => {
+const UserCard = ({ user, onClick, isSwipe = true }) => {
   console.log("user: ", user);
   const imgRef = useRef(null);
   const [bgColor, setBgColor] = useState("#adabb0");
@@ -61,7 +61,7 @@ const UserCard = ({ user, onClick }) => {
               className="text-xs leading-none mb-2"
               style={{ color: textColor }}
             >
-              {user?.description}
+              {user?.goal}
             </p>
             <Button
               label={"View"}
@@ -75,15 +75,17 @@ const UserCard = ({ user, onClick }) => {
           </div>
 
           {/* Swipe icon */}
-          <MdSwipe className="w-5 h-5 absolute bottom-[5px] right-[50%] translate-x-1/2 animate-spin text-white/30" />
+          {isSwipe && (
+            <MdSwipe className="w-5 h-5 absolute bottom-[5px] right-[50%] translate-x-1/2 animate-spin text-white/30" />
+          )}
 
           <div className="w-[30%] text-center">
             <div className="bg-white relative rounded-full w-24 h-24 overflow-hidden mx-auto">
               <img
                 ref={imgRef}
                 src={
-                  user.profileSrc
-                    ? user.profileSrc
+                  user.profileImg
+                    ? user.profileImg
                     : user?.gender === "female"
                     ? femaleProfile
                     : maleProfile
