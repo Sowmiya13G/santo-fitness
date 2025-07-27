@@ -32,7 +32,7 @@ const ProgressScreen = () => {
     formState: { isSubmitting },
   } = methods;
 
-  const fetchProgressList = async (role = "client") => {
+  const fetchProgressList = async () => {
     try {
       const response = await getProgressData();
       if (response?.progress) {

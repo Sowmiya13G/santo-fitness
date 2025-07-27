@@ -25,22 +25,20 @@ axiosInstance.interceptors.request.use((config) => {
 // Handle token errors in response
 axiosInstance.interceptors.response.use(
   (response) => response,
-  
+
   (error) => {
-    console.log('response: ', error);
+    console.log("response: ", error);
 
     if (
       error.response &&
       error.response.data &&
-      error.response.data.message === "Invalid token" 
-    )
-    {
-        dispatch(clearToken(""));
-        window.location.href = "/login";
+      error.response.data.message === "Invalid token"
+    ) {
+      dispatch(clearToken(""));
+      window.location.href = "/login";
     }
 
-    return Promise.reject(
-      error);
+    return Promise.reject(error);
   }
 );
 
