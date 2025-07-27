@@ -110,8 +110,7 @@ const Recipes = () => {
   }, [selectedFilter, selectedDate, selectedUser]);
 
   useEffect(() => {
-    if(userList){
-
+    if (userList) {
       setValue("person", userList[0]?.value);
     }
   }, [setValue, userList]);

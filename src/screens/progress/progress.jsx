@@ -10,6 +10,7 @@ import Dropdown from "@/components/input/dropdown";
 import ScreenHeader from "@/components/screen-header";
 // others
 import { getProgressData } from "@/features/progress/progress-api";
+import { FaAngleRight } from "react-icons/fa";
 import Calendar from "../../assets/icons/calendar-icon.svg";
 import ReminderImage from "../../assets/images/reminder-image.svg";
 
@@ -51,7 +52,9 @@ const ProgressScreen = () => {
   };
 
   useEffect(() => {
-    setValue("person", userList[0].value);
+    if (userList) {
+      setValue("person", userList[0]?.value);
+    }
   }, [setValue, userList]);
 
   useEffect(() => {
@@ -84,26 +87,43 @@ const ProgressScreen = () => {
           <Button
             label={"Compare"}
             customClassName="!w-36 !h-12"
-            onClick={() => navigate("/camera-screen")}
+            onClick={() => navigate("/compare-progress")}
           />
         </div>
         <img src={ReminderImage} alt="Calendar Icon" className="w-15 h-15" />
       </div>
       {!isClient && (
-        <FormProvider {...methods}>
-          <form>
-            <Dropdown
-              name="person"
-              label="Select Client"
-              options={userList}
-              value={watch("person")}
-              onChange={(val) => {
-                methods.setValue("person", val);
-              }}
-              placeholder="Select Client"
-            />
-          </form>
-        </FormProvider>
+        <>
+          <FormProvider {...methods}>
+            <form>
+              <Dropdown
+                name="person"
+                label="Select Client"
+                options={userList}
+                value={watch("person")}
+                onChange={(val) => {
+                  methods.setValue("person", val);
+                }}
+                placeholder="Select Client"
+              />
+            </form>
+          </FormProvider>
+          <div className="relative bg-red_50 p-4 rounded-3xl flex items-center gap-4">
+            <div className="p-4 rounded-full bg-white">
+              <img src={Calendar} alt="Calendar Icon" className="w-8 h-8" />
+            </div>
+            <div>
+              <p className="text-primary  text-base">Reminder!</p>
+              <p className="font-semibold">Upload new progress</p>
+            </div>
+            <button
+              className="absolute right-5"
+              onClick={() => navigate("/camera-screen")}
+            >
+              <FaAngleRight className="w-6 h-6" />
+            </button>
+          </div>
+        </>
       )}
       {images?.length > 0 && (
         <div className="grid grid-cols-2 gap-4 px-4 pb-10">
