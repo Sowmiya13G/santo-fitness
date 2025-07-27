@@ -13,6 +13,7 @@ import { getProgressData } from "@/features/progress/progress-api";
 import { FaAngleRight } from "react-icons/fa";
 import Calendar from "../../assets/icons/calendar-icon.svg";
 import ReminderImage from "../../assets/images/reminder-image.svg";
+import { GradientSpinner } from "@/components/ui/spin-loader";
 
 const ProgressScreen = () => {
   const { userData } = useSelector((state) => state.auth);
@@ -23,6 +24,7 @@ const ProgressScreen = () => {
 
   const dispatch = useDispatch();
   const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const methods = useForm();
   const {
@@ -32,6 +34,7 @@ const ProgressScreen = () => {
   } = methods;
 
   const fetchProgressList = async (targetId) => {
+    setLoading(true);
     try {
       const response = await getProgressData(isClient ? {} : { targetId });
       if (response?.progress) {
@@ -43,9 +46,11 @@ const ProgressScreen = () => {
             url: img?.url,
           }));
         setImages(allImages);
+        setLoading(false);
       }
     } catch (err) {
       console.error("Failed to fetch progress:", err);
+      setLoading(false);
     }
   };
 
@@ -85,7 +90,9 @@ const ProgressScreen = () => {
           <Button
             label={"Compare"}
             customClassName="!w-36 !h-12"
-            onClick={() => navigate("/compare-progress")}
+            onClick={() =>
+              navigate(`/compare-progress?person=${watch("person")}`)
+            }
           />
         </div>
         <img src={ReminderImage} alt="Calendar Icon" className="w-15 h-15" />
@@ -124,21 +131,31 @@ const ProgressScreen = () => {
           </div>
         </>
       )}
-      {images?.length > 0 && (
-        <div className="grid grid-cols-2 gap-4 px-4 pb-10">
-          {images.map((img, idx) => (
-            <div
-              key={idx}
-              className="w-full rounded-xl overflow-hidden border border-gray-200"
-            >
-              <img
-                src={img.url}
-                alt={`Progress ${idx + 1}`}
-                className="w-full h-auto object-cover"
-              />
-            </div>
-          ))}
+      {loading ? (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <GradientSpinner />
         </div>
+      ) : (
+        <>
+          {images?.length > 0 ? (
+            <div className="grid grid-cols-2 gap-4 px-4 pb-10">
+              {images.map((img, idx) => (
+                <div
+                  key={idx}
+                  className="w-full rounded-xl overflow-hidden border border-gray-200"
+                >
+                  <img
+                    src={img.url}
+                    alt={`Progress ${idx + 1}`}
+                    className="w-full h-auto object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-center text-icon">No data available.</p>
+          )}
+        </>
       )}
     </div>
   );

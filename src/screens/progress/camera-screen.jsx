@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { FaCamera, FaRedo, FaUpload } from "react-icons/fa";
 import { IoMdFlash, IoMdFlashOff } from "react-icons/io";
-import { TbEdit } from "react-icons/tb";
 
 import BackActive from "../../assets/images/back-active.svg";
 import Back from "../../assets/images/back.svg";
@@ -13,8 +12,9 @@ import RightActive from "../../assets/images/right-active.svg";
 import Right from "../../assets/images/right.svg";
 
 import ScreenHeader from "@/components/screen-header";
-import { uploadFile } from "@/features/user/user-api";
+import { GradientSpinner } from "@/components/ui/spin-loader";
 import { uploadProgressData } from "@/features/progress/progress-api";
+import { uploadFile } from "@/features/user/user-api";
 
 const poses = [
   { active: FrontActive, inactive: Front, pose: "Front" },
@@ -23,13 +23,6 @@ const poses = [
   { active: LeftActive, inactive: Left, pose: "Left" },
 ];
 
-function GradientSpinner() {
-  return (
-    <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="w-16 h-16 border-4 border-t-transparent border-primary rounded-full animate-spin" />
-    </div>
-  );
-}
 
 function base64ToFile(dataUrl, filename) {
   const arr = dataUrl.split(",");

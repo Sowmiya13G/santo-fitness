@@ -16,6 +16,8 @@ const CompareScreen = () => {
   const isClient = userData?.role === "client";
   const navigate = useNavigate();
 
+  const query = new URLSearchParams(location.search);
+  const person = query?.get("person");
   const [month1, setMonth1] = useState(null);
   const [month2, setMonth2] = useState(null);
   const [openPicker, setOpenPicker] = useState(null);
@@ -95,10 +97,15 @@ const CompareScreen = () => {
               const startYear = format(month1, "yyyy");
               const endMonth = format(month2, "LLLL");
               const endYear = format(month2, "yyyy");
-
-              navigate(
-                `/result?startMonth=${startMonth}&startYear=${startYear}&endMonth=${endMonth}&endYear=${endYear}`
-              );
+              if (isClient) {
+                navigate(
+                  `/result?startMonth=${startMonth}&startYear=${startYear}&endMonth=${endMonth}&endYear=${endYear}`
+                );
+              } else {
+                navigate(
+                  `/result?startMonth=${startMonth}&startYear=${startYear}&endMonth=${endMonth}&endYear=${endYear}&targetId=${person}`
+                );
+              }
             }
           }}
         />

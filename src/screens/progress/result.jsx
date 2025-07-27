@@ -14,12 +14,14 @@ const ResultScreen = () => {
   const location = useLocation();
 
   const [progressData, setProgressData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const query = new URLSearchParams(location.search);
   const startMonth = query.get("startMonth");
   const startYear = query.get("startYear");
   const endMonth = query.get("endMonth");
   const endYear = query.get("endYear");
+  const targetId = query.get("targetId");
 
   useEffect(() => {
     if (startMonth && startYear && endMonth && endYear) {
@@ -28,20 +30,26 @@ const ResultScreen = () => {
   }, [startMonth, startYear, endMonth, endYear]);
 
   const fetchProgressList = async () => {
+    setLoading(true);
     try {
       const response = await getProgressData({
         startMonth: startMonth.toLowerCase(),
         startYear,
         endMonth: endMonth.toLowerCase(),
         endYear,
+        targetId,
       });
 
       if (Array.isArray(response?.progress)) {
         setProgressData(response.progress);
+        setLoading(false);
       } else {
         setProgressData([]);
+        setLoading(false);
       }
     } catch (err) {
+      setLoading(false);
+
       console.error("Failed to fetch progress:", err);
     }
   };
@@ -78,33 +86,39 @@ const ResultScreen = () => {
         </p>
         <p className="text-icon font-semibold text-xl capitalize">{endMonth}</p>
       </div>
-
-      <div className="space-y-6 mt-6">
-        {progressData.length === 2 ? (
-          availableTypes.map((type) => (
-            <div key={type} className="flex flex-col items-center space-y-2">
-              <p className="text-sm font-medium text-icon text-center mb-3">
-                {formatTypeLabel(type)}
-              </p>
-              <div className="flex flex-row items-center justify-between w-full px-6">
-                <img
-                  src={getImageByType(startData, type)}
-                  alt={`start-${type}`}
-                  className="w-36 h-36 object-cover rounded-lg border"
-                />
-                <img
-                  src={getImageByType(endData, type)}
-                  alt={`end-${type}`}
-                  className="w-36 h-36 object-cover rounded-lg border"
-                />
+      {loading ? (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <GradientSpinner />
+        </div>
+      ) : (
+        <div className="space-y-6 mt-6">
+          {progressData.length === 2 ? (
+            availableTypes.map((type) => (
+              <div key={type} className="flex flex-col items-center space-y-2">
+                <p className="text-sm font-medium text-icon text-center mb-3">
+                  {formatTypeLabel(type)}
+                </p>
+                <div className="flex flex-row items-center justify-between w-full px-6">
+                  <img
+                    src={getImageByType(startData, type)}
+                    alt={`start-${type}`}
+                    className="w-36 h-36 object-cover rounded-lg border"
+                  />
+                  <img
+                    src={getImageByType(endData, type)}
+                    alt={`end-${type}`}
+                    className="w-36 h-36 object-cover rounded-lg border"
+                  />
+                </div>
               </div>
-            </div>
-          ))
-        ) : (
-          <p className="text-center text-icon">No comparison data available.</p>
-        )}
-      </div>
-
+            ))
+          ) : (
+            <p className="text-center text-icon">
+              No comparison data available.
+            </p>
+          )}
+        </div>
+      )}
       <div className="w-full absolute bottom-10 left-0 px-6">
         <Button label="Back to Home" onClick={() => navigate("/home")} />
       </div>
