@@ -111,7 +111,6 @@ export const basicFields = [
     label: "User ID",
     placeholder: "Enter user ID",
   },
-  { name: "age", label: "Age", placeholder: "Enter age" },
   { name: "email", label: "Email", placeholder: "Enter email" },
   {
     name: "phoneNumber",
@@ -120,6 +119,7 @@ export const basicFields = [
     type: "number",
     maxLength: 10,
   },
+  { name: "age", label: "Age", placeholder: "Enter age" },
   {
     name: "height",
     label: "Height",
@@ -132,12 +132,33 @@ export const basicFields = [
     placeholder: "Enter weight",
     text: "KG",
   },
+  { name: "goal", label: "Target Goal", placeholder: "Enter Goal" },
   {
-    name: "bodyAge",
-    label: "Body Age",
-    placeholder: "Enter body age",
+    name: "targetCalories",
+    label: "Target Calories",
+    placeholder: "Enter Target Calories",
+    text: "Kcal",
+  },
+  {
+    name: "targetProtein",
+    label: "Target Protein",
+    placeholder: "Enter Target Protein",
+    text: "gram",
+  },
+  {
+    name: "targetCarbs",
+    label: "Target Carbs",
+    placeholder: "Enter Target Carbs",
+    text: "gram",
+  },
+  {
+    name: "targetFat",
+    label: "Target Fat",
+    placeholder: "Enter Target Fat",
+    text: "gram",
   },
   { name: "bmi", label: "BMI", placeholder: "Enter BMI" },
+  { name: "bmr", label: "BMR", placeholder: "Enter BMR" },
 ];
 
 export const fatFields = [
@@ -203,7 +224,4 @@ export const workoutClassData = [
   { label: "HIIT", value: "Hiit" },
 ];
 
-export const mealsData=[
-  {type:"",
-}
-]
+export const mealsData = [{ type: "" }];
