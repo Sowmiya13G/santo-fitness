@@ -6,7 +6,13 @@ import femaleProfile from "../../assets/images/femaleProfile.jpeg";
 import maleProfile from "../../assets/images/maleProfile.jpeg";
 import Button from "../button";
 
-const UserCard = ({ user, onClick, isSwipe = true }) => {
+const UserCard = ({
+  user,
+  onClick,
+  isSwipe = true,
+  buttonLabel = "View",
+  customButtonClass,
+}) => {
   console.log("user: ", user);
   const imgRef = useRef(null);
   const [bgColor, setBgColor] = useState("#adabb0");
@@ -64,11 +70,9 @@ const UserCard = ({ user, onClick, isSwipe = true }) => {
               {user?.goal}
             </p>
             <Button
-              label={"View"}
+              label={buttonLabel}
               onClick={onClick}
-              customClassName={
-                "bg-field_primary !text-font_primary opacity-70 !w-24 !h-8 mb-0 mt-5"
-              }
+              customClassName={`${customButtonClass} bg-field_primary !text-font_primary opacity-70 w-auto !h-8 mb-0 mt-5`}
               buttonColor={`text-[${textColor}]`}
               variant=""
             />

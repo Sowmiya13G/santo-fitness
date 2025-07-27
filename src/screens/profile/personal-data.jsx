@@ -144,6 +144,7 @@ const PersonalData = () => {
     <FormProvider {...methods}>
       <ProfileWrapper title={isCreate ? "Add New Client":"Personal Data"} image={maleProfile} profile 
       isClient={isClient}
+      methods={methods}
       >
         <form
           onSubmit={handleSubmit(onSubmit)}

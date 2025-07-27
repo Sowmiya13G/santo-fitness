@@ -6,22 +6,28 @@ import { useNavigate } from "react-router-dom";
 // components
 import Button from "@/components/button";
 import ScreenHeader from "@/components/screen-header";
+import ProfileWrapper from "@/components/profile-wrapper";
+import Workout from "../../assets/images/panCake.svg";
 
 const MealDetailsScreen = () => {
   const { userData } = useSelector((state) => state.auth);
   const isClient = userData?.role === "client";
   const navigate = useNavigate();
 
-
   return (
-    <div className="w-screen space-y-6 hide-scrollbar px-5 py-6">
-      <ScreenHeader title="Meals Details" isBack />
-      <div className="h-5" />
-
-      <div className="w-full absolute bottom-10 left-0 px-6">
-        <Button label="Compare" onClick={() => navigate("/compare-progress")} />
-      </div>
-    </div>
+    <ProfileWrapper
+      title=""
+      image={Workout}
+      bgColor="bg-red_25"
+      imgClass={"scale-150 rounded-none object-contain"}
+    >
+      {/* <div className="w-full absolute bottom-10 left-0 px-6">
+        <Button
+          label="SubmitProv"
+          onClick={() => navigate("/compare-progress")}
+        />
+      </div> */}
+    </ProfileWrapper>
   );
 };
 

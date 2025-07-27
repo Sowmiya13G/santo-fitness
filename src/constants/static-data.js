@@ -202,3 +202,8 @@ export const workoutClassData = [
   { label: "CrossFit", value: "crossfit" },
   { label: "HIIT", value: "Hiit" },
 ];
+
+export const mealsData=[
+  {type:"",
+}
+]

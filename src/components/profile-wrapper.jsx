@@ -15,9 +15,10 @@ export default function ProfileWrapper({
   bgColor = "bg-primary-gradient",
   imgClass,
   profile = false,
-  isClient
+  isClient,
+  methods,
 }) {
-  const { setValue, watch } = useFormContext();
+  const { setValue, watch } = methods;
 
   const [showModal, setShowModal] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -36,8 +37,7 @@ export default function ProfileWrapper({
   }, [file]);
 
   const handleImageClick = () => {
-    
-    if (isClient &&profile && !isUploading) {
+    if (isClient && profile && !isUploading) {
       setShowModal(true);
     }
   };
@@ -84,7 +84,6 @@ export default function ProfileWrapper({
           src={previewImage ? previewImage : image}
           alt="profile"
           onClick={handleImageClick}
-          
           className={`cursor-pointer ${imgClass} w-44 h-44 object-cover my-4 rounded-full`}
           style={{ objectPosition: "0% 0%" }}
         />
@@ -114,7 +113,7 @@ export default function ProfileWrapper({
               src={previewImage}
               alt="preview"
               className="w-40 h-40 object-cover rounded-full mb-4 border"
-              style={{objectPosition:"0% 0%"}}
+              style={{ objectPosition: "0% 0%" }}
             />
 
             {isUploading ? (
