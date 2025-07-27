@@ -23,7 +23,6 @@ const ProgressScreen = () => {
 
   const dispatch = useDispatch();
   const [images, setImages] = useState([]);
-  console.log("images: ", images);
 
   const methods = useForm();
   const {
@@ -32,13 +31,12 @@ const ProgressScreen = () => {
     formState: { isSubmitting },
   } = methods;
 
-  const fetchProgressList = async () => {
+  const fetchProgressList = async (targetId) => {
     try {
-      const response = await getProgressData();
+      const response = await getProgressData(isClient ? {} : { targetId });
       if (response?.progress) {
         const allImages = response?.progress
           ?.flatMap((entry) => {
-            console.log("entry: ", entry);
             return entry?.images || [];
           })
           ?.map((img) => ({
@@ -103,6 +101,7 @@ const ProgressScreen = () => {
                 value={watch("person")}
                 onChange={(val) => {
                   methods.setValue("person", val);
+                  fetchProgressList(val);
                 }}
                 placeholder="Select Client"
               />

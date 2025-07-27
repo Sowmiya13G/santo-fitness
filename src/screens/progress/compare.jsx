@@ -19,7 +19,6 @@ const CompareScreen = () => {
   const [month1, setMonth1] = useState(null);
   const [month2, setMonth2] = useState(null);
   const [openPicker, setOpenPicker] = useState(null);
-  console.log("openPicker: ", openPicker);
 
   const formatMonth = (date) => {
     return date
@@ -92,9 +91,9 @@ const CompareScreen = () => {
           label="Compare"
           onClick={() => {
             if (month1 && month2) {
-              const startMonth = format(month1, "LLLL")
+              const startMonth = format(month1, "LLLL");
               const startYear = format(month1, "yyyy");
-              const endMonth = format(month2, "LLLL")
+              const endMonth = format(month2, "LLLL");
               const endYear = format(month2, "yyyy");
 
               navigate(
