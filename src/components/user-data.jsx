@@ -9,6 +9,7 @@ import Button from "./button";
 import InputDatePicker from "./input/date-picker";
 import Dropdown from "./input/dropdown";
 import Input from "./input/input";
+import { useEffect } from "react";
 
 const roleOptions = [
   { label: "Client", value: "client" },
@@ -33,7 +34,12 @@ function UserData({
   const selectedPerson = watch("person");
   const selectedTrainer = watch("assignedTrainer");
   const isTrainerRole = selectedRole === "trainer";
+  console.log("isTrainerRole: ", isTrainerRole);
 
+  useEffect(() => {
+    fetchUsersList();
+  }, []);
+  console.log("trainerList: ", list);
   return (
     <>
       {isAdmin && (
@@ -44,25 +50,23 @@ function UserData({
           value={selectedRole}
           onChange={(val) => {
             setValue("role", val);
-            fetchUsersList(val);
           }}
           placeholder="Select role"
         />
       )}
-      { isTrainer ||
-        (isAdmin && watch("role") && !isCreate&& (
-          <Dropdown
-            name="person"
-            label={`Select ${isTrainerRole ? "Trainer" : "Client"}`}
-            options={isTrainerRole ? trainerList : list}
-            value={selectedPerson}
-            onChange={(val) => {
-              setValue("person", val);
-              fetchUserData(val);
-            }}
-            placeholder={`Select ${isTrainerRole ? "trainer" : "client"}`}
-          />
-        ))}
+      {(isTrainer || (isAdmin && watch("role"))) && !isCreate && (
+        <Dropdown
+          name="person"
+          label={`Select ${isTrainerRole ? "Trainer" : "Client"}`}
+          options={isTrainerRole ? trainerList : list}
+          value={selectedPerson}
+          onChange={(val) => {
+            setValue("person", val);
+            fetchUserData(val);
+          }}
+          placeholder={`Select ${isTrainerRole ? "trainer" : "client"}`}
+        />
+      )}
       {selectedRole == "client" && (
         <Dropdown
           name="assignedTrainer"

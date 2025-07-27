@@ -113,7 +113,13 @@ export const basicFields = [
   },
   { name: "age", label: "Age", placeholder: "Enter age" },
   { name: "email", label: "Email", placeholder: "Enter email" },
-  { name: "phoneNumber", label: "Phone Number", placeholder: "Enter Phone Number" },
+  {
+    name: "phoneNumber",
+    label: "Phone Number",
+    placeholder: "Enter Phone Number",
+    type: "number",
+    maxLength: 10,
+  },
   {
     name: "height",
     label: "Height",
@@ -136,12 +142,12 @@ export const basicFields = [
 
 export const fatFields = [
   [
-    { name: "fat", label: "Fat", },
-    { name: "VFat", label: "V.Fat",  },
+    { name: "fat", label: "Fat" },
+    { name: "VFat", label: "V.Fat" },
   ],
   [
-    { name: "SFat", label: "S.Fat",  },
-    { name: "kCal", label: "KCal",  },
+    { name: "SFat", label: "S.Fat" },
+    { name: "kCal", label: "KCal" },
   ],
 ];
 
@@ -149,29 +155,29 @@ export const sectionedFields = [
   {
     title: "Full body",
     fields: [
-      { name: "fullBodySFat", label: "S.Fat",  value: 0 },
-      { name: "fullBodyMuscle", label: "Muscle",  },
+      { name: "fullBodySFat", label: "S.Fat", value: 0 },
+      { name: "fullBodyMuscle", label: "Muscle" },
     ],
   },
   {
     title: "Arms",
     fields: [
-      { name: "armSFat", label: "S.Fat",  value: 0 },
-      { name: "armsMuscle", label: "Muscle",  },
+      { name: "armSFat", label: "S.Fat", value: 0 },
+      { name: "armsMuscle", label: "Muscle" },
     ],
   },
   {
     title: "Trunck",
     fields: [
       { name: "trunkSFat", label: "S.Fat", value: 0 },
-      { name: "trunkMuscle", label: "Muscle",  },
+      { name: "trunkMuscle", label: "Muscle" },
     ],
   },
   {
     title: "Legs",
     fields: [
       { name: "legsSFat", label: "S.Fat", value: 0 },
-      { name: "legsMuscle", label: "Muscle",  },
+      { name: "legsMuscle", label: "Muscle" },
     ],
   },
 ];

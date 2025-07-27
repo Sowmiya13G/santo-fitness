@@ -17,7 +17,7 @@ const Input = ({
   suffixIconAction,
   isLoading = false,
 }) => {
-  console.log("inputClassName: ", inputClassName);
+  console.log('maxLength: ', maxLength);
   const {
     register,
     formState: { errors },
