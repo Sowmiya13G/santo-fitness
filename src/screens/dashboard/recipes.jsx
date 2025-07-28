@@ -23,11 +23,13 @@ const Recipes = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { userData } = useSelector((state) => state.auth);
-  console.log('userData: ', userData);
+  console.log("userData: ", userData);
   const [selectedFilter, setSelectedFilter] = useState("All");
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [nutritionData, setNutritionData] = useState(initialNutritionData);
   const [mealsData, setMealsData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const { userList } = useSelector((state) => state.user);
 
   const methods = useForm();
@@ -73,10 +75,10 @@ const Recipes = () => {
         fat: 0,
         fibre: 0,
         meals: [],
-        targetCarbs:0,
-        targetProtein:0,
-        targetCalories:0,
-        targetFat:0,
+        targetCarbs: 0,
+        targetProtein: 0,
+        targetCalories: 0,
+        targetFat: 0,
       };
       setMealsData(data.meals || []);
       setNutritionData([
@@ -107,10 +109,13 @@ const Recipes = () => {
       ]);
     } catch (error) {
       console.error("Failed to fetch diet data", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
+    setLoading(true);
     fetchData();
   }, [selectedFilter, selectedDate, selectedUser]);
 
@@ -135,7 +140,9 @@ const Recipes = () => {
           }}
           placeholder="Select client"
         />
-
+        {loading && (
+          <p className="text-center text-base text-icon">loading...!</p>
+        )}
         {/* <DietProgress /> */}
         <FilterBar
           filters={filterItems}
