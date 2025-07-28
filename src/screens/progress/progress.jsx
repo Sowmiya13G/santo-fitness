@@ -10,7 +10,7 @@ import Dropdown from "@/components/input/dropdown";
 import ScreenHeader from "@/components/screen-header";
 // others
 import { getProgressData } from "@/features/progress/progress-api";
-import { FaAngleRight } from "react-icons/fa";
+import { FaAngleRight, FaCamera } from "react-icons/fa";
 import Calendar from "../../assets/icons/calendar-icon.svg";
 import ReminderImage from "../../assets/images/reminder-image.svg";
 import { GradientSpinner } from "@/components/ui/spin-loader";
@@ -37,6 +37,7 @@ const ProgressScreen = () => {
     setLoading(true);
     try {
       const response = await getProgressData(isClient ? {} : { targetId });
+      console.log('response: ', response);
       if (response?.progress) {
         const allImages = response?.progress
           ?.flatMap((entry) => {
@@ -65,22 +66,12 @@ const ProgressScreen = () => {
   }, []);
 
   return (
-    <div className="w-full space-y-6 hide-scrollbar">
+    <div className="w-full space-y-6 hide-scrollbar p-4">
+     <div className="bg-primary-gradient w-14 h-14 rounded-full flex items-center justify-center absolute bottom-12 right-2">
+        <FaCamera className="text-white text-xl"/>
+      </div>
       <ScreenHeader title="Progress Photo" />
-      {isClient && (
-        <div className="relative bg-red_50 p-4 rounded-3xl flex items-center gap-4">
-          <button className="absolute top-5 right-5 text-icon">
-            <RxCross2 size={20} />
-          </button>
-          <div className="p-4 rounded-full bg-white">
-            <img src={Calendar} alt="Calendar Icon" className="w-8 h-8" />
-          </div>
-          <div>
-            <p className="text-primary  text-base">Reminder!</p>
-            <p className="font-semibold">Next photos fall on July 08</p>
-          </div>
-        </div>
-      )}
+
       <div className="relative bg-red_30 py-7 px-6 rounded-3xl flex items-center">
         <div className="w-3/4 space-y-3">
           <p className="text-base">
@@ -132,25 +123,25 @@ const ProgressScreen = () => {
         </>
       )}
       {loading ? (
-        <>
-          <p className="text-center text-base text-icon">loading...!</p>
-          {/* <div className="absolute inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <GradientSpinner />
-        </div> */}
-        </>
+        <p className="text-center text-base text-icon">loading...!</p>
       ) : (
         <>
+          <p className="text-left text-md font-semibold text-font_primary !my-2">
+            Gallery
+          </p>
+
           {images?.length > 0 ? (
-            <div className="grid grid-cols-2 gap-4 px-4 pb-10">
+            <div className="grid grid-cols-3 gap-4 h-[55vh] overflow-y-scroll overflow-hidden  !m-0 pb-10">
               {images.map((img, idx) => (
                 <div
                   key={idx}
-                  className="w-full rounded-xl overflow-hidden border border-gray-200"
+                  className="w-28 h-28 rounded-xl overflow-hidden border border-gray-200"
                 >
                   <img
                     src={img.url}
                     alt={`Progress ${idx + 1}`}
-                    className="w-full h-auto object-cover"
+                    className="w-full h-full object-cover"
+                    style={{objectPosition:"0% 0%"}}
                   />
                 </div>
               ))}
@@ -160,6 +151,7 @@ const ProgressScreen = () => {
           )}
         </>
       )}
+      
     </div>
   );
 };
