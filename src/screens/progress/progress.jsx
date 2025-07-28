@@ -9,7 +9,13 @@ import Dropdown from "@/components/input/dropdown";
 import ScreenHeader from "@/components/screen-header";
 // others
 import { getProgressData } from "@/features/progress/progress-api";
-import { FaAngleRight, FaArrowLeft, FaArrowRight, FaCamera, FaDownload } from "react-icons/fa";
+import {
+  FaAngleRight,
+  FaArrowLeft,
+  FaArrowRight,
+  FaCamera,
+  FaDownload,
+} from "react-icons/fa";
 import Calendar from "../../assets/icons/calendar-icon.svg";
 import ReminderImage from "../../assets/images/reminder-image.svg";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -51,30 +57,29 @@ const ProgressScreen = () => {
     setSelectedImageIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0));
   };
 
-const downloadImage = async (url) => {
-  try {
-    const response = await fetch(url, { mode: "cors" }); // ensures blob access
-    const blob = await response.blob();
-    const objectURL = URL.createObjectURL(blob);
+  const downloadImage = async (url) => {
+    try {
+      const response = await fetch(url, { mode: "cors" }); // ensures blob access
+      const blob = await response.blob();
+      const objectURL = URL.createObjectURL(blob);
 
-    const link = document.createElement("a");
-    link.href = objectURL;
-    link.download = `progress-${selectedImageIndex + 1}.jpg`; // or .png if appropriate
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(objectURL); // clean up memory
-  } catch (error) {
-    console.error("Image download failed:", error);
-    alert("Download failed. Please try again.");
-  }
-};
+      const link = document.createElement("a");
+      link.href = objectURL;
+      link.download = `progress-${selectedImageIndex + 1}.jpg`; // or .png if appropriate
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(objectURL); // clean up memory
+    } catch (error) {
+      console.error("Image download failed:", error);
+      alert("Download failed. Please try again.");
+    }
+  };
 
   const fetchProgressList = async (targetId) => {
     setLoading(true);
     try {
       const response = await getProgressData(isClient ? {} : { targetId });
-      console.log("response: ", response);
       if (response?.progress) {
         const allImages = response?.progress
           ?.flatMap((entry) => {
@@ -92,14 +97,16 @@ const downloadImage = async (url) => {
     }
   };
 
-  useEffect(() => {
-    if (userList) {
-      setValue("person", userList[0]?.value);
-    }
-  }, [setValue, userList]);
+  // useEffect(() => {
+  //   if (userList) {
+  //     setValue("person", userList[0]?.value);
+  //   }
+  // }, [setValue, userList]);
 
   useEffect(() => {
-    fetchProgressList();
+    if (isClient) {
+      fetchProgressList();
+    }
   }, []);
 
   return (
@@ -121,9 +128,13 @@ const downloadImage = async (url) => {
           <Button
             label={"Compare"}
             customClassName="!w-36 !h-12"
-            onClick={() =>
-              navigate(`/compare-progress?person=${watch("person")}`)
-            }
+            onClick={() => {
+              if (isClient) {
+                navigate(`/compare-progress}`);
+              } else {
+                navigate(`/compare-progress?person=${watch("person")}`);
+              }
+            }}
           />
         </div>
         <img src={ReminderImage} alt="Calendar Icon" className="w-15 h-15" />
@@ -192,49 +203,48 @@ const downloadImage = async (url) => {
           )}
         </>
       )}
-    {isModalOpen && (
-  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80">
-    <div className="relative max-w-3xl w-full mx-4 bg-white p-4 rounded-xl">
-      <button
-        onClick={closeModal}
-        type="button"
-        className="absolute top-0 right-0 text-gray-600 bg-white p-3 rounded-full w-12 h-12 hover:text-black text-xl font-bold"
-      >
-        ✕
-      </button>
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80">
+          <div className="relative max-w-3xl w-full mx-4 bg-white p-4 rounded-xl">
+            <button
+              onClick={closeModal}
+              type="button"
+              className="absolute top-0 right-0 text-gray-600 bg-white p-3 rounded-full w-12 h-12 hover:text-black text-xl font-bold"
+            >
+              ✕
+            </button>
 
-      <img
-        src={images[selectedImageIndex].url}
-        alt={`Progress ${selectedImageIndex + 1}`}
-        className="w-full max-h-[70vh] object-contain rounded"
-      />
+            <img
+              src={images[selectedImageIndex].url}
+              alt={`Progress ${selectedImageIndex + 1}`}
+              className="w-full max-h-[70vh] object-contain rounded"
+            />
 
-      {/* Navigation Arrows */}
-      <button
-        onClick={prevImage}
-        className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
-      >
-        <IoIosArrowBack className="text-xl" />
-      </button>
-      <button
-        onClick={nextImage}
-        className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
-      >
-        <IoIosArrowForward className="text-xl" />
-      </button>
+            {/* Navigation Arrows */}
+            <button
+              onClick={prevImage}
+              className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
+            >
+              <IoIosArrowBack className="text-xl" />
+            </button>
+            <button
+              onClick={nextImage}
+              className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
+            >
+              <IoIosArrowForward className="text-xl" />
+            </button>
 
-      {/* Download Button */}
-      <button
-        onClick={() => downloadImage(images[selectedImageIndex].url)}
-        className="absolute bottom-0 right-0  bg-white px-3 py-2 rounded-full  flex items-center gap-2"
-      >
-        <FaDownload />
-        <span className="text-sm">Download</span>
-      </button>
-    </div>
-  </div>
-)}
-
+            {/* Download Button */}
+            <button
+              onClick={() => downloadImage(images[selectedImageIndex].url)}
+              className="absolute bottom-0 right-0  bg-white px-3 py-2 rounded-full  flex items-center gap-2"
+            >
+              <FaDownload />
+              <span className="text-sm">Download</span>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
