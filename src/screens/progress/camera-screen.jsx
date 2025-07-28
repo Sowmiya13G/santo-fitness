@@ -23,7 +23,6 @@ const poses = [
   { active: LeftActive, inactive: Left, pose: "Left" },
 ];
 
-
 function base64ToFile(dataUrl, filename) {
   const arr = dataUrl.split(",");
   const mime = arr[0].match(/:(.*?);/)[1];
@@ -231,7 +230,12 @@ export default function CameraScreen() {
           {poses.map(({ active, inactive, pose }) => (
             <button
               key={pose}
-              onClick={() => setSelectedPose(pose)}
+              onClick={() => {
+                setSelectedPose(pose);
+                if (!capturedImages[pose]) {
+                  startCamera();
+                }
+              }}
               className={`w-14 h-20 flex items-center justify-center rounded-lg transition-all duration-200 ${
                 selectedPose === pose
                   ? "bg-field_primary border-icon border"

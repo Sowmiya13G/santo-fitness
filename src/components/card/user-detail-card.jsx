@@ -9,7 +9,7 @@ const UserDetailsCard = ({ label, showTrainer = false }) => {
       <p className="text-gray-600 capitalize text-center ">{label}</p>
       <div className="flex gap-4 overflow-x-auto hide-scrollbar !m-2 px-1 snap-x snap-mandatory">
         {list.map((user) => (
-          <UserCard key={user.id} user={user} />
+          <UserCard key={user.id} user={user} customButtonClass="!w-24" />
         ))}
       </div>
     </>
