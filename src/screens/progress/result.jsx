@@ -87,9 +87,12 @@ const ResultScreen = () => {
         <p className="text-icon font-semibold text-xl capitalize">{endMonth}</p>
       </div>
       {loading ? (
-        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <GradientSpinner />
-        </div>
+        <>
+          <p className="text-center text-base text-icon">loading...!</p>
+          {/* <div className="absolute inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+            <GradientSpinner />
+          </div> */}
+        </>
       ) : (
         <div className="space-y-6 mt-6">
           {progressData.length === 2 ? (
