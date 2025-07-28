@@ -47,9 +47,7 @@ const ClientDashboard = () => {
   return (
     <div className="w-full space-y-6 px-3 text-gray-800 hide-scrollbar ">
       <ScreenHeader isHome />
-      {topClient && (
-        <RankCard label={"top performed client "} data={topClient} />
-      )}
+     
       <div className="flex gap-4 overflow-x-auto overflow-hidden hide-scrollbar h-full snap-x snap-mandatory">
         <div className="min-w-[90%] h-full snap-center snap-always ">
           <BMICard bmi={userData.BMI} />
@@ -58,6 +56,9 @@ const ClientDashboard = () => {
           <BMRCard bmr={userData.BMR} />
         </div>
       </div>{" "}
+       {topClient && (
+        <RankCard label={"top performed client "} data={topClient} />
+      )}
       <ActivityGrid />
       <DietProgress />
       <BestDietMeals />

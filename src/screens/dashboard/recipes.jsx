@@ -129,17 +129,18 @@ const Recipes = () => {
       <FormProvider {...methods}>
         <ScreenHeader title="Meals Tracker" />
         <HorizontalCalendar onSelectDate={(date) => setSelectedDate(date)} />
-
-        <Dropdown
-          name="person"
-          label="Select Client"
-          options={userList}
-          value={selectedUser}
-          onChange={(val) => {
-            setValue("person", val);
-          }}
-          placeholder="Select client"
-        />
+        {userData.role !== "client" && (
+          <Dropdown
+            name="person"
+            label="Select Client"
+            options={userList}
+            value={selectedUser}
+            onChange={(val) => {
+              setValue("person", val);
+            }}
+            placeholder="Select client"
+          />
+        )}
         {loading && (
           <p className="text-center text-base text-icon">loading...!</p>
         )}
