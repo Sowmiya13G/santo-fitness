@@ -12,6 +12,7 @@ import { getProgressData } from "@/features/progress/progress-api";
 import { FaAngleRight, FaArrowLeft, FaArrowRight, FaCamera, FaDownload } from "react-icons/fa";
 import Calendar from "../../assets/icons/calendar-icon.svg";
 import ReminderImage from "../../assets/images/reminder-image.svg";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 const ProgressScreen = () => {
   const { userData } = useSelector((state) => state.auth);
@@ -197,7 +198,7 @@ const downloadImage = async (url) => {
       <button
         onClick={closeModal}
         type="button"
-        className="absolute top-2 right-2  text-gray-600 bg-white p-3 rounded-full w-12 h-12 hover:text-black text-xl font-bold"
+        className="absolute top-0 right-0 text-gray-600 bg-white p-3 rounded-full w-12 h-12 hover:text-black text-xl font-bold"
       >
         ✕
       </button>
@@ -211,21 +212,21 @@ const downloadImage = async (url) => {
       {/* Navigation Arrows */}
       <button
         onClick={prevImage}
-        className="absolute top-1/2 left-3 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
+        className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
       >
-        <FaArrowLeft className="text-xl" />
+        <IoIosArrowBack className="text-xl" />
       </button>
       <button
         onClick={nextImage}
-        className="absolute top-1/2 right-3 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
+        className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
       >
-        <FaArrowRight className="text-xl" />
+        <IoIosArrowForward className="text-xl" />
       </button>
 
       {/* Download Button */}
       <button
         onClick={() => downloadImage(images[selectedImageIndex].url)}
-        className="absolute bottom-3 right-3   bg-white px-3 py-2 rounded-full  flex items-center gap-2"
+        className="absolute bottom-0 right-0  bg-white px-3 py-2 rounded-full  flex items-center gap-2"
       >
         <FaDownload />
         <span className="text-sm">Download</span>
