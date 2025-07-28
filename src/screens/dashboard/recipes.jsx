@@ -23,6 +23,7 @@ const Recipes = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { userData } = useSelector((state) => state.auth);
+  console.log('userData: ', userData);
   const [selectedFilter, setSelectedFilter] = useState("All");
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [nutritionData, setNutritionData] = useState(initialNutritionData);
@@ -72,31 +73,35 @@ const Recipes = () => {
         fat: 0,
         fibre: 0,
         meals: [],
+        targetCarbs:0,
+        targetProtein:0,
+        targetCalories:0,
+        targetFat:0,
       };
       setMealsData(data.meals || []);
       setNutritionData([
         {
           type: "Calories",
-          value: `${data.calories} kCal`,
-          percentage: (data.calories / 2000) * 100,
+          value: `${data.calories}/${data.targetCalories} kCal`,
+          percentage: (data.calories / data.targetCalories) * 100,
           icon: "🔥",
         },
         {
           type: "Proteins",
-          value: `${data.protein}g`,
-          percentage: (data.protein / 150) * 100,
+          value: `${data.protein}/${data.targetProtein} g`,
+          percentage: (data.protein / data.targetProtein) * 100,
           icon: "🥩",
         },
         {
           type: "Carbs",
-          value: `${data.carbs}g`,
-          percentage: (data.carbs / 300) * 100,
+          value: `${data.carbs}/${data.targetCarbs} g`,
+          percentage: (data.carbs / data.targetCarbs) * 100,
           icon: "🌾",
         },
         {
           type: "Fats",
-          value: `${data.fat}g`,
-          percentage: (data.fat / 70) * 100,
+          value: `${data.fat}/${data.targetFat} g`,
+          percentage: (data.fat / data.targetFat) * 100,
           icon: "🥚",
         },
       ]);

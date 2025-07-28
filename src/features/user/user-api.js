@@ -56,3 +56,11 @@ export const uploadFile = async (formData) => {
   return response.data;
 };
 
+
+
+export const getTopClient = async () => {
+  const response = await axiosInstance.get(
+    `${API_ENDPOINTS.RANKING.TOP_CLIENTS}`,
+  );
+  return response.data;
+};

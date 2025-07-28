@@ -10,7 +10,7 @@ const FilterBar = ({ filters = [], onSelect }) => {
 
   return (
     <div className="w-full overflow-x-auto hide-scrollbar ">
-      <div className="flex space-x-3 w-max px-4 py-2">
+      <div className="flex space-x-3 w-max py-2">
         {filters.map((item, index) => (
           <button
             key={index}

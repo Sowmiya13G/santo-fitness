@@ -30,6 +30,9 @@ const API_ENDPOINTS = {
   PROGRESS: {
     BODY_PROGRESS: "/body-progress",
   },
+  RANKING:{
+    TOP_CLIENTS:"/client-rankings"
+  }
 };
 
 export default API_ENDPOINTS;

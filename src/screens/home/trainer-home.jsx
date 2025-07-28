@@ -5,12 +5,12 @@ import ScreenHeader from "@/components/screen-header";
 import { useSelector } from "react-redux";
 
 const TrainerDashboard = () => {
-  const { userList } = useSelector((state) => state.user);
+  const { topClient } = useSelector((state) => state.user);
 
   return (
     <div className="w-full space-y-6 px-3 hide-scrollbar ">
       <ScreenHeader isHome />
-      <RankCard label={"top performed client "} data={userList} />
+      <RankCard label={"top performed client "} data={topClient} />
       <UserDetailsCard label={"My Clients"} />
       <PendingListCard label={"pending List"} />
     </div>

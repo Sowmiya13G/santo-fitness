@@ -1,5 +1,9 @@
-import { getUsersList } from "@/features/user/user-api";
-import { setTrainerList, setUserList } from "@/features/user/user-slice";
+import { getTopClient, getUsersList } from "@/features/user/user-api";
+import {
+  setTopClient,
+  setTrainerList,
+  setUserList,
+} from "@/features/user/user-slice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AdminDashboard from "../home/admin-home";
@@ -23,6 +27,12 @@ const Home = () => {
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
+  const fetchTopClient = async () => {
+    const response = await getTopClient();
+    dispatch(setTopClient(response.data));
+  };
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchUsersList = async () => {
     try {
       const response = await getUsersList();
@@ -36,7 +46,7 @@ const Home = () => {
             name: x.name,
             goal: x.goal,
             profileImg: x.profileImg,
-            ...x
+            ...x,
           }));
         const trainers = response.users
           .filter((x) => x.role == "trainer")
@@ -46,8 +56,7 @@ const Home = () => {
             name: x.name,
             goal: x.goal,
             profileImg: x.profileImg,
-            ...x
-
+            ...x,
           }));
         dispatch(setUserList(users));
         dispatch(setTrainerList(trainers));
@@ -64,6 +73,7 @@ const Home = () => {
       return;
     }
     fetchUsersList();
+    fetchTopClient();
   }, [fetchUsersList, userData.role]);
   return (
     <div className="min-h-screen  bg-white w-screen overflow-scroll pb-10 hide-scrollbar">
