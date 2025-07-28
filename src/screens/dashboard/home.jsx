@@ -29,7 +29,7 @@ const Home = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchTopClient = async () => {
     const response = await getTopClient();
-    dispatch(setTopClient(response.data));
+    dispatch(setTopClient(response?.data));
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -69,11 +69,11 @@ const Home = () => {
   };
 
   useEffect(() => {
+    fetchTopClient();
     if (userData.role === "client") {
       return;
     }
     fetchUsersList();
-    fetchTopClient();
   }, [fetchUsersList, userData.role]);
   return (
     <div className="min-h-screen  bg-white w-screen overflow-scroll pb-10 hide-scrollbar">

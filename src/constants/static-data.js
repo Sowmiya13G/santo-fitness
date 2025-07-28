@@ -111,7 +111,7 @@ export const basicFields = [
     label: "User ID",
     placeholder: "Enter user ID",
   },
-  { name: "email", label: "Email", placeholder: "Enter email" },
+  { name: "email", label: "Email", placeholder: "Enter email", type: "email" },
   {
     name: "phoneNumber",
     label: "Phone Number",
@@ -119,18 +119,20 @@ export const basicFields = [
     type: "number",
     maxLength: 10,
   },
-  { name: "age", label: "Age", placeholder: "Enter age" },
+  { name: "age", label: "Age", placeholder: "Enter age", type: "number" },
   {
     name: "height",
     label: "Height",
     placeholder: "Enter height",
     text: "CM",
+    type: "number",
   },
   {
     name: "weight",
     label: "Weight",
     placeholder: "Enter weight",
     text: "KG",
+    type: "number",
   },
   { name: "goal", label: "Target Goal", placeholder: "Enter Goal" },
   {
@@ -138,27 +140,31 @@ export const basicFields = [
     label: "Target Calories",
     placeholder: "Enter Target Calories",
     text: "Kcal",
+    type: "number",
   },
   {
     name: "targetProtein",
     label: "Target Protein",
     placeholder: "Enter Target Protein",
     text: "gram",
+    type: "number",
   },
   {
     name: "targetCarbs",
     label: "Target Carbs",
     placeholder: "Enter Target Carbs",
     text: "gram",
+    type: "number",
   },
   {
     name: "targetFat",
     label: "Target Fat",
     placeholder: "Enter Target Fat",
     text: "gram",
+    type: "number",
   },
-  { name: "bmi", label: "BMI", placeholder: "Enter BMI" },
-  { name: "bmr", label: "BMR", placeholder: "Enter BMR" },
+  { name: "BMI", label: "BMI", placeholder: "Enter BMI", type: "number" },
+  { name: "BMR", label: "BMR", placeholder: "Enter BMR", type: "number" },
 ];
 
 export const fatFields = [

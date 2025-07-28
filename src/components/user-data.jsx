@@ -37,6 +37,9 @@ function UserData({
   console.log("isTrainerRole: ", isTrainerRole);
 
   useEffect(() => {
+    if (isClient) {
+      return;
+    }
     fetchUsersList();
   }, []);
   console.log("trainerList: ", list);

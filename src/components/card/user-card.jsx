@@ -13,7 +13,6 @@ const UserCard = ({
   buttonLabel = "View",
   customButtonClass,
 }) => {
-  console.log("user: ", user);
   const imgRef = useRef(null);
   const [bgColor, setBgColor] = useState("#adabb0");
   const [textColor, setTextColor] = useState("#0e0e0e");

@@ -19,6 +19,7 @@ const authSlice = createSlice({
       state.trainerList = action.payload;
     },
     setTopClient(state, action) {
+      
       state.topClient = action.payload;
     },
     clearFCMToken(state) {

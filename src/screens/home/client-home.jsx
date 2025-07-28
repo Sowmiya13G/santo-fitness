@@ -15,7 +15,9 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const ClientDashboard = () => {
-  const { userData, topClient } = useSelector((state) => state.auth);
+  const { userData } = useSelector((state) => state.auth);
+  console.log("userData: ", userData);
+  const { topClient } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -45,13 +47,15 @@ const ClientDashboard = () => {
   return (
     <div className="w-full space-y-6 px-3 text-gray-800 hide-scrollbar ">
       <ScreenHeader isHome />
-      <RankCard label={"top performed client "} data={topClient} />
-      <div className="flex gap-4 overflow-x-auto hide-scrollbar px-1 snap-x snap-mandatory">
-        <div className="min-w-[100%] snap-center snap-always">
+      {topClient && (
+        <RankCard label={"top performed client "} data={topClient} />
+      )}
+      <div className="flex gap-4 overflow-x-auto overflow-hidden hide-scrollbar h-full snap-x snap-mandatory">
+        <div className="min-w-[90%] h-full snap-center snap-always ">
           <BMICard bmi={userData.BMI} />
         </div>
-        <div className="min-w-[100%] snap-center snap-always">
-          <BMRCard bmr={1630} />
+        <div className="min-w-[90%] snap-center snap-always">
+          <BMRCard bmr={userData.BMR} />
         </div>
       </div>{" "}
       <ActivityGrid />
