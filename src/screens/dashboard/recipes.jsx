@@ -23,7 +23,7 @@ const Recipes = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { userData } = useSelector((state) => state.auth);
-  console.log("userData: ", userData);
+
   const [selectedFilter, setSelectedFilter] = useState("All");
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [nutritionData, setNutritionData] = useState(initialNutritionData);

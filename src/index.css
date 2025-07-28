@@ -149,3 +149,10 @@ body::-webkit-scrollbar {
 .delay-300 {
   animation-delay: 0.3s;
 }
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none; /* Firefox */
+}

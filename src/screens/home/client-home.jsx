@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const ClientDashboard = () => {
   const { userData } = useSelector((state) => state.auth);
-  console.log("userData: ", userData);
+  
   const { topClient } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 

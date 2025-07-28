@@ -1,5 +1,5 @@
 import { uploadFile } from "@/features/user/user-api";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { AiOutlineFileImage, AiOutlineFilePdf } from "react-icons/ai";
 import { MdCancel } from "react-icons/md";
@@ -16,6 +16,8 @@ const UploadInput = ({
   placeholder,
   error,
   acceptFormat = [".pdf", ".doc", ".docx", ".jpg", ".jpeg", ".png"],
+  type = "reports",
+  isArray = false,
 }) => {
   const {
     setValue,
@@ -24,54 +26,75 @@ const UploadInput = ({
     formState: { errors },
   } = useFormContext();
 
-  const file = watch(name);
+  const files = watch(name) || (isArray ? [] : null);
   const [loading, setLoading] = useState(false);
-  const [fileType, setFileType] = useState(null);
+  const [fileTypes, setFileTypes] = useState([]);
+  const [previewUrls, setPreviewUrls] = useState([]);
 
-  const previewUrl = useMemo(() => {
-    if (!file) return null;
-    if (typeof file === "string") return file; // URL from API
-    return URL.createObjectURL(file); // Local preview
-  }, [file]);
+  const isReports = type === "reports";
+  const MAX_FILES = 5;
 
-useEffect(() => {
-  if (!file) return;
+  useEffect(() => {
+    if (!files || (isArray && files.length === 0)) return;
 
-  let extension = "";
+    const determineType = (fileItem) => {
+      let extension = "";
+      if (typeof fileItem === "string") {
+        try {
+          const url = new URL(fileItem);
+          extension = url.pathname.split(".").pop()?.toLowerCase();
+        } catch {
+          extension = fileItem.split(".").pop()?.toLowerCase();
+        }
+      } else {
+        extension = fileItem.name.split(".").pop()?.toLowerCase() || "";
+      }
+      return getFileType(extension);
+    };
 
-  if (typeof file === "string") {
-    try {
-      const url = new URL(file);
-      const pathname = url.pathname;
-      extension = pathname.split(".").pop()?.toLowerCase();
-    } catch {
-      extension = file.split(".").pop()?.toLowerCase(); // fallback
-    }
-  } else {
-    extension = file.name.split(".").pop()?.toLowerCase() || "";
-  }
+    const allFiles = isArray ? files : [files];
+    const types = allFiles.map(determineType);
+    const urls = allFiles.map((f) =>
+      typeof f === "string" ? f : URL.createObjectURL(f)
+    );
 
-  setFileType(getFileType(extension));
-}, [file]);
-
+    setFileTypes(types);
+    setPreviewUrls(urls.filter(Boolean));
+  }, [files, isArray]);
 
   const handleFileChange = async (e) => {
-    const selectedFile = e.target.files[0];
-    if (!selectedFile) return;
+    const selectedFiles = Array.from(e.target.files || []);
+    if (selectedFiles.length === 0) return;
 
-    const extension = selectedFile.name.split(".").pop()?.toLowerCase();
-    if (!acceptFormat.includes("." + extension)) {
-      // Optionally add toast or error message
+    const validFiles = selectedFiles.filter((file) =>
+      acceptFormat.includes("." + file.name.split(".").pop()?.toLowerCase())
+    );
+
+    if (validFiles.length === 0) return;
+
+    if (isArray && files.length + validFiles.length > MAX_FILES) {
+      // Optional: toast.error("You can only upload up to 5 files.");
       return;
     }
 
     setLoading(true);
     try {
       const formData = new FormData();
-      formData.append("files", selectedFile);
+      validFiles.forEach((file) => formData.append("files", file));
 
-      const response = await uploadFile(formData); // API call
-      setValue(name, response.data.url);
+      const response = await uploadFile(formData);
+      const urls = response?.urls || [];
+
+      if (isArray) {
+        const newPreviewUrls = [...previewUrls, ...urls];
+        const newValue = [...files, ...urls];
+        setPreviewUrls(newPreviewUrls.filter(Boolean));
+        setValue(name, newValue);
+      } else {
+        setPreviewUrls([urls[0]]);
+        setValue(name, urls[0]);
+      }
+
       clearErrors(name);
     } catch (err) {
       console.error("File upload failed:", err);
@@ -80,8 +103,16 @@ useEffect(() => {
     }
   };
 
-  const handleRemove = () => {
-    setValue(name, null);
+  const handleRemove = (index) => {
+    if (isArray && index >= 0 && index < files.length) {
+      const updatedFiles = files.filter((_, i) => i !== index);
+      const updatedPreviews = previewUrls.filter((_, i) => i !== index);
+      setValue(name, updatedFiles);
+      setPreviewUrls(updatedPreviews);
+    } else {
+      setValue(name, null);
+      setPreviewUrls([]);
+    }
     clearErrors(name);
   };
 
@@ -92,7 +123,9 @@ useEffect(() => {
         <label
           htmlFor={`file-input-${name}`}
           className={`text-icon text-10 flex flex-col items-center justify-center cursor-pointer ${
-            file ? "opacity-50 cursor-not-allowed" : ""
+            files && (!isArray || files.length >= MAX_FILES)
+              ? "opacity-50 cursor-not-allowed"
+              : ""
           }`}
         >
           {loading ? (
@@ -114,56 +147,111 @@ useEffect(() => {
         <input
           id={`file-input-${name}`}
           type="file"
+          multiple={isArray}
           accept={acceptFormat.join(",")}
           onChange={handleFileChange}
           className="hidden"
-          disabled={!!file}
+          disabled={files && (!isArray || files.length >= MAX_FILES)}
         />
       </div>
 
-      {/* File Preview Info */}
-      {previewUrl && (
-        <div className="relative mt-2 flex items-center gap-2 px-3 py-4 rounded-lg bg-opacity_primary">
-          <GradientIcon
-            Icon={fileType === "pdf" ? AiOutlineFilePdf : AiOutlineFileImage}
-          />
-          <span className="text-base text-gradient">
-            {typeof file === "string"
-              ? file.split("/").pop()?.split("?")[0] || "Uploaded file"
-              : file?.name?.slice(0, 30) || "File"}
-          </span>
-          <button
-            type="button"
-            className="ml-auto text-gradient"
-            onClick={handleRemove}
-          >
-            <GradientIcon Icon={MdCancel} />
-          </button>
+      {isArray && previewUrls.length > 0 ? (
+        <div className="relative overflow-x-auto flex gap-4 py-2 scroll-smooth no-scrollbar">
+          {previewUrls.map((url, idx) => {
+            if (!url) return null;
+            const fileType = fileTypes[idx] || "image";
+            const fileLabel =
+              typeof files[idx] === "string"
+                ? files[idx]?.split("/").pop()?.split("?")[0]
+                : files[idx]?.name?.slice(0, 30) || "File";
+
+            return fileType === "image" ? (
+              <div key={idx} className="relative min-w-[250px] max-w-[250px]">
+                <img
+                  src={url}
+                  alt={fileLabel}
+                  className="rounded-lg object-fit w-full h-48"
+                />
+                <button
+                  type="button"
+                  className="absolute top-1 right-1 text-white  p-1 rounded-full"
+                  onClick={() => handleRemove(idx)}
+                >
+                  <GradientIcon Icon={MdCancel} />
+                </button>
+              </div>
+            ) : isReports ? (
+              <div
+                key={idx}
+                className="relative flex items-center gap-2 px-3 py-4 rounded-lg bg-opacity_primary"
+              >
+                <GradientIcon
+                  Icon={
+                    fileType === "pdf" ? AiOutlineFilePdf : AiOutlineFileImage
+                  }
+                />
+                <span className="text-base text-gradient">{fileLabel}</span>
+                <button
+                  type="button"
+                  className="ml-auto text-gradient"
+                  onClick={() => handleRemove(idx)}
+                >
+                  <GradientIcon Icon={MdCancel} />
+                </button>
+              </div>
+            ) : null;
+          })}
         </div>
+      ) : (
+        // fallback for single file
+        previewUrls.map((url, idx) => {
+          if (!url) return null;
+          const fileType = fileTypes[idx] || "image";
+          const fileLabel =
+            typeof files === "string"
+              ? files?.split("/").pop()?.split("?")[0]
+              : files?.name?.slice(0, 30) || "File";
+
+          return fileType === "image" ? (
+            <div key={idx} className="relative mt-2">
+              <img
+                src={url}
+                alt={fileLabel}
+                className="w-full max-h-64 object-contain rounded"
+              />
+              <button
+                type="button"
+                className="absolute top-1 right-1 text-gradient"
+                onClick={() => handleRemove(idx)}
+              >
+                <GradientIcon Icon={MdCancel} />
+              </button>
+            </div>
+          ) : fileType === "pdf" ? (
+            <div key={idx} className="relative mt-2">
+              <iframe
+                src={url}
+                title={`PDF Preview ${idx}`}
+                className="w-full h-64 rounded"
+              />
+              <button
+                type="button"
+                className="absolute top-1 right-1 text-gradient"
+                onClick={() => handleRemove(idx)}
+              >
+                <GradientIcon Icon={MdCancel} />
+              </button>
+            </div>
+          ) : null;
+        })
       )}
 
-      {/* Optional: Inline Image or PDF Preview */}
-      {previewUrl && fileType === "image" && (
-        <img
-          src={previewUrl}
-          alt="Preview"
-          className="w-full max-h-64 object-contain mt-2 rounded"
-        />
-      )}
-      {previewUrl && fileType === "pdf" && (
-        <iframe
-          src={previewUrl}
-          title="PDF Preview"
-          className="w-full h-64 mt-2 rounded"
-        />
-      )}
-
-      {/* Error Message */}
-      {!file && (error || errors?.[name]) && (
-        <span className="text-red-500 text-sm">
-          {errors?.[name]?.message || error}
-        </span>
-      )}
+      {(!files || (isArray && files.length === 0)) &&
+        (error || errors?.[name]) && (
+          <span className="text-red-500 text-sm">
+            {errors?.[name]?.message || error}
+          </span>
+        )}
     </div>
   );
 };

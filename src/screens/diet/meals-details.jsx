@@ -1,15 +1,17 @@
 // packages
 import "react-datepicker/dist/react-datepicker.css";
+import { FormProvider, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { FormProvider, useForm } from "react-hook-form";
 
 // components
 import Button from "@/components/button";
-import ScreenHeader from "@/components/screen-header";
-import ProfileWrapper from "@/components/profile-wrapper";
-import Workout from "../../assets/images/panCake.svg";
+import AudioRecorderInput from "@/components/input/audio-input";
+import Textarea from "@/components/input/text-area";
 import UploadInput from "@/components/input/upload";
+import ProfileWrapper from "@/components/profile-wrapper";
+
+import Workout from "../../assets/images/panCake.svg";
 
 const MealDetailsScreen = () => {
   const { userData } = useSelector((state) => state.auth);
@@ -50,31 +52,34 @@ const MealDetailsScreen = () => {
       bgColor="bg-red_25"
       // imgClass={"scale-150 rounded-none object-contain"}
     >
-      <div className="w-screen h-full px-5 py-4">
+      <div className="w-screen min-h-screen px-5 py-4">
         <p className="text-icon text-sm text-center">
           focus on regular physical activity, a balanced diet, sufficient sleep,
           and stress management
         </p>
-        <p className="text-font_primary text-base font-medium text-center">
+        <p className="text-font_primary text-base font-medium text-center my-5">
           focus on regular physical activity, a balanced diet, sufficient sleep,
           and stress management
         </p>
         <FormProvider {...methods}>
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="space-y-6 pb-10"
+            className="space-y-6 pb-10 mb-3"
             encType="multipart/form-data"
           >
             <UploadInput
               name="file"
               label="Upload Report (PDF, PNG, JPG)"
               accept=".pdf,.png,.jpg,.jpeg"
-              // error={errors.file?.message}placeholder
               placeholder={"Upload Image"}
+              isArray
+              type="meals"
             />
+            <Textarea name="comments" placeholder="Enter comment" />
+            <AudioRecorderInput name="audio" />
           </form>
         </FormProvider>
-        <div className="w-full absolute bottom-10 left-0 px-6">
+        <div className="w-full bg-white absolute bottom-10 left-0 px-6">
           <Button
             label="Submit"
             onClick={() => navigate("/compare-progress")}
