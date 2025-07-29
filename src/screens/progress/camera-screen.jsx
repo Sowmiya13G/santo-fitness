@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { FaCamera, FaRedo, FaUpload } from "react-icons/fa";
 import { IoMdFlash, IoMdFlashOff } from "react-icons/io";
+import { SiTicktick } from "react-icons/si";
 
 import BackActive from "../../assets/images/back-active.svg";
 import FrontActive from "../../assets/images/front-active.svg";
@@ -73,7 +74,6 @@ export default function CameraScreen() {
   const [capturedImages, setCapturedImages] = useState({});
   const [selectedPose, setSelectedPose] = useState("Front");
   const [isUploading, setIsUploading] = useState(false);
-  const [isCameraReady, setIsCameraReady] = useState(false);
 
   const allCaptured = Object.keys(capturedImages).length === poses.length;
   const isDisabled = allCaptured ? false : capturedImages[selectedPose];
@@ -87,21 +87,41 @@ export default function CameraScreen() {
     return () => stopCamera();
   }, []);
 
+  useEffect(() => {
+    if (!capturedImages[selectedPose]) {
+      startCamera();
+    }
+  }, [selectedPose]);
+
   const startCamera = async () => {
     stopCamera();
+
     try {
       const newStream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode },
       });
+
       if (videoRef.current) {
         videoRef.current.srcObject = newStream;
-        videoRef.current.play();
-        setIsCameraReady(true);
+
+        const playPromise = new Promise((resolve, reject) => {
+          videoRef.current.onloadedmetadata = () => {
+            videoRef.current
+              .play()
+              .then(resolve)
+              .catch((err) => {
+                console.warn("Camera play failed:", err);
+                reject(err);
+              });
+          };
+        });
+
+        await playPromise;
       }
+
       streamRef.current = newStream;
     } catch (err) {
       console.error("Error accessing camera:", err);
-      setIsCameraReady(false);
     }
   };
 
@@ -114,7 +134,6 @@ export default function CameraScreen() {
     if (videoRef.current) {
       videoRef.current.srcObject = null;
     }
-    setIsCameraReady(false);
   };
 
   const toggleFlash = async () => {
@@ -236,32 +255,56 @@ export default function CameraScreen() {
         <canvas ref={canvasRef} className="hidden" />
 
         <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 w-[80%] flex items-center justify-evenly gap-6 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 z-10">
-          <button
-            disabled={!isCameraReady}
-            onClick={toggleFlash}
-            className="text-white text-2xl"
-          >
+          <button onClick={toggleFlash} className="text-white text-2xl">
             {flashOn ? <IoMdFlashOff /> : <IoMdFlash />}
           </button>
 
           <button
-            onClick={allCaptured ? handleUpload : capturePhoto}
+            onClick={() => {
+              if (allCaptured) {
+                handleUpload();
+              } else if (capturedImages[selectedPose]) {
+                console.log('capturedImages[selectedPose]: ', capturedImages[selectedPose]);
+                const currentIndex = poses.findIndex(
+                  (p) => p.pose === selectedPose
+                );
+                const nextUncaptured =
+                  poses.find(
+                    (p, i) => i > currentIndex && !capturedImages[p.pose]
+                  ) || poses.find((p) => !capturedImages[p.pose]);
+                if (nextUncaptured) {
+                  setSelectedPose(nextUncaptured.pose); 
+                  console.log("nextUncaptured.pose: ", nextUncaptured.pose);
+                }
+              } else {
+                console.log('capturedImages[selectedPose]:else ', capturedImages[selectedPose]);
+                capturePhoto();
+              }
+            }}
             className="bg-white p-3 rounded-full border-4 border-white text-red-600"
-            aria-label={allCaptured ? "Upload Images" : "Capture Photo"}
-            disabled={!isCameraReady || isDisabled}
+            aria-label={
+              allCaptured
+                ? "Upload Images"
+                : capturedImages[selectedPose]
+                ? "Continue to Next Pose"
+                : "Capture Photo"
+            }
           >
-            {allCaptured ? <FaUpload size={23} /> : <FaCamera size={24} />}
+            {allCaptured ? (
+              <FaUpload size={23} />
+            ) : capturedImages[selectedPose] ? (
+              <SiTicktick size={23} />
+            ) : (
+              <FaCamera size={24} />
+            )}
           </button>
 
-          <button
-            onClick={handleRetake}
-            disabled={!isCameraReady}
-            className="text-white text-xl"
-          >
+          <button onClick={handleRetake} className="text-white text-xl">
             <FaRedo />
           </button>
         </div>
       </div>
+      <SiTicktick />
       <div className="h-4" />
       <div className="w-full absolute bottom-0 flex flex-col left-0 bg-primary-gradient">
         <div className="flex gap-4 px-2 py-5 rounded-full h-full w-full justify-evenly z-10">
