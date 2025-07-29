@@ -156,3 +156,18 @@ body::-webkit-scrollbar {
   -ms-overflow-style: none; /* IE/Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+.shimmer {
+  background: linear-gradient(110deg, #f7f8f8 8%, #f7f8f8 18%, #f7f8f8 33%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}

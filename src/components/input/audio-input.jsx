@@ -24,7 +24,7 @@ const AudioRecorderInput = ({ name = "audio" }) => {
   const drawWaveform = (data, playedRatio = 0) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-  
+
     const ctx = canvas.getContext("2d");
     const width = canvas.width;
     const height = canvas.height;
@@ -32,30 +32,53 @@ const AudioRecorderInput = ({ name = "audio" }) => {
     const gap = 1;
     const bars = data.length;
     const centerY = height / 2;
-  
+
     ctx.clearRect(0, 0, width, height);
-  
+
     data.forEach((value, i) => {
       const x = i * (barWidth + gap);
       const barHeight = (value / 255) * (height / 2);
       const radius = barWidth / 2;
-  
+
       ctx.beginPath();
       ctx.fillStyle = i / bars <= playedRatio ? "#8E8E93" : "#FFF";
-  
+
       ctx.moveTo(x, centerY - barHeight + radius);
-      ctx.arcTo(x, centerY - barHeight, x + barWidth, centerY - barHeight, radius);
-      ctx.arcTo(x + barWidth, centerY - barHeight, x + barWidth, centerY - barHeight + radius, radius);
+      ctx.arcTo(
+        x,
+        centerY - barHeight,
+        x + barWidth,
+        centerY - barHeight,
+        radius
+      );
+      ctx.arcTo(
+        x + barWidth,
+        centerY - barHeight,
+        x + barWidth,
+        centerY - barHeight + radius,
+        radius
+      );
       ctx.lineTo(x + barWidth, centerY + barHeight - radius);
-      ctx.arcTo(x + barWidth, centerY + barHeight, x, centerY + barHeight, radius);
-      ctx.arcTo(x, centerY + barHeight, x, centerY + barHeight - radius, radius);
-  
+      ctx.arcTo(
+        x + barWidth,
+        centerY + barHeight,
+        x,
+        centerY + barHeight,
+        radius
+      );
+      ctx.arcTo(
+        x,
+        centerY + barHeight,
+        x,
+        centerY + barHeight - radius,
+        radius
+      );
+
       ctx.closePath();
       ctx.fill();
     });
   };
-  
-  
+
   useEffect(() => {
     if (!isPlaying || !audioRef.current) return;
 
@@ -90,7 +113,7 @@ const AudioRecorderInput = ({ name = "audio" }) => {
       const audioCtx = new AudioContext();
       const decoded = await audioCtx.decodeAudioData(buffer);
       const rawData = decoded.getChannelData(0);
-      const samples = Math.floor(275 / (barWidth + gap)); 
+      const samples = Math.floor(275 / (barWidth + gap));
       const blockSize = Math.floor(rawData.length / samples);
       const waveform = new Array(samples).fill(0).map((_, i) => {
         const block = rawData.slice(i * blockSize, (i + 1) * blockSize);
@@ -135,39 +158,48 @@ const AudioRecorderInput = ({ name = "audio" }) => {
     <div className="space-y-2">
       <div
         className={`${
-          audioUrl
-            ? " text-white shadow-lg"
-            : " text-gray-700"
+          audioUrl ? " text-white shadow-lg" : " text-gray-700"
         } rounded-2xl px-4 h-14 w-full flex flex-col gap-3 bg-primary-gradient`}
       >
         <div className="flex  h-14 items-center justify-between gap-4">
           {!audioUrl && !isRecording && (
-            <button onClick={startRecording}>
-              <FaMicrophone />
+            <button type="button" onClick={startRecording}>
+              <FaMicrophone color="white"/>
             </button>
           )}
 
           {isRecording && (
-            <button onClick={stopRecording} className="animate-pulse">
-              <FaStop />
+            <button
+              type="button"
+              onClick={stopRecording}
+              className="animate-pulse"
+            >
+              <FaStop color="white"/>
             </button>
           )}
 
           {audioUrl && !isRecording && (
             <div className="flex items-center gap-4 w-full">
-              <button onClick={playAudio} className="flex-shrink-0">
-                {isPlaying ? <FaStop /> : <FaPlay />}
+              <button
+                type="button"
+                onClick={playAudio}
+                className="flex-shrink-0"
+              >
+                {isPlaying ? (
+                  <FaStop color="white" />
+                ) : (
+                  <FaPlay color="white" />
+                )}
               </button>
 
-              <canvas
-                ref={canvasRef}
-                width={275}
-                height={50}
-                className=""
-              />
+              <canvas ref={canvasRef} width={275} height={50} className="" />
 
-              <button onClick={deleteRecording} className="flex-shrink-0">
-                <FaTrash />
+              <button
+                type="button"
+                onClick={deleteRecording}
+                className="flex-shrink-0"
+              >
+                <FaTrash color="white" />
               </button>
             </div>
           )}

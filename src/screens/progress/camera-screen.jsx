@@ -21,10 +21,11 @@ import LeftCompleted from "../../assets/images/left-completed.svg";
 import RightCompleted from "../../assets/images/right-completed.svg";
 
 import ScreenHeader from "@/components/screen-header";
+import { showToast } from "@/components/toast";
 import { GradientSpinner } from "@/components/ui/spin-loader";
 import { uploadBodyProgressData } from "@/features/progress/progress-api";
 import { uploadFile } from "@/features/user/user-api";
-import { showToast } from "@/components/toast";
+import { base64ToFile } from "@/utils/helper";
 
 const poses = [
   {
@@ -52,18 +53,6 @@ const poses = [
     pose: "Left",
   },
 ];
-
-function base64ToFile(dataUrl, filename) {
-  const arr = dataUrl.split(",");
-  const mime = arr[0].match(/:(.*?);/)[1];
-  const bstr = atob(arr[1]);
-  let n = bstr.length;
-  const u8arr = new Uint8Array(n);
-  while (n--) {
-    u8arr[n] = bstr.charCodeAt(n);
-  }
-  return new File([u8arr], filename, { type: mime });
-}
 
 export default function CameraScreen() {
   const videoRef = useRef(null);

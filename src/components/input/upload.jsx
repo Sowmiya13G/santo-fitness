@@ -1,4 +1,3 @@
-import { uploadFile } from "@/features/user/user-api";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { AiOutlineFileImage, AiOutlineFilePdf } from "react-icons/ai";
@@ -73,31 +72,27 @@ const UploadInput = ({
     if (validFiles.length === 0) return;
 
     if (isArray && files.length + validFiles.length > MAX_FILES) {
-      // Optional: toast.error("You can only upload up to 5 files.");
       return;
     }
 
     setLoading(true);
     try {
-      const formData = new FormData();
-      validFiles.forEach((file) => formData.append("files", file));
-
-      const response = await uploadFile(formData);
-      const urls = response?.urls || [];
+      const newPreviewUrls = validFiles.map((file) =>
+        URL.createObjectURL(file)
+      );
 
       if (isArray) {
-        const newPreviewUrls = [...previewUrls, ...urls];
-        const newValue = [...files, ...urls];
-        setPreviewUrls(newPreviewUrls.filter(Boolean));
+        const newValue = [...files, ...validFiles];
+        setPreviewUrls((prev) => [...prev, ...newPreviewUrls]);
         setValue(name, newValue);
       } else {
-        setPreviewUrls([urls[0]]);
-        setValue(name, urls[0]);
+        setPreviewUrls([newPreviewUrls[0]]);
+        setValue(name, validFiles[0]);
       }
 
       clearErrors(name);
     } catch (err) {
-      console.error("File upload failed:", err);
+      console.error("Local file handling failed:", err);
     } finally {
       setLoading(false);
     }

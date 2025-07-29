@@ -17,7 +17,6 @@ const DietDetailsScreen = () => {
   const { userData } = useSelector((state) => state.auth);
   const isClient = userData?.role === "client";
   const navigate = useNavigate();
-  console.info("userData: ", userData);
 
   const sections = [
     {
@@ -28,7 +27,7 @@ const DietDetailsScreen = () => {
       onClick: "",
     },
     {
-      type: "morning-snack",
+      type: "morning_snack",
       label: "Morning Snack",
       targetData: `${userData?.targetCalories} Calories | ${userData?.targetProtein} Protein | ${userData?.targetCarbs} Carbs | ${userData?.targetFat} Fat `,
       image: MorningSnack,
@@ -42,7 +41,7 @@ const DietDetailsScreen = () => {
       onClick: "",
     },
     {
-      type: "evening-snack",
+      type: "evening_snack",
       label: "evening Snack",
       targetData: `${userData?.targetCalories} Calories | ${userData?.targetProtein} Protein | ${userData?.targetCarbs} Carbs | ${userData?.targetFat} Fat `,
       image: EveningSnack,
@@ -59,7 +58,6 @@ const DietDetailsScreen = () => {
   return (
     <div className="w-screen space-y-6 hide-scrollbar px-5 py-6">
       <ScreenHeader title="Diet Details" />
-      <div className="h-5" />
       {sections?.map((x, y) => (
         <UserCard
           user={{
@@ -67,7 +65,7 @@ const DietDetailsScreen = () => {
             goal: x?.targetData,
             profileImg: x?.image,
           }}
-          onClick={() => navigate(`/meals-details?${x?.type}`)}
+          onClick={() => navigate(`/meals-details?type=${x?.type}`)}
           isSwipe={false}
           buttonLabel={isClient ? "Upload Meals Image" : "View More"}
           customButtonClass={"!h-10 !w-auto py-3"}

@@ -1,3 +1,4 @@
+import { useState } from "react";
 // packages
 import "react-datepicker/dist/react-datepicker.css";
 import { FormProvider, useForm } from "react-hook-form";
@@ -7,10 +8,12 @@ import { useNavigate } from "react-router-dom";
 // components
 import Button from "@/components/button";
 import AudioRecorderInput from "@/components/input/audio-input";
+import Input from "@/components/input/input";
 import Textarea from "@/components/input/text-area";
 import UploadInput from "@/components/input/upload";
 import ProfileWrapper from "@/components/profile-wrapper";
 
+import { uploadFile } from "@/features/user/user-api";
 import Workout from "../../assets/images/panCake.svg";
 
 const MealDetailsScreen = () => {
@@ -18,33 +21,69 @@ const MealDetailsScreen = () => {
   const isClient = userData?.role === "client";
   const navigate = useNavigate();
 
-  const methods = useForm({
-    // defaultValues: {
-    //   clientName: null,
-    //   file: null,
-    // },
-    // resolver: yupResolver(schema),
-  });
+  const methods = useForm({});
 
   const {
     handleSubmit,
-
     formState: { isSubmitting, errors },
   } = methods;
 
-  const onSubmit = async (data) => {
-    const formData = new FormData();
-    formData.append("clientId", data.clientName.value);
-    formData.append("file", data.file[0]);
+  const query = new URLSearchParams(location.search);
+  const type = query.get("type");
+  const [loading, setLoading] = useState(false);
 
-    // 👉 Replace this with actual API call
+  const onSubmit = async (data) => {
+    setLoading(true);
     try {
-      // const res = await uploadReport(formData); // e.g., POST API
-      navigate(-1); // Go back after success
+      const payload = {
+        type: type,
+        name: data.name,
+        calories: userData?.targetCalories,
+        protein: userData?.targetProtein,
+        carbs: userData?.targetCarbs,
+        fat: userData?.targetFat,
+        fibre: userData?.targetFibre,
+        comment: data.comments,
+        images: [],
+        voiceNote: null,
+      };
+
+      if (Array.isArray(data.file) && data.file.length > 0) {
+        const imageForm = new FormData();
+        data.file.forEach((file) => imageForm.append("files", file));
+        const imageUploadRes = await uploadFile(imageForm);
+        payload.images = imageUploadRes?.urls || [];
+      }
+
+      if (
+        data.audio &&
+        (data.audio instanceof Blob || typeof data.audio === "object")
+      ) {
+        const audioBlob =
+          data.audio instanceof Blob
+            ? data.audio
+            : new Blob([data.audio], { type: data.audio.type || "audio/webm" });
+        const audioFile = new File([audioBlob], "recording.webm", {
+          type: audioBlob.type,
+          lastModified: Date.now(),
+        });
+
+        const audioForm = new FormData();
+        audioForm.append("files", audioFile);
+        const audioUploadRes = await uploadFile(audioForm);
+        payload.audio = audioUploadRes?.urls?.[0] || null;
+      }
+
+      console.log("Final Payload:", payload);
+      setLoading(false);
+
+      // navigate(-1);
     } catch (err) {
-      console.error("Error submitting report:", err);
+      console.error("Submission failed:", err);
+      setLoading(false);
     }
   };
+
   return (
     <ProfileWrapper
       title=""
@@ -75,14 +114,25 @@ const MealDetailsScreen = () => {
               isArray
               type="meals"
             />
-            <Textarea name="comments" placeholder="Enter comment" />
+            <Input
+              name="name"
+              placeholder="Enter recipe name"
+              label="Recipe Name"
+            />
+            <Textarea
+              name="comments"
+              placeholder="Enter comment"
+              label="Comments"
+            />
             <AudioRecorderInput name="audio" />
+            <div className="h-8" />
           </form>
         </FormProvider>
-        <div className="w-full bg-white absolute bottom-10 left-0 px-6">
+        <div className="w-full bg-white absolute pb-8 pt-2 bottom-0 left-0 px-6">
           <Button
             label="Submit"
-            onClick={() => navigate("/compare-progress")}
+            loading={loading}
+            type="submit"
           />
         </div>
       </div>

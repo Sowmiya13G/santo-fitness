@@ -17,7 +17,6 @@ const Input = ({
   suffixIconAction,
   isLoading = false,
 }) => {
-  console.log('maxLength: ', maxLength);
   const {
     register,
     formState: { errors },
@@ -84,7 +83,7 @@ const Input = ({
       </div>
       {error && <p className="text-red-500 text-sm pl-2">{error}</p>}
 
-      <style jsx>{`
+      <style>{`
         .shimmer {
           background: linear-gradient(
             110deg,
