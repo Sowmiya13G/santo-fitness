@@ -7,14 +7,16 @@ import FrontActive from "../../assets/images/front-active.svg";
 import LeftActive from "../../assets/images/left-active.svg";
 import RightActive from "../../assets/images/right-active.svg";
 
+import Back from "../../assets/images/back.svg";
 import Front from "../../assets/images/front.svg";
 import Left from "../../assets/images/left.svg";
-import Back from "../../assets/images/back.svg";
 import Right from "../../assets/images/right.svg";
 
-import FrontCompleted from "../../assets/images/front-completed.svg";
+import {
+  default as BackCompleted,
+  default as FrontCompleted,
+} from "../../assets/images/front-completed.svg";
 import LeftCompleted from "../../assets/images/left-completed.svg";
-import BackCompleted from "../../assets/images/front-completed.svg";
 import RightCompleted from "../../assets/images/right-completed.svg";
 
 import ScreenHeader from "@/components/screen-header";
@@ -65,13 +67,13 @@ export default function CameraScreen() {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const streamRef = useRef(null);
-  const cameraReadyRef = useRef(false);
 
   const [facingMode, setFacingMode] = useState("environment");
   const [flashOn, setFlashOn] = useState(false);
   const [capturedImages, setCapturedImages] = useState({});
   const [selectedPose, setSelectedPose] = useState("Front");
   const [isUploading, setIsUploading] = useState(false);
+  const [isCameraReady, setIsCameraReady] = useState(false);
 
   const allCaptured = Object.keys(capturedImages).length === poses.length;
   const isDisabled = allCaptured ? false : capturedImages[selectedPose];
@@ -94,12 +96,12 @@ export default function CameraScreen() {
       if (videoRef.current) {
         videoRef.current.srcObject = newStream;
         videoRef.current.play();
-        cameraReadyRef.current = true;
+        setIsCameraReady(true);
       }
       streamRef.current = newStream;
     } catch (err) {
       console.error("Error accessing camera:", err);
-      cameraReadyRef.current = false;
+      setIsCameraReady(false);
     }
   };
 
@@ -112,6 +114,7 @@ export default function CameraScreen() {
     if (videoRef.current) {
       videoRef.current.srcObject = null;
     }
+    setIsCameraReady(false);
   };
 
   const toggleFlash = async () => {
@@ -234,7 +237,7 @@ export default function CameraScreen() {
 
         <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 w-[80%] flex items-center justify-evenly gap-6 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 z-10">
           <button
-            disabled={!cameraReadyRef.current}
+            disabled={!isCameraReady}
             onClick={toggleFlash}
             className="text-white text-2xl"
           >
@@ -245,14 +248,14 @@ export default function CameraScreen() {
             onClick={allCaptured ? handleUpload : capturePhoto}
             className="bg-white p-3 rounded-full border-4 border-white text-red-600"
             aria-label={allCaptured ? "Upload Images" : "Capture Photo"}
-            disabled={!cameraReadyRef.current || isDisabled}
+            disabled={!isCameraReady || isDisabled}
           >
             {allCaptured ? <FaUpload size={23} /> : <FaCamera size={24} />}
           </button>
 
           <button
             onClick={handleRetake}
-            disabled={!cameraReadyRef.current}
+            disabled={!isCameraReady}
             className="text-white text-xl"
           >
             <FaRedo />
@@ -286,7 +289,6 @@ export default function CameraScreen() {
                     ? "bg-field_primary border-icon border"
                     : "bg-white/20"
                 }`}
-                disabled={!cameraReadyRef.current}
               >
                 <img
                   src={imageSrc}
