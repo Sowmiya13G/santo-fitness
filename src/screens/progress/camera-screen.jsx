@@ -65,6 +65,7 @@ export default function CameraScreen() {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const streamRef = useRef(null);
+  const cameraReadyRef = useRef(false);
 
   const [facingMode, setFacingMode] = useState("environment");
   const [flashOn, setFlashOn] = useState(false);
@@ -86,6 +87,7 @@ export default function CameraScreen() {
 
   const startCamera = async () => {
     stopCamera();
+    cameraReadyRef.current = false;
     try {
       const newStream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode },
@@ -93,10 +95,12 @@ export default function CameraScreen() {
       if (videoRef.current) {
         videoRef.current.srcObject = newStream;
         videoRef.current.play();
+        cameraReadyRef.current = true;
       }
       streamRef.current = newStream;
     } catch (err) {
       console.error("Error accessing camera:", err);
+      cameraReadyRef.current = false;
     }
   };
 
@@ -114,16 +118,16 @@ export default function CameraScreen() {
   const toggleFlash = async () => {
     const stream = streamRef.current;
     if (!stream) return;
-  
+
     const [videoTrack] = stream.getVideoTracks();
     if (!videoTrack) return;
-  
+
     const capabilities = videoTrack.getCapabilities?.();
     if (!capabilities?.torch) {
       alert("Flash not supported on this device/browser.");
       return;
     }
-  
+
     try {
       await videoTrack.applyConstraints({
         advanced: [{ torch: !flashOn }],
@@ -134,7 +138,6 @@ export default function CameraScreen() {
       alert("Failed to toggle flash. It may not be supported or allowed.");
     }
   };
-  
 
   const capturePhoto = () => {
     const video = videoRef.current;
@@ -231,7 +234,11 @@ export default function CameraScreen() {
         <canvas ref={canvasRef} className="hidden" />
 
         <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 w-[80%] flex items-center justify-evenly gap-6 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 z-10">
-          <button onClick={toggleFlash} className="text-white text-2xl">
+          <button
+            disabled={!cameraReadyRef.current}
+            onClick={toggleFlash}
+            className="text-white text-2xl"
+          >
             {flashOn ? <IoMdFlashOff /> : <IoMdFlash />}
           </button>
 
@@ -239,12 +246,16 @@ export default function CameraScreen() {
             onClick={allCaptured ? handleUpload : capturePhoto}
             className="bg-white p-3 rounded-full border-4 border-white text-red-600"
             aria-label={allCaptured ? "Upload Images" : "Capture Photo"}
-            disabled={isDisabled}
+            disabled={!cameraReadyRef.current || isDisabled}
           >
             {allCaptured ? <FaUpload size={23} /> : <FaCamera size={24} />}
           </button>
 
-          <button onClick={handleRetake} className="text-white text-xl">
+          <button
+            onClick={handleRetake}
+            disabled={!cameraReadyRef.current}
+            className="text-white text-xl"
+          >
             <FaRedo />
           </button>
         </div>
@@ -276,6 +287,7 @@ export default function CameraScreen() {
                     ? "bg-field_primary border-icon border"
                     : "bg-white/20"
                 }`}
+                disabled={!cameraReadyRef.current}
               >
                 <img
                   src={imageSrc}
