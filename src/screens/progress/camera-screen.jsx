@@ -3,13 +3,19 @@ import { FaCamera, FaRedo, FaUpload } from "react-icons/fa";
 import { IoMdFlash, IoMdFlashOff } from "react-icons/io";
 
 import BackActive from "../../assets/images/back-active.svg";
-import Back from "../../assets/images/back.svg";
 import FrontActive from "../../assets/images/front-active.svg";
-import Front from "../../assets/images/front.svg";
 import LeftActive from "../../assets/images/left-active.svg";
-import Left from "../../assets/images/left.svg";
 import RightActive from "../../assets/images/right-active.svg";
+
+import Front from "../../assets/images/front.svg";
+import Left from "../../assets/images/left.svg";
+import Back from "../../assets/images/back.svg";
 import Right from "../../assets/images/right.svg";
+
+import FrontCompleted from "../../assets/images/front-completed.svg";
+import LeftCompleted from "../../assets/images/left-completed.svg";
+import BackCompleted from "../../assets/images/front-completed.svg";
+import RightCompleted from "../../assets/images/right-completed.svg";
 
 import ScreenHeader from "@/components/screen-header";
 import { GradientSpinner } from "@/components/ui/spin-loader";
@@ -17,10 +23,30 @@ import { uploadProgressData } from "@/features/progress/progress-api";
 import { uploadFile } from "@/features/user/user-api";
 
 const poses = [
-  { active: FrontActive, inactive: Front, pose: "Front" },
-  { active: RightActive, inactive: Right, pose: "Right" },
-  { active: BackActive, inactive: Back, pose: "Back" },
-  { active: LeftActive, inactive: Left, pose: "Left" },
+  {
+    active: FrontActive,
+    inactive: Front,
+    completed: FrontCompleted,
+    pose: "Front",
+  },
+  {
+    active: RightActive,
+    inactive: Right,
+    completed: RightCompleted,
+    pose: "Right",
+  },
+  {
+    active: BackActive,
+    inactive: Back,
+    completed: BackCompleted,
+    pose: "Back",
+  },
+  {
+    active: LeftActive,
+    inactive: Left,
+    completed: LeftCompleted,
+    pose: "Left",
+  },
 ];
 
 function base64ToFile(dataUrl, filename) {
@@ -88,28 +114,27 @@ export default function CameraScreen() {
   const toggleFlash = async () => {
     const stream = streamRef.current;
     if (!stream) return;
-
-    const videoTrack = stream
-      .getVideoTracks()
-      .find((track) => track.getSettings().facingMode === facingMode);
-
+  
+    const [videoTrack] = stream.getVideoTracks();
     if (!videoTrack) return;
-
-    const capabilities = videoTrack.getCapabilities();
-    if (!capabilities.torch) {
-      alert("Flash not supported on this device");
+  
+    const capabilities = videoTrack.getCapabilities?.();
+    if (!capabilities?.torch) {
+      alert("Flash not supported on this device/browser.");
       return;
     }
-
+  
     try {
       await videoTrack.applyConstraints({
         advanced: [{ torch: !flashOn }],
       });
       setFlashOn((prev) => !prev);
     } catch (err) {
-      console.error("Failed to toggle flash:", err);
+      console.error("Torch toggle failed:", err);
+      alert("Failed to toggle flash. It may not be supported or allowed.");
     }
   };
+  
 
   const capturePhoto = () => {
     const video = videoRef.current;
@@ -224,31 +249,42 @@ export default function CameraScreen() {
           </button>
         </div>
       </div>
-
+      <div className="h-4" />
       <div className="w-full absolute bottom-0 flex flex-col left-0 bg-primary-gradient">
         <div className="flex gap-4 px-2 py-5 rounded-full h-full w-full justify-evenly z-10">
-          {poses.map(({ active, inactive, pose }) => (
-            <button
-              key={pose}
-              onClick={() => {
-                setSelectedPose(pose);
-                if (!capturedImages[pose]) {
-                  startCamera();
-                }
-              }}
-              className={`w-14 h-20 flex items-center justify-center rounded-lg transition-all duration-200 ${
-                selectedPose === pose
-                  ? "bg-field_primary border-icon border"
-                  : "bg-white/20"
-              }`}
-            >
-              <img
-                src={selectedPose === pose ? active : inactive}
-                alt={pose}
-                className="w-8 h-16 object-contain"
-              />
-            </button>
-          ))}
+          {poses.map(({ active, inactive, completed, pose }) => {
+            const isSelected = selectedPose === pose;
+            const isCompleted = !!capturedImages[pose];
+
+            let imageSrc = inactive;
+            if (isCompleted) {
+              imageSrc = completed;
+            } else if (isSelected) {
+              imageSrc = active;
+            }
+            return (
+              <button
+                key={pose}
+                onClick={() => {
+                  setSelectedPose(pose);
+                  if (!capturedImages[pose]) {
+                    startCamera();
+                  }
+                }}
+                className={`w-14 h-20 flex items-center justify-center rounded-lg transition-all duration-200 ${
+                  selectedPose === pose
+                    ? "bg-field_primary border-icon border"
+                    : "bg-white/20"
+                }`}
+              >
+                <img
+                  src={imageSrc}
+                  alt={pose}
+                  className="w-8 h-16 object-contain"
+                />
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>
