@@ -21,3 +21,11 @@ export const uploadProgressData = async (formData) => {
   );
   return response.data;
 };
+
+export const uploadBodyProgressData = async (data) => {
+  const response = await axiosInstance.post(
+    API_ENDPOINTS.PROGRESS.BODY_PROGRESS,
+    data
+  );
+  return response.data;
+};

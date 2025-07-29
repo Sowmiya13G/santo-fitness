@@ -22,8 +22,9 @@ import RightCompleted from "../../assets/images/right-completed.svg";
 
 import ScreenHeader from "@/components/screen-header";
 import { GradientSpinner } from "@/components/ui/spin-loader";
-import { uploadProgressData } from "@/features/progress/progress-api";
+import { uploadBodyProgressData } from "@/features/progress/progress-api";
 import { uploadFile } from "@/features/user/user-api";
+import { showToast } from "@/components/toast";
 
 const poses = [
   {
@@ -207,7 +208,6 @@ export default function CameraScreen() {
       });
 
       const uploadResponse = await uploadFile(formData);
-      console.log("Upload success:", uploadResponse);
 
       const imagePayload = entries.map(({ pose }, index) => ({
         url: uploadResponse?.urls[index],
@@ -219,8 +219,12 @@ export default function CameraScreen() {
         // note: "Week 1 - visible muscle definition"
       };
 
-      const result = await uploadProgressData(finalPayload);
-      console.log("Metadata sent:", result);
+      const result = await uploadBodyProgressData(finalPayload);
+      if (result?.progress) {
+        navigate(-1);
+        setIsUploading(false);
+        showToast("success","Progress uploaded successfully!")
+      }
     } catch (err) {
       console.error("File upload or metadata sending failed:", err);
       setIsUploading(false);
@@ -264,7 +268,10 @@ export default function CameraScreen() {
               if (allCaptured) {
                 handleUpload();
               } else if (capturedImages[selectedPose]) {
-                console.log('capturedImages[selectedPose]: ', capturedImages[selectedPose]);
+                console.log(
+                  "capturedImages[selectedPose]: ",
+                  capturedImages[selectedPose]
+                );
                 const currentIndex = poses.findIndex(
                   (p) => p.pose === selectedPose
                 );
@@ -273,11 +280,14 @@ export default function CameraScreen() {
                     (p, i) => i > currentIndex && !capturedImages[p.pose]
                   ) || poses.find((p) => !capturedImages[p.pose]);
                 if (nextUncaptured) {
-                  setSelectedPose(nextUncaptured.pose); 
+                  setSelectedPose(nextUncaptured.pose);
                   console.log("nextUncaptured.pose: ", nextUncaptured.pose);
                 }
               } else {
-                console.log('capturedImages[selectedPose]:else ', capturedImages[selectedPose]);
+                console.log(
+                  "capturedImages[selectedPose]:else ",
+                  capturedImages[selectedPose]
+                );
                 capturePhoto();
               }
             }}
