@@ -87,7 +87,6 @@ export default function CameraScreen() {
 
   const startCamera = async () => {
     stopCamera();
-    cameraReadyRef.current = false;
     try {
       const newStream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode },
