@@ -136,9 +136,9 @@ const AudioRecorderInput = ({ name = "audio" }) => {
       <div
         className={`${
           audioUrl
-            ? "bg-red-700 text-white shadow-lg"
-            : "bg-gray-100 text-gray-700"
-        } rounded-2xl px-4 h-14 w-full flex flex-col gap-3`}
+            ? " text-white shadow-lg"
+            : " text-gray-700"
+        } rounded-2xl px-4 h-14 w-full flex flex-col gap-3 bg-primary-gradient`}
       >
         <div className="flex  h-14 items-center justify-between gap-4">
           {!audioUrl && !isRecording && (

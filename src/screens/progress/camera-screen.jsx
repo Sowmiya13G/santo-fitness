@@ -193,19 +193,19 @@ export default function CameraScreen() {
           <img
             src={capturedImages[selectedPose]}
             alt="Captured"
-            className="h-full w-full object-cover scale-x-[-1]"
+            className="h-full w-full object-cover scale-x-[1]"
           />
         ) : (
           <video
             ref={videoRef}
             autoPlay
             playsInline
-            className="h-full w-full object-cover scale-x-[-1]"
+            className="h-full w-full object-cover scale-x-[1]"
           />
         )}
         <canvas ref={canvasRef} className="hidden" />
 
-        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 w-[80%] flex items-center justify-evenly gap-6 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 z-10">
+        <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 w-[80%] flex items-center justify-evenly gap-6 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 z-10">
           <button onClick={toggleFlash} className="text-white text-2xl">
             {flashOn ? <IoMdFlashOff /> : <IoMdFlash />}
           </button>
