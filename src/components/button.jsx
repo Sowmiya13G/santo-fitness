@@ -16,7 +16,7 @@ const Button = ({
   const isPrimary = variant === "primary";
 
   const baseStyles =
-    "px-6 py-3 rounded-full font-semibold shadow-md w-full flex items-center justify-center gap-2 h-16 focus:outline-none hover:border-0 focus:ring-0 hover:outline-none active:outline-none transition-opacity duration-300";
+    "px-6 py-2 rounded-full font-semibold shadow-md w-full flex items-center justify-center gap-2 h-16 focus:outline-none hover:border-0 focus:ring-0 hover:outline-none active:outline-none transition-opacity duration-300";
 
   const buttonClass = `  ${customClassName} ${baseStyles} ${
     isPrimary ? "bg-primary-gradient" : "bg-white"
