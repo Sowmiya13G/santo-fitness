@@ -156,7 +156,7 @@ const Recipes = () => {
             Meals Nutritions
           </p>
           <button
-            onClick={() => navigate("/meals-details", { state: mealsData })}
+            onClick={() => navigate("/diet-details", { state: mealsData })}
           >
             <p className="text-base font-medium text-gradient">View More</p>
           </button>

@@ -42,7 +42,9 @@ const UserCard = ({
   return (
     <div className="min-w-[100%] snap-center snap-always">
       <Card
-        className="relative text-white rounded-3xl p-4 shadow-lg w-full h-32 overflow-hidden"
+        className={`${
+          isSwipe ? "" : "py-6 h-[24%]"
+        } relative text-white rounded-3xl p-4 shadow-lg w-full h-32 overflow-hidden`}
         style={{ backgroundColor: bgColor }}
       >
         {/* Decorative bubbles */}
@@ -95,7 +97,9 @@ const UserCard = ({
                 }
                 alt={user?.name}
                 crossOrigin="anonymous"
-                className="rounded-full w-full h-full object-cover shadow-2xl"
+                className={`${
+                  isSwipe ? "object-cover" : "object-fit"
+                } rounded-full w-full h-full shadow-2xl`}
                 style={{ objectPosition: "0% 0%" }}
               />
             </div>
