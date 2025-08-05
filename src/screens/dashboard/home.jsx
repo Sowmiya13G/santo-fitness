@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 import AdminDashboard from "../home/admin-home";
 import ClientDashboard from "../home/client-home";
 import TrainerDashboard from "../home/trainer-home";
+import { logoutUser } from "@/utils/helper";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const { userData } = useSelector((state) => state.auth);
@@ -25,7 +27,9 @@ const Home = () => {
         return <div>Role not found</div>;
     }
   };
+  const navigate = useNavigate();
 
+  // logoutUser(dispatch, navigate)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchTopClient = async () => {
     const response = await getTopClient();
@@ -70,11 +74,11 @@ const Home = () => {
 
   useEffect(() => {
     fetchTopClient();
-    if (userData.role === "client") {
+    if (userData?.role === "client") {
       return;
     }
     fetchUsersList();
-  }, [fetchUsersList, userData.role]);
+  }, [fetchUsersList, userData?.role]);
   return (
     <div className="min-h-screen  bg-white w-screen overflow-scroll pb-10 hide-scrollbar">
       {renderHome(userData?.role)}

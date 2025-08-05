@@ -65,6 +65,7 @@ const DietDetailsScreen = () => {
             goal: x?.targetData,
             profileImg: x?.image,
           }}
+          key={y}
           onClick={() => navigate(`/meals-details?type=${x?.type}`)}
           isSwipe={false}
           buttonLabel={isClient ? "Upload Meals Image" : "View More"}

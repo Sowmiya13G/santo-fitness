@@ -36,7 +36,7 @@ const Recipes = () => {
   const { watch, setValue } = methods;
 
   const selectedUser = watch("person");
-
+  const isClient = userData?.role === "client";
   const filterItems = [
     "All",
     "Morning snacks",
@@ -48,7 +48,7 @@ const Recipes = () => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchData = async () => {
-    if (!selectedUser) return;
+    if (!isClient && !selectedUser) return;
     try {
       const formattedDate = format(selectedDate, "yyyy-MM-dd");
       const typeMap = {
@@ -64,7 +64,7 @@ const Recipes = () => {
       const params = {
         date: formattedDate,
         type,
-        userId: selectedUser,
+        userId: isClient ? userData?._id : selectedUser,
       };
 
       const res = await getDietProgress(params);

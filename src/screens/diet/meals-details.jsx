@@ -15,6 +15,8 @@ import ProfileWrapper from "@/components/profile-wrapper";
 
 import { uploadFile } from "@/features/user/user-api";
 import Workout from "../../assets/images/panCake.svg";
+import { createDailyLogs } from "@/features/daily-logs/daily-logs-api";
+import { showToast } from "@/components/toast";
 
 const MealDetailsScreen = () => {
   const { userData } = useSelector((state) => state.auth);
@@ -38,11 +40,11 @@ const MealDetailsScreen = () => {
       const payload = {
         type: type,
         name: data.name,
-        calories: userData?.targetCalories,
-        protein: userData?.targetProtein,
-        carbs: userData?.targetCarbs,
-        fat: userData?.targetFat,
-        fibre: userData?.targetFibre,
+        calories: Number(userData?.targetCalories),
+        protein: Number(userData?.targetProtein),
+        carbs: Number(userData?.targetCarbs),
+        fat: Number(userData?.targetFat),
+        // fibre: Number(userData?.targetFibre),
         comment: data.comments,
         images: [],
         voiceNote: null,
@@ -62,22 +64,26 @@ const MealDetailsScreen = () => {
         const audioBlob =
           data.audio instanceof Blob
             ? data.audio
-            : new Blob([data.audio], { type: data.audio.type || "audio/webm" });
+            : new Blob([data.audio], {
+                type: data?.audio?.type || "audio/mpeg",
+              });
         const audioFile = new File([audioBlob], "recording.webm", {
-          type: audioBlob.type,
+          type: "audio/mpeg",
           lastModified: Date.now(),
         });
 
         const audioForm = new FormData();
         audioForm.append("files", audioFile);
         const audioUploadRes = await uploadFile(audioForm);
-        payload.audio = audioUploadRes?.urls?.[0] || null;
+        payload.voiceNote = audioUploadRes?.urls?.[0] || null;
       }
 
-      console.log("Final Payload:", payload);
-      setLoading(false);
-
-      // navigate(-1);
+      const result = await createDailyLogs(payload);
+      if (result?.status === 200) {
+        setLoading(false);
+        showToast("success","Meals Uploaded Successfully!")
+        navigate(-1);
+      }
     } catch (err) {
       console.error("Submission failed:", err);
       setLoading(false);
@@ -126,15 +132,11 @@ const MealDetailsScreen = () => {
             />
             <AudioRecorderInput name="audio" />
             <div className="h-8" />
+            <div className="w-full bg-white absolute pb-8 pt-2 bottom-0 left-0 px-6">
+              <Button label="Submit" loading={loading} type="submit" />
+            </div>
           </form>
         </FormProvider>
-        <div className="w-full bg-white absolute pb-8 pt-2 bottom-0 left-0 px-6">
-          <Button
-            label="Submit"
-            loading={loading}
-            type="submit"
-          />
-        </div>
       </div>
     </ProfileWrapper>
   );

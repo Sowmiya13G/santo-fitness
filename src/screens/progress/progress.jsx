@@ -11,14 +11,12 @@ import ScreenHeader from "@/components/screen-header";
 import { getProgressData } from "@/features/progress/progress-api";
 import {
   FaAngleRight,
-  FaArrowLeft,
-  FaArrowRight,
   FaCamera,
-  FaDownload,
+  FaDownload
 } from "react-icons/fa";
+import { IoIosArrowBack, IoIosArrowForward, IoIosClose } from "react-icons/io";
 import Calendar from "../../assets/icons/calendar-icon.svg";
 import ReminderImage from "../../assets/images/reminder-image.svg";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 const ProgressScreen = () => {
   const { userData } = useSelector((state) => state.auth);
@@ -209,13 +207,13 @@ const ProgressScreen = () => {
             <button
               onClick={closeModal}
               type="button"
-              className="absolute top-0 right-0 text-gray-600 bg-white p-3 rounded-full w-12 h-12 hover:text-black text-xl font-bold"
+              className="absolute top-5 right-5 text-gray-600 bg-white p-1 rounded-full w-10 h-10 hover:text-black text-xl font-bold"
             >
-              ✕
+              <IoIosClose className="text-3xl"/>
             </button>
 
             <img
-              src={images[selectedImageIndex].url}
+              src={images[selectedImageIndex]?.url}
               alt={`Progress ${selectedImageIndex + 1}`}
               className="w-full max-h-[70vh] object-contain rounded"
             />
