@@ -65,7 +65,7 @@ const UserCard = ({
               {user?.name}
             </h2>
             <p
-              className="text-xs leading-none mb-2"
+              className="text-xs  mb-2"
               style={{ color: textColor }}
             >
               {user?.goal}

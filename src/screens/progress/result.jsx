@@ -74,11 +74,9 @@ const ResultScreen = () => {
     type.charAt(0).toUpperCase() + type.slice(1) + " Facing";
 
   return (
-    <div className="w-screen space-y-6 hide-scrollbar px-5 py-6">
-      <div className="absolute w-full bg-white">
-        <ScreenHeader title="Result" isBack />
-      </div>
-      <div className="h-5" />
+    <div className="w-screen space-y-6 hide-scrollbar px-4 py-6">
+      <ScreenHeader title="Result" isBack />
+      {/* <div className="h-5" /> */}
 
       <div className="flex flex-row items-center justify-between px-2">
         <p className="text-icon font-semibold text-xl capitalize">
@@ -87,12 +85,7 @@ const ResultScreen = () => {
         <p className="text-icon font-semibold text-xl capitalize">{endMonth}</p>
       </div>
       {loading ? (
-        <>
           <p className="text-center text-base text-icon">loading...!</p>
-          {/* <div className="absolute inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-            <GradientSpinner />
-          </div> */}
-        </>
       ) : (
         <div className="space-y-6 mt-6">
           {progressData.length === 2 ? (
@@ -101,7 +94,7 @@ const ResultScreen = () => {
                 <p className="text-sm font-medium text-icon text-center mb-3">
                   {formatTypeLabel(type)}
                 </p>
-                <div className="flex flex-row items-center justify-between w-full px-6">
+                <div className="flex flex-row items-center justify-between w-full ">
                   <img
                     src={getImageByType(startData, type)}
                     alt={`start-${type}`}
@@ -122,9 +115,9 @@ const ResultScreen = () => {
           )}
         </div>
       )}
-      <div className="w-full absolute bottom-10 left-0 px-6">
+      {/* <div className="w-full absolute bottom-10 left-0 px-6">
         <Button label="Back to Home" onClick={() => navigate("/home")} />
-      </div>
+      </div> */}
     </div>
   );
 };

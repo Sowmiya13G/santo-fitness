@@ -42,7 +42,7 @@ const UserCard = ({ user }) => {
           crossOrigin="anonymous"
           alt={user.name}
           className="w-full h-full object-cover"
-          style={{objectPosition:"0% 0%"}}
+          style={{ objectPosition: "0% 0%" }}
         />
       </div>
       <span
@@ -62,7 +62,7 @@ const RankCard = ({ label, data = [] }) => {
   return (
     <>
       <p className="text-gray-600 capitalize text-center ">{label}</p>
-      <div className="flex gap-4 overflow-x-scroll overflow-hidden hide-scrollbar snap-x snap-mandatory">
+      <div className="flex gap-4 overflow-x-scroll overflow-hidden hide-scrollbar space-y-0 snap-x snap-mandatory">
         {data.map((user) => (
           <UserCard key={user.userId} user={user} />
         ))}

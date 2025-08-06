@@ -11,6 +11,8 @@ const AudioRecorderInput = ({ name = "audio" }) => {
 
   const [isRecording, setIsRecording] = useState(false);
   const [audioBlob, setAudioBlob] = useState(null);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
   const [audioUrl, setAudioUrl] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [waveformData, setWaveformData] = useState([]);
@@ -26,45 +28,45 @@ const AudioRecorderInput = ({ name = "audio" }) => {
   const convertToMp3 = async (webmBlob) => {
     try {
       setIsConverting(true);
-      
+
       // Create audio context
-      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      
+      const audioContext = new (window.AudioContext ||
+        window.webkitAudioContext)();
+
       // Convert blob to array buffer
       const arrayBuffer = await webmBlob.arrayBuffer();
-      
+
       // Decode audio data
       const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-      
+
       // Create offline context for rendering
       const offlineContext = new OfflineAudioContext(
         audioBuffer.numberOfChannels,
         audioBuffer.length,
         audioBuffer.sampleRate
       );
-      
+
       // Create buffer source
       const source = offlineContext.createBufferSource();
       source.buffer = audioBuffer;
       source.connect(offlineContext.destination);
       source.start(0);
-      
+
       // Render the audio
       const renderedBuffer = await offlineContext.startRendering();
-      
+
       // Convert to WAV first (as intermediate step)
       const wavBlob = audioBufferToWav(renderedBuffer);
-      
+
       // For true MP3 conversion, you would need a library like lamejs
       // For now, we'll create a proper audio blob with MP3 mimetype
       // Note: This creates a WAV file but with MP3 extension for demonstration
-      const mp3Blob = new Blob([wavBlob], { type: 'audio/mp3' });
-      
+      const mp3Blob = new Blob([wavBlob], { type: "audio/mp3" });
+
       setIsConverting(false);
       return mp3Blob;
-      
     } catch (error) {
-      console.error('Error converting to MP3:', error);
+      console.error("Error converting to MP3:", error);
       setIsConverting(false);
       // Fallback to original blob
       return webmBlob;
@@ -78,18 +80,18 @@ const AudioRecorderInput = ({ name = "audio" }) => {
     const sampleRate = buffer.sampleRate;
     const arrayBuffer = new ArrayBuffer(44 + length * numberOfChannels * 2);
     const view = new DataView(arrayBuffer);
-    
+
     // WAV header
     const writeString = (offset, string) => {
       for (let i = 0; i < string.length; i++) {
         view.setUint8(offset + i, string.charCodeAt(i));
       }
     };
-    
-    writeString(0, 'RIFF');
+
+    writeString(0, "RIFF");
     view.setUint32(4, 36 + length * numberOfChannels * 2, true);
-    writeString(8, 'WAVE');
-    writeString(12, 'fmt ');
+    writeString(8, "WAVE");
+    writeString(12, "fmt ");
     view.setUint32(16, 16, true);
     view.setUint16(20, 1, true);
     view.setUint16(22, numberOfChannels, true);
@@ -97,21 +99,49 @@ const AudioRecorderInput = ({ name = "audio" }) => {
     view.setUint32(28, sampleRate * numberOfChannels * 2, true);
     view.setUint16(32, numberOfChannels * 2, true);
     view.setUint16(34, 16, true);
-    writeString(36, 'data');
+    writeString(36, "data");
     view.setUint32(40, length * numberOfChannels * 2, true);
-    
+
     // Convert float audio data to 16-bit PCM
     let offset = 44;
     for (let i = 0; i < length; i++) {
       for (let channel = 0; channel < numberOfChannels; channel++) {
-        const sample = Math.max(-1, Math.min(1, buffer.getChannelData(channel)[i]));
-        view.setInt16(offset, sample < 0 ? sample * 0x8000 : sample * 0x7FFF, true);
+        const sample = Math.max(
+          -1,
+          Math.min(1, buffer.getChannelData(channel)[i])
+        );
+        view.setInt16(
+          offset,
+          sample < 0 ? sample * 0x8000 : sample * 0x7fff,
+          true
+        );
         offset += 2;
       }
     }
-    
+
     return arrayBuffer;
   };
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const handleTimeUpdate = () => {
+      setCurrentTime(audio.currentTime);
+    };
+
+    const handleLoadedMetadata = () => {
+      setDuration(audio.duration);
+    };
+
+    audio.addEventListener("timeupdate", handleTimeUpdate);
+    audio.addEventListener("loadedmetadata", handleLoadedMetadata);
+
+    return () => {
+      audio.removeEventListener("timeupdate", handleTimeUpdate);
+      audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
+    };
+  }, [audioUrl]);
 
   const drawWaveform = (data, playedRatio = 0) => {
     const canvas = canvasRef.current;
@@ -133,7 +163,7 @@ const AudioRecorderInput = ({ name = "audio" }) => {
       const radius = barWidth / 2;
 
       ctx.beginPath();
-      ctx.fillStyle = i / bars <= playedRatio ? "#8E8E93" : "#FFF";
+      ctx.fillStyle = i / bars <= playedRatio ? "#ddd" : "#FFF";
 
       ctx.moveTo(x, centerY - barHeight + radius);
       ctx.arcTo(
@@ -186,29 +216,55 @@ const AudioRecorderInput = ({ name = "audio" }) => {
   useEffect(() => {
     if (waveformData.length > 0) drawWaveform(waveformData, 0);
   }, [waveformData]);
-
   const startRecording = async () => {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     const recorder = new MediaRecorder(stream);
     const chunks = [];
 
+    const audioContext = new (window.AudioContext ||
+      window.webkitAudioContext)();
+    const source = audioContext.createMediaStreamSource(stream);
+    const analyser = audioContext.createAnalyser();
+    analyser.fftSize = 256;
+
+    source.connect(analyser);
+
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+
+    // 👇 Start live waveform drawing
+    const drawLiveWaveform = () => {
+      if (!isRecording) return; // stop drawing if not recording
+
+      analyser.getByteTimeDomainData(dataArray);
+
+      // Use every 2nd value to reduce bars for better performance
+      const simplifiedData = Array.from(dataArray).filter(
+        (_, i) => i % 2 === 0
+      );
+      setWaveformData(simplifiedData);
+      drawWaveform(simplifiedData);
+      requestAnimationFrame(drawLiveWaveform);
+    };
+
+    drawLiveWaveform(); // start the loop
+
     recorder.ondataavailable = (e) => chunks.push(e.data);
+
     recorder.onstop = async () => {
       const webmBlob = new Blob(chunks, { type: "audio/webm" });
-      
-      // Convert to MP3
+
       const mp3Blob = await convertToMp3(webmBlob);
       const url = URL.createObjectURL(mp3Blob);
-      
+
       setAudioBlob(mp3Blob);
       setAudioUrl(url);
       setValue(name, mp3Blob);
       clearErrors(name);
 
-      // Generate waveform from original WebM for better compatibility
+      // (Optional) Generate waveform for playback
       const buffer = await webmBlob.arrayBuffer();
-      const audioCtx = new AudioContext();
-      const decoded = await audioCtx.decodeAudioData(buffer);
+      const decoded = await audioContext.decodeAudioData(buffer);
       const rawData = decoded.getChannelData(0);
       const samples = Math.floor(275 / (barWidth + gap));
       const blockSize = Math.floor(rawData.length / samples);
@@ -251,17 +307,25 @@ const AudioRecorderInput = ({ name = "audio" }) => {
     setValue(name, null);
   };
 
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60)
+      .toString()
+      .padStart(2, "0");
+    return `${minutes}:${secs}`;
+  };
+
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 relative">
       <div
         className={`${
-          audioUrl ? " text-white shadow-lg" : " text-gray-700"
-        } rounded-2xl px-4 h-14 w-full flex flex-col gap-3 bg-primary-gradient`}
+          audioUrl ? " text-white shadow-lg" : " text-gray-200"
+        } rounded-2xl px-4 h-14 w-full flex flex-col gap-3 bg-secondary`}
       >
         <div className="flex h-14 items-center justify-between gap-4">
           {!audioUrl && !isRecording && !isConverting && (
             <button type="button" onClick={startRecording}>
-              <FaMicrophone color="white"/>
+              <FaMicrophone color="white" />
             </button>
           )}
 
@@ -271,7 +335,7 @@ const AudioRecorderInput = ({ name = "audio" }) => {
               onClick={stopRecording}
               className="animate-pulse"
             >
-              <FaStop color="white"/>
+              <FaStop color="white" />
             </button>
           )}
 
@@ -279,6 +343,12 @@ const AudioRecorderInput = ({ name = "audio" }) => {
             <div className="flex items-center gap-2">
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
               <span className="text-white text-sm">Converting to MP3...</span>
+            </div>
+          )}
+          {isRecording && (
+            <div className="flex items-center gap-2">
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+              <span className="text-white text-sm">Recording...</span>
             </div>
           )}
 
@@ -297,6 +367,11 @@ const AudioRecorderInput = ({ name = "audio" }) => {
               </button>
 
               <canvas ref={canvasRef} width={275} height={50} className="" />
+
+              {/* NEW: Show current playback time */}
+              <span className="text-white text-sm  text-left absolute bottom-0">
+                {formatTime(isPlaying ? currentTime : duration)} 
+              </span>
 
               <button
                 type="button"

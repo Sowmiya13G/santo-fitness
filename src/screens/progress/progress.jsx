@@ -9,11 +9,7 @@ import Dropdown from "@/components/input/dropdown";
 import ScreenHeader from "@/components/screen-header";
 // others
 import { getProgressData } from "@/features/progress/progress-api";
-import {
-  FaAngleRight,
-  FaCamera,
-  FaDownload
-} from "react-icons/fa";
+import { FaAngleRight, FaCamera, FaDownload } from "react-icons/fa";
 import { IoIosArrowBack, IoIosArrowForward, IoIosClose } from "react-icons/io";
 import Calendar from "../../assets/icons/calendar-icon.svg";
 import ReminderImage from "../../assets/images/reminder-image.svg";
@@ -108,14 +104,14 @@ const ProgressScreen = () => {
   }, []);
 
   return (
-    <div className="w-full space-y-6 hide-scrollbar p-4 h-[90vh]">
+    <div className="w-screen space-y-6 hide-scrollbar px-5 py-6 mb-10">
+      <ScreenHeader title="Progress Photo" />
       <div
         className="bg-primary-gradient w-14 h-14 rounded-full flex items-center justify-center fixed bottom-[13%] right-2"
         onClick={() => navigate("/camera-screen")}
       >
         <FaCamera className="text-white text-xl" />
       </div>
-      <ScreenHeader title="Progress Photo" />
 
       <div className="relative bg-red_30 py-7 px-6 rounded-3xl flex items-center">
         <div className="w-3/4 space-y-3">
@@ -128,7 +124,7 @@ const ProgressScreen = () => {
             customClassName="!w-36 !h-12"
             onClick={() => {
               if (isClient) {
-                navigate(`/compare-progress}`);
+                navigate(`/compare-progress`);
               } else {
                 navigate(`/compare-progress?person=${watch("person")}`);
               }
@@ -175,7 +171,7 @@ const ProgressScreen = () => {
         <p className="text-center text-base text-icon">loading...!</p>
       ) : (
         <>
-          <p className="text-left text-md font-semibold text-font_primary !my-2">
+          <p className="text-left text-md font-semibold text-font_primary !my-4">
             Gallery
           </p>
 
@@ -209,7 +205,7 @@ const ProgressScreen = () => {
               type="button"
               className="absolute top-5 right-5 text-gray-600 bg-white p-1 rounded-full w-10 h-10 hover:text-black text-xl font-bold"
             >
-              <IoIosClose className="text-3xl"/>
+              <IoIosClose className="text-3xl" />
             </button>
 
             <img
