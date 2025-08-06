@@ -369,7 +369,7 @@ const AudioRecorderInput = ({ name = "audio" }) => {
               <canvas ref={canvasRef} width={275} height={50} className="" />
 
               {/* NEW: Show current playback time */}
-              <span className="text-white text-sm  text-left absolute bottom-0">
+              <span className="text-white text-xs  text-left absolute bottom-0">
                 {formatTime(isPlaying ? currentTime : duration)} 
               </span>
 
