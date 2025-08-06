@@ -18,7 +18,7 @@ import Workout from "../../assets/images/panCake.svg";
 import { createDailyLogs } from "@/features/daily-logs/daily-logs-api";
 import { showToast } from "@/components/toast";
 
-const MealDetailsScreen = () => {
+const UploadMealsScreen = () => {
   const { userData } = useSelector((state) => state.auth);
   const isClient = userData?.role === "client";
   const navigate = useNavigate();
@@ -81,7 +81,7 @@ const MealDetailsScreen = () => {
       const result = await createDailyLogs(payload);
       if (result?.status === 200) {
         setLoading(false);
-        showToast("success", "Meals Uploaded Successfully!");
+        showToast("success","Meals Uploaded Successfully!")
         navigate(-1);
       }
     } catch (err) {
@@ -95,23 +95,42 @@ const MealDetailsScreen = () => {
       title=""
       image={Workout}
       bgColor="bg-red_25"
-      imgClass={"scale-150 rounded-none object-contain"}
+      // imgClass={"scale-150 rounded-none object-contain"}
     >
       <div className="w-screen min-h-screen px-5 py-4">
         <p className="text-icon text-sm text-center">
           focus on regular physical activity, a balanced diet, sufficient sleep,
           and stress management
         </p>
-        {/* <p className="text-font_primary text-base font-medium text-center my-5">
+        <p className="text-font_primary text-base font-medium text-center my-5">
           focus on regular physical activity, a balanced diet, sufficient sleep,
           and stress management
-        </p> */}
+        </p>
         <FormProvider {...methods}>
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="space-y-6 pb-10 mb-3"
             encType="multipart/form-data"
           >
+            <UploadInput
+              name="file"
+              label="Upload Report (PDF, PNG, JPG)"
+              accept=".pdf,.png,.jpg,.jpeg"
+              placeholder={"Upload Image"}
+              isArray
+              type="meals"
+            />
+            <Input
+              name="name"
+              placeholder="Enter recipe name"
+              label="Recipe Name"
+            />
+            <Textarea
+              name="comments"
+              placeholder="Enter comment"
+              label="Comments"
+            />
+            <AudioRecorderInput name="audio" />
             <div className="h-8" />
             <div className="w-full bg-white absolute pb-8 pt-2 bottom-0 left-0 px-6">
               <Button label="Submit" loading={loading} type="submit" />
@@ -123,4 +142,4 @@ const MealDetailsScreen = () => {
   );
 };
 
-export default MealDetailsScreen;
+export default UploadMealsScreen;

@@ -38,6 +38,7 @@ import ResultScreen from "@/screens/progress/result";
 // Diet Screens
 import DietDetailsScreen from "@/screens/diet/diet-details";
 import MealDetailsScreen from "@/screens/diet/meals-details";
+import UploadMealsScreen from "@/screens/diet/upload-meals";
 
 export default function AppRoutes() {
   const { isLoggedIn } = useAuth();
@@ -85,6 +86,7 @@ export default function AppRoutes() {
           <Route path="/result" element={<ResultScreen />} />
 
           {/* Diet */}
+          <Route path="/meals-upload" element={<UploadMealsScreen />} />
           <Route path="/meals-details" element={<MealDetailsScreen />} />
 
           {/* Notifications */}
@@ -97,8 +99,7 @@ export default function AppRoutes() {
             <Route path="/camera" element={<Camera />} />
             <Route path="/recipes" element={<Recipes />} />
             <Route path="/diet-details" element={<DietDetailsScreen />} />
-          <Route path="/profile" element={<Profile />} />
-         
+            <Route path="/profile" element={<Profile />} />
           </Route>
         </>
       )}
