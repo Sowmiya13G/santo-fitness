@@ -40,14 +40,10 @@ const UploadMealsScreen = () => {
       const payload = {
         type: type,
         name: data.name,
-        calories: Number(userData?.targetCalories),
-        protein: Number(userData?.targetProtein),
-        carbs: Number(userData?.targetCarbs),
-        fat: Number(userData?.targetFat),
-        // fibre: Number(userData?.targetFibre),
         comment: data.comments,
         images: [],
         voiceNote: null,
+        isNutrientAdded :false
       };
 
       if (Array.isArray(data.file) && data.file.length > 0) {

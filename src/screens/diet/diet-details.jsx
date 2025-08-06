@@ -3,8 +3,7 @@ import React, { useEffect } from "react";
 import { format } from "date-fns";
 import "react-datepicker/dist/react-datepicker.css";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-
+import { useLocation, useNavigate } from "react-router-dom";
 // components
 import UserCard from "@/components/card/user-card";
 import ScreenHeader from "@/components/screen-header";
@@ -17,20 +16,23 @@ import Lunch from "../../assets/images/lunch-img.svg";
 import MorningSnack from "../../assets/images/morning-snacks.svg";
 
 const DietDetailsScreen = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const { data, filter } = location.state || {};
   const { userData } = useSelector((state) => state.auth);
   const isClient = userData?.role === "client";
-  const navigate = useNavigate();
   const [mealsData, setMealsData] = React.useState([]);
 
   const fetchData = async () => {
     try {
-      const formattedDate = format(new Date(), "yyyy-MM-dd");
+      const formattedDate = format(filter?.date, "yyyy-MM-dd");
       const type = "all";
 
       const params = {
         date: formattedDate,
         type,
-        userId: userData?._id,
+        userId: isClient ? userData?._id : filter?.user,
       };
 
       const res = await getDietProgress(params);
@@ -44,8 +46,10 @@ const DietDetailsScreen = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
   const availableMealTypes =
     mealsData[0]?.meals?.map((meal) => meal.type) || [];
+
   const calorieSplit = {
     breakfast: 0.25,
     morning_snack: 0.1,
@@ -55,10 +59,18 @@ const DietDetailsScreen = () => {
   };
 
   const getSplitTargetData = (type) => {
-    const cal = Math.round(userData?.targetCalories * calorieSplit[type]);
-    const protein = Math.round(userData?.targetProtein * calorieSplit[type]);
-    const carbs = Math.round(userData?.targetCarbs * calorieSplit[type]);
-    const fat = Math.round(userData?.targetFat * calorieSplit[type]);
+    const cal = userData?.targetCalories
+      ? Math.round(userData?.targetCalories * calorieSplit[type])
+      : 0;
+    const protein = userData?.targetProtein
+      ? Math.round(userData?.targetProtein * calorieSplit[type])
+      : 0;
+    const carbs = userData?.targetCarbs
+      ? Math.round(userData?.targetCarbs * calorieSplit[type])
+      : 0;
+    const fat = userData?.targetFat
+      ? Math.round(userData?.targetFat * calorieSplit[type])
+      : 0;
 
     return `${cal} Calories | ${protein} Protein | ${carbs} Carbs | ${fat} Fat`;
   };
@@ -100,12 +112,19 @@ const DietDetailsScreen = () => {
     <div className="w-screen space-y-6 hide-scrollbar px-5 py-6 mb-10">
       <ScreenHeader title="Diet Details" />
       {sections?.map((x, y) => {
-        const isMealUploaded = availableMealTypes.includes(x.type);
-        console.log("isMealUploaded: ", isMealUploaded);
-        const buttonLabel = isMealUploaded
-          ? "View Details"
-          : isClient
-          ? "Upload Meals Image"
+        const isMealUploaded = availableMealTypes.includes(x?.type);
+        const mealForType = mealsData[0]?.meals?.find((meal) => {
+          return meal?.type == x?.type;
+        });
+        const isNutrientAdded = mealForType?.isNutrientAdded;
+        const buttonLabel = isClient
+          ? isMealUploaded
+            ? "View Details"
+            : "Upload Meals Image"
+          : !isClient
+          ? isNutrientAdded
+            ? "View Details"
+            : "Review"
           : "View More";
 
         const navigateTo = isMealUploaded ? "meals-details" : "meals-upload";
