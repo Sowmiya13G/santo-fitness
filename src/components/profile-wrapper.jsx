@@ -76,7 +76,7 @@ export default function ProfileWrapper({
 
   return (
     <div className={`flex flex-col h-full ${bgColor} relative`}>
-      <div className="h-10" />
+      {/* <div className="h-10" /> */}
       <ScreenHeader title={title} isBack={isBack} titleColor="text-white" />
       <div className="flex justify-center">
         <img

@@ -95,7 +95,7 @@ const UploadMealsScreen = () => {
       title=""
       image={Workout}
       bgColor="bg-red_25"
-      // imgClass={"scale-150 rounded-none object-contain"}
+      imgClass={"scale-150 rounded-none object-contain"}
     >
       <div className="w-screen min-h-screen px-5 py-4">
         <p className="text-icon text-sm text-center">
