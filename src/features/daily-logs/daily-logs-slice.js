@@ -5,6 +5,7 @@ const dailySlice = createSlice({
   initialState: {
     todayLogs: [],
     weeklyLogs: [],
+    pendingLogsList: [],
   },
   reducers: {
     setTodayLogs(state, action) {
@@ -13,8 +14,12 @@ const dailySlice = createSlice({
     setWeekLogs(state, action) {
       state.weeklyLogs = action.payload;
     },
+    setPendingLogsList(state, action) {
+      state.pendingLogsList = action.payload;
+    },
   },
 });
 
-export const { setTodayLogs, setWeekLogs } = dailySlice.actions;
+export const { setTodayLogs, setWeekLogs, setPendingLogsList } =
+  dailySlice.actions;
 export default dailySlice.reducer;

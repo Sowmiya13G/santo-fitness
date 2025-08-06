@@ -18,6 +18,7 @@ const API_ENDPOINTS = {
   },
   DAILY_LOGS: {
     GET_DIET_PROGRESS: "/diet-progress",
+    GET_DIET_PENDING_PROGRESS: "/daily-logs/pending",
     CREATE_DAILY_LOGS: "/daily-logs",
   },
   REPORT: {

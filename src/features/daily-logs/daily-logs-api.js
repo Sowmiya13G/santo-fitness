@@ -17,3 +17,10 @@ export const getDietProgress = async (params = {}) => {
 
   return response.data.data;
 };
+export const getDietPendingProgress = async () => {
+  const response = await axiosInstance.get(
+    API_ENDPOINTS.DAILY_LOGS.GET_DIET_PENDING_PROGRESS
+  );
+
+  return response.data.data;
+};
