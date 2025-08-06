@@ -23,6 +23,8 @@ export default function ProfileWrapper({
   const [isUploading, setIsUploading] = useState(false);
   const { userData } = useSelector((state) => state.auth);
   const file = watch("profileImg");
+  const [scrollY, setScrollY] = useState(0);
+
   const [previewImage, setPreviewImage] = useState(image);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -73,22 +75,46 @@ export default function ProfileWrapper({
       setShowModal(false);
     }
   };
+  const maxScroll = 100; // Adjust to control fade-out speed
+  const scrollRatio = Math.min(scrollY / maxScroll, 1);
+
+  const containerHeight = `${200 - scrollRatio * 200}px`; // from 200px to 0px
+  const imageOpacity = 1 - scrollRatio;
+  const imageScale = 1 - scrollRatio * 0.1; // Optional: scale down a bit
 
   return (
     <div className={`flex flex-col h-full ${bgColor} relative`}>
-      {/* <div className="h-10" /> */}
-      <ScreenHeader title={title} isBack={isBack} titleColor="text-white" />
-      <div className="flex justify-center">
+      <div className="h-14" />
+      <ScreenHeader
+        title={title}
+        isBack={isBack}
+        titleColor="text-white"
+        headerStyle="!bg-transparent"
+      />
+      <div
+        className="flex justify-center relative transition-all duration-300 ease-in-out"
+        style={{
+          height: containerHeight,
+          opacity: imageOpacity,
+        }}
+      >
         <img
           src={previewImage ? previewImage : image}
           alt="profile"
           onClick={handleImageClick}
-          className={`cursor-pointer ${imgClass} w-44 h-44 object-cover my-4 rounded-full`}
-          style={{ objectPosition: "0% 0%" }}
+          className={`cursor-pointer ${imgClass} w-44 h-44 object-cover rounded-full transition-all duration-300`}
+          style={{
+            objectPosition: "0% 0%",
+            opacity: imageOpacity,
+            transform: `scale(${imageScale})`,
+          }}
         />
       </div>
 
-      <div className="flex-1 overflow-y-auto space-y-4 bg-white rounded-t-3xl z-10">
+      <div
+        className="flex-1 overflow-y-auto space-y-4 bg-white rounded-t-3xl z-10 duration-300"
+        onScroll={(e) => setScrollY(e.target.scrollTop)}
+      >
         <div className="flex justify-center pt-2">
           <div className="bg-border_secondary h-1.5 w-28 rounded-full" />
         </div>
