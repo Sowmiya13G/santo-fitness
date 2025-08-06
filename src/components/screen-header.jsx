@@ -22,7 +22,7 @@ export default function ScreenHeader({
     <>
       {isHome ? (
         <div
-          className={`w-full z-50 text-md absolute left-0 top-0 flex items-center justify-between px-4 h-14 bg-white/70 backdrop-blur-sm ${headerStyle}`}
+          className={`w-full z-50 text-md absolute left-0 top-0 flex items-center justify-between px-4 h-20 bg-white/70 backdrop-blur-sm ${headerStyle}`}
         >
           <div>
             <p className="text-base text-icon">Welcome Back,</p>
@@ -57,7 +57,7 @@ export default function ScreenHeader({
           </p>
         </div>
       )}
-      <div className="h-1"></div>
+      <div className="h-2"></div>
     </>
   );
 }

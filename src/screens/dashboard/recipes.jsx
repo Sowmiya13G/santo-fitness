@@ -128,7 +128,6 @@ const Recipes = () => {
     <div className="h-full w-screen bg-white space-y-6 py-5 px-5 overflow-y-auto overflow-hidden mb-5">
       <FormProvider {...methods}>
         <ScreenHeader title="Meals Tracker" />
-        <HorizontalCalendar onSelectDate={(date) => setSelectedDate(date)} />
         {userData.role !== "client" && (
           <Dropdown
             name="person"
@@ -141,6 +140,8 @@ const Recipes = () => {
             placeholder="Select client"
           />
         )}
+        <HorizontalCalendar onSelectDate={(date) => setSelectedDate(date)} />
+
         {loading && (
           <p className="text-center text-base text-icon">loading...!</p>
         )}

@@ -91,11 +91,12 @@ const ProgressScreen = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (userList) {
-  //     setValue("person", userList[0]?.value);
-  //   }
-  // }, [setValue, userList]);
+  useEffect(() => {
+    if (userList) {
+      setValue("person", userList[0]?.value);
+      fetchProgressList(userList[0]?.value);
+    }
+  }, [setValue, userList]);
 
   useEffect(() => {
     if (isClient) {
@@ -113,26 +114,6 @@ const ProgressScreen = () => {
         <FaCamera className="text-white text-xl" />
       </div>
 
-      <div className="relative bg-red_30 py-7 px-6 rounded-3xl flex items-center">
-        <div className="w-3/4 space-y-3">
-          <p className="text-base">
-            Track Your Progress Each Month With{"  "}
-            <span className="text-gradient font-semibold"> Photo</span>
-          </p>
-          <Button
-            label={"Compare"}
-            customClassName="!w-36 !h-12"
-            onClick={() => {
-              if (isClient) {
-                navigate(`/compare-progress`);
-              } else {
-                navigate(`/compare-progress?person=${watch("person")}`);
-              }
-            }}
-          />
-        </div>
-        <img src={ReminderImage} alt="Calendar Icon" className="w-15 h-15" />
-      </div>
       {!isClient && (
         <>
           <FormProvider {...methods}>
@@ -167,6 +148,26 @@ const ProgressScreen = () => {
           </div>
         </>
       )}
+      <div className="relative bg-red_30 py-7 px-6 rounded-3xl flex items-center">
+        <div className="w-3/4 space-y-3">
+          <p className="text-base">
+            Track Your Progress Each Month With{"  "}
+            <span className="text-gradient font-semibold"> Photo</span>
+          </p>
+          <Button
+            label={"Compare"}
+            customClassName="!w-36 !h-12"
+            onClick={() => {
+              if (isClient) {
+                navigate(`/compare-progress`);
+              } else {
+                navigate(`/compare-progress?person=${watch("person")}`);
+              }
+            }}
+          />
+        </div>
+        <img src={ReminderImage} alt="Calendar Icon" className="w-15 h-15" />
+      </div>
       {loading ? (
         <p className="text-center text-base text-icon">loading...!</p>
       ) : (
