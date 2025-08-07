@@ -43,7 +43,6 @@ const PendingUserCard = ({ list }) => {
 
 const PendingListCard = ({ label }) => {
   const { pendingLogsList } = useSelector((state) => state.dailyLogs);
-  console.log("pendingLogsList: ", pendingLogsList);
 
   return (
     <div className="w-full px-2">

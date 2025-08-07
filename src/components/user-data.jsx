@@ -34,7 +34,6 @@ function UserData({
   const selectedPerson = watch("person");
   const selectedTrainer = watch("assignedTrainer");
   const isTrainerRole = selectedRole === "trainer";
-  console.log("isTrainerRole: ", isTrainerRole);
 
   useEffect(() => {
     if (isClient) {
@@ -42,7 +41,6 @@ function UserData({
     }
     fetchUsersList();
   }, []);
-  console.log("trainerList: ", list);
   return (
     <>
       {isAdmin && (

@@ -78,7 +78,6 @@ const PersonalData = () => {
     try {
       const response = await getUsersList();
       if (response?.status === 200) {
-        console.log("users: ", response);
         const users = response.users
           .filter((x) => x.role == "client")
           .map((x) => ({
@@ -94,7 +93,6 @@ const PersonalData = () => {
         setList(users);
 
         setTrainerList(trainers);
-        console.log("trainers: ", trainers);
       }
     } catch (err) {
       console.error("Failed to fetch users:", err);

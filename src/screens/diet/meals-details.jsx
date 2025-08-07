@@ -46,7 +46,7 @@ const MealDetailsScreen = () => {
   const isClient = userData?.role === "client";
   const type = query.get("type");
   const { data, filter } = location.state || {};
-  console.log('filter: ', filter);
+  console.log("filter: ", filter);
   const isNutrientAdded = mealsData[0]?.meals[0]?.isNutrientAdded;
 
   const fetchData = async () => {

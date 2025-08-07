@@ -27,8 +27,6 @@ axiosInstance.interceptors.response.use(
   (response) => response,
 
   (error) => {
-    console.log("response: ", error);
-
     if (
       error.response &&
       error.response.data &&

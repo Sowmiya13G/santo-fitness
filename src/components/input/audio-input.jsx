@@ -334,7 +334,7 @@ const AudioRecorderInput = ({ name = "audio", value = null }) => {
         } rounded-2xl px-4 h-14 w-full flex flex-col gap-3 bg-secondary`}
       >
         <div className="flex h-14 items-center justify-between gap-4">
-          {!audioUrl && !isRecording && !isConverting && (
+          {!readonlyMode && !audioUrl && !isRecording && !isConverting && (
             <button type="button" onClick={startRecording}>
               <FaMicrophone color="white" />
             </button>
@@ -356,14 +356,14 @@ const AudioRecorderInput = ({ name = "audio", value = null }) => {
               <span className="text-white text-sm">Converting to MP3...</span>
             </div>
           )}
-          {isRecording && (
+          {!readonlyMode && isRecording && (
             <div className="flex items-center gap-2">
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
               <span className="text-white text-sm">Recording...</span>
             </div>
           )}
 
-          {audioUrl && !isRecording && !isConverting && (
+          {readonlyMode && audioUrl && !isRecording && !isConverting && (
             <div className="flex items-center gap-4 w-full">
               <button
                 type="button"

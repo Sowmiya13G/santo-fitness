@@ -54,7 +54,6 @@ function Login() {
         password: data.password,
       };
       const response = await login(payload);
-      console.log('response: ', response);
 
       if (response?.status === 200) {
         dispatch(setToken(response?.data?.token));

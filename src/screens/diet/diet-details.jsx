@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 // components
 import UserCard from "@/components/card/user-card";
+import Dropdown from "@/components/input/dropdown";
 import ScreenHeader from "@/components/screen-header";
 
 import { getDietProgress } from "@/features/daily-logs/daily-logs-api";
@@ -15,7 +16,6 @@ import Dinner from "../../assets/images/dinner.svg";
 import EveningSnack from "../../assets/images/evening-snacks.svg";
 import Lunch from "../../assets/images/lunch-img.svg";
 import MorningSnack from "../../assets/images/morning-snacks.svg";
-import Dropdown from "@/components/input/dropdown";
 
 const DietDetailsScreen = () => {
   const navigate = useNavigate();
@@ -133,10 +133,12 @@ const DietDetailsScreen = () => {
         )}
         {sections?.map((x, y) => {
           const isMealUploaded = availableMealTypes.includes(x?.type);
+          console.log('isMealUploaded: ', isMealUploaded);
           const mealForType = mealsData[0]?.meals?.find((meal) => {
             return meal?.type == x?.type;
           });
           const isNutrientAdded = mealForType?.isNutrientAdded;
+          console.log('isNutrientAdded: ',  mealForType?.isNutrientAdded);
           const buttonLabel = isClient
             ? isMealUploaded
               ? "View Details"

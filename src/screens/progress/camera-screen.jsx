@@ -212,7 +212,7 @@ export default function CameraScreen() {
       if (result?.progress) {
         navigate(-1);
         setIsUploading(false);
-        showToast("success","Progress uploaded successfully!")
+        showToast("success", "Progress uploaded successfully!");
       }
     } catch (err) {
       console.error("File upload or metadata sending failed:", err);
@@ -257,10 +257,6 @@ export default function CameraScreen() {
               if (allCaptured) {
                 handleUpload();
               } else if (capturedImages[selectedPose]) {
-                console.log(
-                  "capturedImages[selectedPose]: ",
-                  capturedImages[selectedPose]
-                );
                 const currentIndex = poses.findIndex(
                   (p) => p.pose === selectedPose
                 );
@@ -270,13 +266,8 @@ export default function CameraScreen() {
                   ) || poses.find((p) => !capturedImages[p.pose]);
                 if (nextUncaptured) {
                   setSelectedPose(nextUncaptured.pose);
-                  console.log("nextUncaptured.pose: ", nextUncaptured.pose);
                 }
               } else {
-                console.log(
-                  "capturedImages[selectedPose]:else ",
-                  capturedImages[selectedPose]
-                );
                 capturePhoto();
               }
             }}

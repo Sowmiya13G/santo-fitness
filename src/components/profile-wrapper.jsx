@@ -61,7 +61,6 @@ export default function ProfileWrapper({
         const id = userData._id;
         const data = { profileImg: url };
         const response = await updateUser(id, data);
-        console.log("response: ", response);
         dispatch(setUserData(response?.user));
         showToast("success", "Profile Photo Updated!");
       } else {
