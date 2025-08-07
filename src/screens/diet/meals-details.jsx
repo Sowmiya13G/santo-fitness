@@ -63,7 +63,7 @@ const MealDetailsScreen = () => {
       const res = await getDietProgress(params);
       setMealsData(res);
       const data = res[0]?.meals[0];
-      console.log('data: ', data);
+      console.log("data: ", data);
       reset({
         kcal: data?.calories,
         protein: data?.protein,
