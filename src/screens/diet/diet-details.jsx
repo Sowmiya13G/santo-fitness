@@ -148,7 +148,11 @@ const DietDetailsScreen = () => {
               : "Review"
             : "View More";
 
-          const navigateTo = isMealUploaded ? "meals-details" : "meals-upload";
+        const navigateTo = isClient
+          ? isMealUploaded
+            ? "meals-details"
+            : "meals-upload"
+          : "meals-details";
 
           return (
             <UserCard

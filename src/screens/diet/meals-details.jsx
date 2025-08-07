@@ -26,6 +26,7 @@ const MealDetailsScreen = () => {
   const location = useLocation();
 
   const { data, filter } = location.state || {};
+  console.log("data: ", data);
   const methods = useForm({});
 
   const {
@@ -75,13 +76,14 @@ const MealDetailsScreen = () => {
         comment: data.comments,
         isNutrientAdded: true,
       };
+      console.log("payload: ", payload);
 
-      const result = await createDailyLogs(payload);
-      if (result?.status === 200) {
-        setLoading(false);
-        showToast("success", "Meals Review Added Successfully!");
-        navigate(-1);
-      }
+      // const result = await createDailyLogs(payload);
+      // if (result?.status === 200) {
+      //   setLoading(false);
+      //   showToast("success", "Meals Review Added Successfully!");
+      //   navigate(-1);
+      // }
     } catch (err) {
       console.error("Submission failed:", err);
       setLoading(false);
@@ -95,7 +97,7 @@ const MealDetailsScreen = () => {
           {isClient ? "Uploaded Images :" : "Client Uploaded Images :"}
         </p>
 
-        <div className="relative overflow-x-auto flex gap-4 scroll-smooth no-scrollbar">
+        <div className="relative overflow-x-auto flex gap-4 scroll-smooth no-scrollbar mb-4">
           {mealsData[0]?.meals[0]?.images?.map((x, y) => (
             <div key={y} className="relative  flex min-w-[250px] max-w-[250px]">
               <img
@@ -107,19 +109,18 @@ const MealDetailsScreen = () => {
           ))}
         </div>
 
-        <p className="text-base text-black font-medium">
+        <p className="text-base text-black font-medium mb-4">
           {isClient ? "Your Comment :" : "Client Comment :"}
           <span className="text-normal">
             {" "}
-            {mealsData[0]?.meals[0]?.comment}
+            {mealsData[0]?.meals[0]?.comment ?? "--"}
           </span>
         </p>
+
+        <p className="text-base text-black font-medium mb-2">
+          {isClient ? "Your Voice Note :" : "Client Voice Note :"}
+        </p>
         <AudioRecorderInput value={mealsData[0]?.meals[0]?.voiceNote} />
-        {!isClient && (
-          <div className="w-full bg-white absolute pb-8 pt-2 bottom-0 left-0 px-6">
-            <Button label="Submit" loading={loading} type="submit" />
-          </div>
-        )}
       </div>
     );
   };
@@ -144,6 +145,23 @@ const MealDetailsScreen = () => {
     );
   };
 
+  const renderContentTrainer = () => {
+    return (
+      <>
+        {renderClientData()}
+        {renderReviewData()}
+      </>
+    );
+  };
+
+  const renderContentClient = () => {
+    return (
+      <>
+        {renderReviewData()}
+        {renderClientData()}
+      </>
+    );
+  };
   return (
     <ProfileWrapper
       title=""
@@ -166,15 +184,10 @@ const MealDetailsScreen = () => {
             <FormProvider {...methods}>
               <form
                 onSubmit={handleSubmit(onSubmit)}
-                className={
-                  isClient
-                    ? "flex-col-reverse space-y-6 pb-10 mb-3"
-                    : "flex-col space-y-6 pb-10 mb-3"
-                }
+                className={"flex-col space-y-6 pb-10 mb-3"}
                 encType="multipart/form-data"
               >
-                {renderClientData()}
-                {renderReviewData()}
+                {isClient ? renderContentClient() : renderContentTrainer()}
               </form>
             </FormProvider>
           </>
