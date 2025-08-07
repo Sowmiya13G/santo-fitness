@@ -6,7 +6,6 @@ export const parseFatValue = (val) => {
 };
 
 export const logoutUser = (dispatch) => {
-
   dispatch(clearToken(""));
   window.location.href = "/login";
 };
@@ -21,4 +20,32 @@ export function base64ToFile(dataUrl, filename) {
     u8arr[n] = bstr.charCodeAt(n);
   }
   return new File([u8arr], filename, { type: mime });
+}
+
+const mealsTypeData = [
+  {
+    type: "breakfast",
+    label: "Breakfast",
+  },
+  {
+    type: "morning_snack",
+    label: "Morning Snack",
+  },
+  {
+    type: "lunch",
+    label: "Lunch",
+  },
+  {
+    type: "evening_snack",
+    label: "Evening Snack",
+  },
+  {
+    type: "dinner",
+    label: "Dinner",
+  },
+];
+
+export function getMealsLabel(type) {
+  const mealsType = mealsTypeData?.find((x) => x?.type === type);
+  return mealsType?.label;
 }

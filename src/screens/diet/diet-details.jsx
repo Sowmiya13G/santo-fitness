@@ -137,7 +137,13 @@ const DietDetailsScreen = () => {
               profileImg: x?.image,
             }}
             key={y}
-            onClick={() => navigate(`/${navigateTo}?type=${x?.type}`)}
+            onClick={() =>
+              navigate(`/${navigateTo}?type=${x?.type}`, {
+                state: {
+                  filter: filter,
+                },
+              })
+            }
             isSwipe={false}
             buttonLabel={buttonLabel}
             customButtonClass={"!h-12 !w-auto py-3 text-sm font-normal"}

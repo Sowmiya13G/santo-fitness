@@ -1,28 +1,31 @@
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 // packages
+import { format } from "date-fns";
 import "react-datepicker/dist/react-datepicker.css";
 import { FormProvider, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 // components
 import Button from "@/components/button";
 import AudioRecorderInput from "@/components/input/audio-input";
-import Input from "@/components/input/input";
-import Textarea from "@/components/input/text-area";
-import UploadInput from "@/components/input/upload";
 import ProfileWrapper from "@/components/profile-wrapper";
-
-import { uploadFile } from "@/features/user/user-api";
-import Workout from "../../assets/images/panCake.svg";
-import { createDailyLogs } from "@/features/daily-logs/daily-logs-api";
 import { showToast } from "@/components/toast";
+
+import {
+  createDailyLogs,
+  getDietProgress,
+} from "@/features/daily-logs/daily-logs-api";
+import { getMealsLabel } from "@/utils/helper";
+import Workout from "../../assets/images/panCake.svg";
 
 const MealDetailsScreen = () => {
   const { userData } = useSelector((state) => state.auth);
   const isClient = userData?.role === "client";
   const navigate = useNavigate();
+  const location = useLocation();
 
+  const { data, filter } = location.state || {};
   const methods = useForm({});
 
   const {
@@ -33,61 +36,112 @@ const MealDetailsScreen = () => {
   const query = new URLSearchParams(location.search);
   const type = query.get("type");
   const [loading, setLoading] = useState(false);
+  const [loadingData, setLoadingData] = useState(false);
+  const [mealsData, setMealsData] = React.useState([]);
+
+  const fetchData = async () => {
+    setLoadingData(true);
+    try {
+      const formattedDate = format(filter?.date, "yyyy-MM-dd");
+
+      const params = {
+        date: formattedDate,
+        type,
+        userId: isClient ? userData?._id : filter?.user,
+      };
+
+      const res = await getDietProgress(params);
+      setMealsData(res);
+    } catch (error) {
+      console.error("Failed to fetch diet data", error);
+    } finally {
+      setLoadingData(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const onSubmit = async (data) => {
     setLoading(true);
     try {
       const payload = {
         type: type,
-        name: data.name,
         calories: Number(userData?.targetCalories),
         protein: Number(userData?.targetProtein),
         carbs: Number(userData?.targetCarbs),
         fat: Number(userData?.targetFat),
-        // fibre: Number(userData?.targetFibre),
         comment: data.comments,
-        images: [],
-        voiceNote: null,
+        isNutrientAdded: true,
       };
-
-      if (Array.isArray(data.file) && data.file.length > 0) {
-        const imageForm = new FormData();
-        data.file.forEach((file) => imageForm.append("files", file));
-        const imageUploadRes = await uploadFile(imageForm);
-        payload.images = imageUploadRes?.urls || [];
-      }
-
-      if (
-        data.audio &&
-        (data.audio instanceof Blob || typeof data.audio === "object")
-      ) {
-        const audioBlob =
-          data.audio instanceof Blob
-            ? data.audio
-            : new Blob([data.audio], {
-                type: data?.audio?.type || "audio/mpeg",
-              });
-        const audioFile = new File([audioBlob], "recording.webm", {
-          type: "audio/mpeg",
-          lastModified: Date.now(),
-        });
-
-        const audioForm = new FormData();
-        audioForm.append("files", audioFile);
-        const audioUploadRes = await uploadFile(audioForm);
-        payload.voiceNote = audioUploadRes?.urls?.[0] || null;
-      }
 
       const result = await createDailyLogs(payload);
       if (result?.status === 200) {
         setLoading(false);
-        showToast("success", "Meals Uploaded Successfully!");
+        showToast("success", "Meals Review Added Successfully!");
         navigate(-1);
       }
     } catch (err) {
       console.error("Submission failed:", err);
       setLoading(false);
     }
+  };
+
+  const renderClientData = () => {
+    return (
+      <div className="flex-col">
+        <p className="text-base text-black font-medium mt-4">
+          {isClient ? "Uploaded Images :" : "Client Uploaded Images :"}
+        </p>
+
+        <div className="relative overflow-x-auto flex gap-4 scroll-smooth no-scrollbar">
+          {mealsData[0]?.meals[0]?.images?.map((x, y) => (
+            <div key={y} className="relative  flex min-w-[250px] max-w-[250px]">
+              <img
+                src={x}
+                alt={"img"}
+                className="rounded-lg object-fit w-full h-48"
+              />
+            </div>
+          ))}
+        </div>
+
+        <p className="text-base text-black font-medium">
+          {isClient ? "Your Comment :" : "Client Comment :"}
+          <span className="text-normal">
+            {" "}
+            {mealsData[0]?.meals[0]?.comment}
+          </span>
+        </p>
+        <AudioRecorderInput value={mealsData[0]?.meals[0]?.voiceNote} />
+        {!isClient && (
+          <div className="w-full bg-white absolute pb-8 pt-2 bottom-0 left-0 px-6">
+            <Button label="Submit" loading={loading} type="submit" />
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const renderReviewData = () => {
+    return (
+      <div className="flex-col">
+        <p className="text-base text-black font-medium">
+          {!isClient ? "Your Comment :" : "Trainer Comment :"}
+          <span className="text-normal">
+            {" "}
+            {mealsData[0]?.meals[0]?.comment}
+          </span>
+        </p>
+        <AudioRecorderInput value={mealsData[0]?.meals[0]?.voiceNote} />
+        {!isClient && (
+          <div className="w-full bg-white absolute pb-8 pt-2 bottom-0 left-0 px-6">
+            <Button label="Submit" loading={loading} type="submit" />
+          </div>
+        )}
+      </div>
+    );
   };
 
   return (
@@ -98,26 +152,33 @@ const MealDetailsScreen = () => {
       imgClass={"scale-150 rounded-none object-contain"}
     >
       <div className="w-screen min-h-screen px-5 py-4">
-        <p className="text-icon text-sm text-center">
-          focus on regular physical activity, a balanced diet, sufficient sleep,
-          and stress management
-        </p>
-        {/* <p className="text-font_primary text-base font-medium text-center my-5">
-          focus on regular physical activity, a balanced diet, sufficient sleep,
-          and stress management
-        </p> */}
-        <FormProvider {...methods}>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="space-y-6 pb-10 mb-3"
-            encType="multipart/form-data"
-          >
-            <div className="h-8" />
-            <div className="w-full bg-white absolute pb-8 pt-2 bottom-0 left-0 px-6">
-              <Button label="Submit" loading={loading} type="submit" />
-            </div>
-          </form>
-        </FormProvider>
+        {loadingData ? (
+          <p className="text-center text-base font-medium text-icon">
+            Loading..!
+          </p>
+        ) : (
+          <>
+            <p className="text-black text-base text-center font-medium">
+              {isClient
+                ? `Your ${getMealsLabel(type)} Detials`
+                : `Your ${getMealsLabel(type)} Detials`}
+            </p>
+            <FormProvider {...methods}>
+              <form
+                onSubmit={handleSubmit(onSubmit)}
+                className={
+                  isClient
+                    ? "flex-col-reverse space-y-6 pb-10 mb-3"
+                    : "flex-col space-y-6 pb-10 mb-3"
+                }
+                encType="multipart/form-data"
+              >
+                {renderClientData()}
+                {renderReviewData()}
+              </form>
+            </FormProvider>
+          </>
+        )}
       </div>
     </ProfileWrapper>
   );

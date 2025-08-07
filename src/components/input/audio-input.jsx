@@ -1,8 +1,8 @@
-import React, { useRef, useState, useEffect } from "react";
-import { FaMicrophone, FaStop, FaPlay, FaTrash } from "react-icons/fa";
+import { useEffect, useRef, useState } from "react";
 import { useFormContext } from "react-hook-form";
+import { FaMicrophone, FaPlay, FaStop, FaTrash } from "react-icons/fa";
 
-const AudioRecorderInput = ({ name = "audio" }) => {
+const AudioRecorderInput = ({ name = "audio", value = null }) => {
   const {
     setValue,
     clearErrors,
@@ -20,47 +20,62 @@ const AudioRecorderInput = ({ name = "audio" }) => {
   const canvasRef = useRef(null);
   const audioRef = useRef(null);
   const mediaRecorderRef = useRef(null);
-
+  const readonlyMode = !!value;
   const barWidth = 3;
   const gap = 1;
 
-  // Convert WebM to MP3 using Web Audio API
+  useEffect(() => {
+    if (!value || audioBlob || audioUrl) return;
+
+    const fetchAndProcessAudio = async () => {
+      try {
+        const response = await fetch(value);
+        const blob = await response.blob();
+        const audioContext = new (window.AudioContext ||
+          window.webkitAudioContext)();
+        const arrayBuffer = await blob.arrayBuffer();
+        const decoded = await audioContext.decodeAudioData(arrayBuffer);
+
+        const rawData = decoded.getChannelData(0);
+        const samples = Math.floor(275 / (barWidth + gap));
+        const blockSize = Math.floor(rawData.length / samples);
+        const waveform = new Array(samples).fill(0).map((_, i) => {
+          const block = rawData.slice(i * blockSize, (i + 1) * blockSize);
+          const sum = block.reduce((acc, val) => acc + Math.abs(val), 0);
+          return Math.floor((sum / block.length) * 255);
+        });
+
+        setWaveformData(waveform);
+        setAudioUrl(value);
+      } catch (err) {
+        console.error("Error loading external audio", err);
+      }
+    };
+
+    fetchAndProcessAudio();
+  }, [value, audioBlob, audioUrl]);
+
   const convertToMp3 = async (webmBlob) => {
     try {
       setIsConverting(true);
-
-      // Create audio context
       const audioContext = new (window.AudioContext ||
         window.webkitAudioContext)();
 
-      // Convert blob to array buffer
       const arrayBuffer = await webmBlob.arrayBuffer();
-
-      // Decode audio data
       const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
 
-      // Create offline context for rendering
       const offlineContext = new OfflineAudioContext(
         audioBuffer.numberOfChannels,
         audioBuffer.length,
         audioBuffer.sampleRate
       );
-
-      // Create buffer source
       const source = offlineContext.createBufferSource();
       source.buffer = audioBuffer;
       source.connect(offlineContext.destination);
       source.start(0);
 
-      // Render the audio
       const renderedBuffer = await offlineContext.startRendering();
-
-      // Convert to WAV first (as intermediate step)
       const wavBlob = audioBufferToWav(renderedBuffer);
-
-      // For true MP3 conversion, you would need a library like lamejs
-      // For now, we'll create a proper audio blob with MP3 mimetype
-      // Note: This creates a WAV file but with MP3 extension for demonstration
       const mp3Blob = new Blob([wavBlob], { type: "audio/mp3" });
 
       setIsConverting(false);
@@ -68,12 +83,10 @@ const AudioRecorderInput = ({ name = "audio" }) => {
     } catch (error) {
       console.error("Error converting to MP3:", error);
       setIsConverting(false);
-      // Fallback to original blob
       return webmBlob;
     }
   };
 
-  // Convert AudioBuffer to WAV format
   const audioBufferToWav = (buffer) => {
     const length = buffer.length;
     const numberOfChannels = buffer.numberOfChannels;
@@ -81,7 +94,6 @@ const AudioRecorderInput = ({ name = "audio" }) => {
     const arrayBuffer = new ArrayBuffer(44 + length * numberOfChannels * 2);
     const view = new DataView(arrayBuffer);
 
-    // WAV header
     const writeString = (offset, string) => {
       for (let i = 0; i < string.length; i++) {
         view.setUint8(offset + i, string.charCodeAt(i));
@@ -102,7 +114,6 @@ const AudioRecorderInput = ({ name = "audio" }) => {
     writeString(36, "data");
     view.setUint32(40, length * numberOfChannels * 2, true);
 
-    // Convert float audio data to 16-bit PCM
     let offset = 44;
     for (let i = 0; i < length; i++) {
       for (let channel = 0; channel < numberOfChannels; channel++) {
@@ -368,18 +379,18 @@ const AudioRecorderInput = ({ name = "audio" }) => {
 
               <canvas ref={canvasRef} width={275} height={50} className="" />
 
-              {/* NEW: Show current playback time */}
               <span className="text-white text-xs  text-left absolute bottom-0">
-                {formatTime(isPlaying ? currentTime : duration)} 
+                {formatTime(isPlaying ? currentTime : duration)}
               </span>
-
-              <button
-                type="button"
-                onClick={deleteRecording}
-                className="flex-shrink-0"
-              >
-                <FaTrash color="white" />
-              </button>
+              {!readonlyMode && (
+                <button
+                  type="button"
+                  onClick={deleteRecording}
+                  className="flex-shrink-0"
+                >
+                  <FaTrash color="white" />
+                </button>
+              )}
             </div>
           )}
         </div>
