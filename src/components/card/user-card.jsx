@@ -40,11 +40,11 @@ const UserCard = ({
   }, []);
 
   return (
-    <div className="min-w-[100%] snap-center snap-always">
+    <div className="min-w-[100%] snap-center snap-always ">
       <Card
         className={`${
           isSwipe ? "" : "py-6 h-[24%]"
-        } relative text-white rounded-3xl p-4 shadow-lg w-full h-32 overflow-hidden`}
+        } relative !z-1 text-white rounded-3xl p-4 shadow-lg w-full h-32 overflow-hidden`}
         style={{ backgroundColor: bgColor }}
       >
         {/* Decorative bubbles */}
@@ -56,7 +56,7 @@ const UserCard = ({
         <div className="absolute w-3 h-3 bg-white/20 rounded-full bottom-[30px] right-[40%]" />
 
         {/* Card content */}
-        <div className="flex w-full justify-between h-full relative z-10">
+        <div className="flex w-full justify-between h-full relative z-5">
           <div className="w-[70%]">
             <h2
               className="text-lg font-medium leading-tight mb-2 capitalize"
@@ -64,10 +64,7 @@ const UserCard = ({
             >
               {user?.name}
             </h2>
-            <p
-              className="text-xs  mb-2"
-              style={{ color: textColor }}
-            >
+            <p className="text-xs  mb-2" style={{ color: textColor }}>
               {user?.goal}
             </p>
             <Button

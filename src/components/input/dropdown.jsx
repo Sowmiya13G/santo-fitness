@@ -72,7 +72,7 @@ const Dropdown = ({
               <div
                 key={opt.value}
                 onClick={() => handleSelect(opt.value)}
-                className={`px-4 py-2 cursor-pointer hover:bg-gray-100 text-sm text-font_primary ${
+                className={`px-4 py-2 cursor-pointer hover:bg-gray-100 z-50 text-sm text-font_primary ${
                   value === opt.value ? "bg-gray-100 font-medium" : ""
                 }`}
               >

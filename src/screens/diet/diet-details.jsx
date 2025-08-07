@@ -9,20 +9,26 @@ import UserCard from "@/components/card/user-card";
 import ScreenHeader from "@/components/screen-header";
 
 import { getDietProgress } from "@/features/daily-logs/daily-logs-api";
+import { FormProvider, useForm } from "react-hook-form";
 import Breakfast from "../../assets/images/breakfast.svg";
 import Dinner from "../../assets/images/dinner.svg";
 import EveningSnack from "../../assets/images/evening-snacks.svg";
 import Lunch from "../../assets/images/lunch-img.svg";
 import MorningSnack from "../../assets/images/morning-snacks.svg";
+import Dropdown from "@/components/input/dropdown";
 
 const DietDetailsScreen = () => {
   const navigate = useNavigate();
   const location = useLocation();
-
   const { data, filter } = location.state || {};
   const { userData } = useSelector((state) => state.auth);
+  const methods = useForm();
+  const { watch, setValue } = methods;
+  const selectedUser = watch("person");
+
   const isClient = userData?.role === "client";
   const [mealsData, setMealsData] = React.useState([]);
+  const { userList } = useSelector((state) => state.user);
 
   const fetchData = async () => {
     try {
@@ -58,19 +64,16 @@ const DietDetailsScreen = () => {
     dinner: 0.25,
   };
 
+  const getUserData = isClient
+    ? userData
+    : userList.find((x) => x.value === selectedUser);
+
+  console.log("getUserData: ", getUserData);
   const getSplitTargetData = (type) => {
-    const cal = userData?.targetCalories
-      ? Math.round(userData?.targetCalories * calorieSplit[type])
-      : 0;
-    const protein = userData?.targetProtein
-      ? Math.round(userData?.targetProtein * calorieSplit[type])
-      : 0;
-    const carbs = userData?.targetCarbs
-      ? Math.round(userData?.targetCarbs * calorieSplit[type])
-      : 0;
-    const fat = userData?.targetFat
-      ? Math.round(userData?.targetFat * calorieSplit[type])
-      : 0;
+    const cal = Math.round(getUserData?.targetCalories * calorieSplit[type]);
+    const protein = Math.round(getUserData?.targetProtein * calorieSplit[type]);
+    const carbs = Math.round(getUserData?.targetCarbs * calorieSplit[type]);
+    const fat = Math.round(getUserData?.targetFat * calorieSplit[type]);
 
     return `${cal} Calories | ${protein} Protein | ${carbs} Carbs | ${fat} Fat`;
   };
@@ -107,49 +110,68 @@ const DietDetailsScreen = () => {
       image: Dinner,
     },
   ];
-
+  useEffect(() => {
+    if (userList) {
+      console.log("userList: ", userList);
+      setValue("person", userList[0]?.value);
+    }
+  }, [setValue, userList]);
   return (
     <div className="w-screen space-y-6 hide-scrollbar px-5 py-6 mb-10">
-      <ScreenHeader title="Diet Details" />
-      {sections?.map((x, y) => {
-        const isMealUploaded = availableMealTypes.includes(x?.type);
-        const mealForType = mealsData[0]?.meals?.find((meal) => {
-          return meal?.type == x?.type;
-        });
-        const isNutrientAdded = mealForType?.isNutrientAdded;
-        const buttonLabel = isClient
-          ? isMealUploaded
-            ? "View Details"
-            : "Upload Meals Image"
-          : !isClient
-          ? isNutrientAdded
-            ? "View Details"
-            : "Review"
-          : "View More";
-
-        const navigateTo = isMealUploaded ? "meals-details" : "meals-upload";
-
-        return (
-          <UserCard
-            user={{
-              name: x?.label,
-              goal: x?.targetData,
-              profileImg: x?.image,
+      <FormProvider {...methods}>
+        <ScreenHeader title="Diet Details" />
+        {userData.role !== "client" && (
+          <Dropdown
+            name="person"
+            label="Select Client"
+            options={userList}
+            value={selectedUser}
+            onChange={(val) => {
+              setValue("person", val);
             }}
-            key={y}
-            onClick={() =>
-              navigate(`/${navigateTo}?type=${x?.type}`, {
-                state: {
-                  filter: filter,
-                },
-              })
-            }
-            isSwipe={false}
-            buttonLabel={buttonLabel}
-            customButtonClass={"!h-12 !w-auto py-3 text-sm font-normal"}
+            placeholder="Select client"
           />
-        );
-      })}
+        )}
+        {sections?.map((x, y) => {
+          const isMealUploaded = availableMealTypes.includes(x?.type);
+          const mealForType = mealsData[0]?.meals?.find((meal) => {
+            return meal?.type == x?.type;
+          });
+          const isNutrientAdded = mealForType?.isNutrientAdded;
+          const buttonLabel = isClient
+            ? isMealUploaded
+              ? "View Details"
+              : "Upload Meals Image"
+            : !isClient
+            ? isNutrientAdded
+              ? "View Details"
+              : "Review"
+            : "View More";
+
+          const navigateTo = isMealUploaded ? "meals-details" : "meals-upload";
+
+          return (
+            <UserCard
+              user={{
+                name: x?.label,
+                goal: x?.targetData,
+                profileImg: x?.image,
+              }}
+              key={y}
+              onClick={() =>
+                navigate(`/${navigateTo}?type=${x?.type}`, {
+                  state: {
+                    filter: filter,
+                  },
+                })
+              }
+              isSwipe={false}
+              buttonLabel={buttonLabel}
+              customButtonClass={"!h-12 !w-auto py-3 text-sm font-normal"}
+            />
+          );
+        })}
+      </FormProvider>
     </div>
   );
 };

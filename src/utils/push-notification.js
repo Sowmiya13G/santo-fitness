@@ -3,6 +3,7 @@ import { getToken, messaging } from "../../firebase";
 
 const VAPID_KEY =
   "BHlaAMHjZCKXfxWz2GeFVWWXQAAtXPaM-jXdz1fVyJpmkbyLIbbii7jdHO5VyzldnQA04EL6Bqg4JdTYOLy9LkI";
+  
 export const requestForToken = async () => {
   try {
     const currentToken = await getToken(messaging, { vapidKey: VAPID_KEY });
