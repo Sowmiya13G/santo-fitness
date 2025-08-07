@@ -165,6 +165,7 @@ const Recipes = () => {
                   filter: {
                     date: selectedDate,
                     user: selectedUser,
+                    type: selectedFilter,
                   },
                   fromMTracker: true,
                 },

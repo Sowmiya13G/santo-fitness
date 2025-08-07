@@ -21,6 +21,7 @@ const DietDetailsScreen = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { data, filter, fromMTracker } = location.state || {};
+  console.log("filter: ", filter);
   const { userData } = useSelector((state) => state.auth);
   const methods = useForm();
   const { watch, setValue } = methods;
@@ -36,7 +37,7 @@ const DietDetailsScreen = () => {
         fromMTracker ? filter?.date : new Date(),
         "yyyy-MM-dd"
       );
-      const type = "all";
+      const type = fromMTracker ? filter?.type : "all";
 
       const params = {
         date: formattedDate,
@@ -54,7 +55,8 @@ const DietDetailsScreen = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [selectedUser]);
+
   const availableMealTypes =
     mealsData[0]?.meals?.map((meal) => {
       return meal?.type;
