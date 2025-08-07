@@ -1,27 +1,27 @@
 import React, { useEffect, useState } from "react";
 // packages
+import { yupResolver } from "@hookform/resolvers/yup";
 import { format } from "date-fns";
-import "react-datepicker/dist/react-datepicker.css";
 import { FormProvider, useForm } from "react-hook-form";
+import { FaDownload } from "react-icons/fa";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-
 // components
 import Button from "@/components/button";
 import AudioRecorderInput from "@/components/input/audio-input";
 import Input from "@/components/input/input";
 import Textarea from "@/components/input/text-area";
 import ProfileWrapper from "@/components/profile-wrapper";
-
+import { showToast } from "@/components/toast";
+// others
 import {
   createDailyLogs,
   getDietProgress,
 } from "@/features/daily-logs/daily-logs-api";
 import { getMealsLabel } from "@/utils/helper";
 import { nutrientsValidationSchema } from "@/utils/validation";
-import { yupResolver } from "@hookform/resolvers/yup";
 import Workout from "../../assets/images/panCake.svg";
-import { showToast } from "@/components/toast";
 
 const MealDetailsScreen = () => {
   const { userData } = useSelector((state) => state.auth);
@@ -43,11 +43,52 @@ const MealDetailsScreen = () => {
   const [loading, setLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
   const [mealsData, setMealsData] = React.useState([]);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const isClient = userData?.role === "client";
   const type = query.get("type");
   const { data, filter } = location.state || {};
   const isNutrientAdded = mealsData[0]?.meals[0]?.isNutrientAdded;
+
+  // ------------------------------------- functionalities ------------------------------------- //
+
+  const openModal = (index) => {
+    setSelectedImageIndex(index);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedImageIndex(null);
+  };
+
+  const prevImage = () => {
+    setSelectedImageIndex((prev) => (prev > 0 ? prev - 1 : images.length - 1));
+  };
+
+  const nextImage = () => {
+    setSelectedImageIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0));
+  };
+
+  const downloadImage = async (url) => {
+    try {
+      const response = await fetch(url, { mode: "cors" }); // ensures blob access
+      const blob = await response.blob();
+      const objectURL = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = objectURL;
+      link.download = `progress-${selectedImageIndex + 1}.jpg`; // or .png if appropriate
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(objectURL); // clean up memory
+    } catch (error) {
+      console.error("Image download failed:", error);
+      alert("Download failed. Please try again.");
+    }
+  };
 
   const fetchData = async () => {
     setLoadingData(true);
@@ -116,7 +157,11 @@ const MealDetailsScreen = () => {
 
         <div className="relative overflow-x-auto flex gap-4 scroll-smooth no-scrollbar mb-4">
           {mealsData[0]?.meals[0]?.images?.map((x, y) => (
-            <div key={y} className="relative  flex min-w-[250px] max-w-[250px]">
+            <div
+              key={y}
+              onClick={() => openModal(idx)}
+              className="relative  flex min-w-[250px] max-w-[250px]"
+            >
               <img
                 src={x}
                 alt={"img"}
@@ -240,6 +285,50 @@ const MealDetailsScreen = () => {
                 {isClient ? renderContentClient() : renderContentTrainer()}
               </form>
             </FormProvider>
+            {isModalOpen && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80">
+                <div className="relative max-w-3xl w-full mx-4 bg-white p-4 rounded-xl">
+                  <button
+                    onClick={closeModal}
+                    type="button"
+                    className="absolute top-5 right-5 text-gray-600 bg-white p-1 rounded-full w-10 h-10 hover:text-black text-xl font-bold"
+                  >
+                    <IoIosClose className="text-3xl" />
+                  </button>
+
+                  <img
+                    src={
+                      mealsData[0]?.meals[0]?.images[selectedImageIndex]?.url
+                    }
+                    alt={`Progress ${selectedImageIndex + 1}`}
+                    className="w-full max-h-[70vh] object-contain rounded"
+                  />
+
+                  <button
+                    onClick={prevImage}
+                    className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
+                  >
+                    <IoIosArrowBack className="text-xl" />
+                  </button>
+                  <button
+                    onClick={nextImage}
+                    className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
+                  >
+                    <IoIosArrowForward className="text-xl" />
+                  </button>
+
+                  <button
+                    onClick={() =>
+                      downloadImage(images[selectedImageIndex].url)
+                    }
+                    className="absolute bottom-0 right-0  bg-white px-3 py-2 rounded-full  flex items-center gap-2"
+                  >
+                    <FaDownload />
+                    <span className="text-sm">Download</span>
+                  </button>
+                </div>
+              </div>
+            )}
           </>
         )}
       </div>

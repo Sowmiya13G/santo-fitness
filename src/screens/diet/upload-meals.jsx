@@ -1,28 +1,24 @@
 import { useState } from "react";
 // packages
-import "react-datepicker/dist/react-datepicker.css";
 import { FormProvider, useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 // components
 import Button from "@/components/button";
 import AudioRecorderInput from "@/components/input/audio-input";
 import Input from "@/components/input/input";
-import Textarea from "@/components/input/text-area";
 import UploadInput from "@/components/input/upload";
 import ProfileWrapper from "@/components/profile-wrapper";
-
-import { uploadFile } from "@/features/user/user-api";
-import Workout from "../../assets/images/panCake.svg";
-import { createDailyLogs } from "@/features/daily-logs/daily-logs-api";
 import { showToast } from "@/components/toast";
 
-const UploadMealsScreen = () => {
-  const { userData } = useSelector((state) => state.auth);
-  const isClient = userData?.role === "client";
-  const navigate = useNavigate();
+import { createDailyLogs } from "@/features/daily-logs/daily-logs-api";
+import { uploadFile } from "@/features/user/user-api";
+import Workout from "../../assets/images/panCake.svg";
 
+const UploadMealsScreen = () => {
+  const navigate = useNavigate();
+  const query = new URLSearchParams(location.search);
+  const type = query.get("type");
   const methods = useForm({});
 
   const {
@@ -30,9 +26,9 @@ const UploadMealsScreen = () => {
     formState: { isSubmitting, errors },
   } = methods;
 
-  const query = new URLSearchParams(location.search);
-  const type = query.get("type");
   const [loading, setLoading] = useState(false);
+
+  // ------------------------------------- functionalities ------------------------------------- //
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -84,6 +80,7 @@ const UploadMealsScreen = () => {
       setLoading(false);
     }
   };
+  // ------------------------------------- render ui ------------------------------------- //
 
   return (
     <ProfileWrapper
