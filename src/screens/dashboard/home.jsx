@@ -30,13 +30,11 @@ const Home = () => {
   const navigate = useNavigate();
 
   // logoutUser(dispatch, navigate)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchTopClient = async () => {
     const response = await getTopClient();
     dispatch(setTopClient(response?.data));
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchUsersList = async () => {
     try {
       const response = await getUsersList();
