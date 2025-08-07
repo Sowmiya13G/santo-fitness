@@ -37,6 +37,7 @@ const MealDetailsScreen = () => {
   const {
     handleSubmit,
     formState: { isSubmitting, errors },
+    reset,
   } = methods;
 
   const [loading, setLoading] = useState(false);
@@ -46,7 +47,6 @@ const MealDetailsScreen = () => {
   const isClient = userData?.role === "client";
   const type = query.get("type");
   const { data, filter } = location.state || {};
-  // console.log("filter: ", filter);
   const isNutrientAdded = mealsData[0]?.meals[0]?.isNutrientAdded;
 
   const fetchData = async () => {
@@ -62,6 +62,14 @@ const MealDetailsScreen = () => {
 
       const res = await getDietProgress(params);
       setMealsData(res);
+      const data = res[0]?.meals[0];
+      reset({
+        kcal: data?.calories,
+        protein: data?.protein,
+        carbs: data?.carbs,
+        fat: data?.fat,
+        comment: data.comment,
+      });
     } catch (error) {
       console.error("Failed to fetch diet data", error);
     } finally {
@@ -127,10 +135,15 @@ const MealDetailsScreen = () => {
 
         <p className="text-base text-black font-medium mb-2">
           {isClient ? "Your Voice Note :" : "Client Voice Note :"}
+          <span className="text-normal">
+            {" "}
+            {mealsData[0]?.meals[0]?.voiceNote ? "" : "--"}
+          </span>
         </p>
-        <AudioRecorderInput
-          value={mealsData[0]?.meals[0]?.voiceNote}
-        />
+
+        {mealsData[0]?.meals[0]?.voiceNote && (
+          <AudioRecorderInput value={mealsData[0]?.meals[0]?.voiceNote} />
+        )}
       </div>
     );
   };
