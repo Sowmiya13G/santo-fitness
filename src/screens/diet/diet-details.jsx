@@ -54,7 +54,8 @@ const DietDetailsScreen = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [selectedUser]);
+
   const availableMealTypes =
     mealsData[0]?.meals?.map((meal) => {
       return meal?.type;

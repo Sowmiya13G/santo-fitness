@@ -63,6 +63,7 @@ const MealDetailsScreen = () => {
       const res = await getDietProgress(params);
       setMealsData(res);
       const data = res[0]?.meals[0];
+      console.log('data: ', data);
       reset({
         kcal: data?.calories,
         protein: data?.protein,
@@ -109,7 +110,7 @@ const MealDetailsScreen = () => {
   const renderClientData = () => {
     return (
       <div className="flex-col">
-        <p className="text-base text-black font-medium mt-4">
+        <p className="text-base text-black font-medium mt-4 mb-2">
           {isClient ? "Uploaded Images :" : "Client Uploaded Images :"}
         </p>
 
@@ -124,15 +125,6 @@ const MealDetailsScreen = () => {
             </div>
           ))}
         </div>
-
-        <p className="text-base text-black font-medium mb-4">
-          {isClient ? "Your Comment :" : "Client Comment :"}
-          <span className="text-normal">
-            {" "}
-            {mealsData[0]?.meals[0]?.comment ?? "--"}
-          </span>
-        </p>
-
         <p className="text-base text-black font-medium mb-2">
           {isClient ? "Your Voice Note :" : "Client Voice Note :"}
           <span className="text-normal">
@@ -237,9 +229,7 @@ const MealDetailsScreen = () => {
         ) : (
           <>
             <p className="text-black text-base text-center font-medium">
-              {isClient
-                ? `Your ${getMealsLabel(type)} Detials`
-                : `Your ${getMealsLabel(type)} Detials`}
+              {`${getMealsLabel(type)} Detials`}
             </p>
             <FormProvider {...methods}>
               <form

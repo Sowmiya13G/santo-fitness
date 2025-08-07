@@ -40,10 +40,9 @@ const UploadMealsScreen = () => {
       const payload = {
         type: type,
         name: data.name,
-        comment: data.comments,
         images: [],
         voiceNote: null,
-        isNutrientAdded :false
+        isNutrientAdded: false,
       };
 
       if (Array.isArray(data.file) && data.file.length > 0) {
@@ -77,7 +76,7 @@ const UploadMealsScreen = () => {
       const result = await createDailyLogs(payload);
       if (result?.status === 200) {
         setLoading(false);
-        showToast("success","Meals Uploaded Successfully!")
+        showToast("success", "Meals Uploaded Successfully!");
         navigate(-1);
       }
     } catch (err) {
@@ -120,11 +119,6 @@ const UploadMealsScreen = () => {
               name="name"
               placeholder="Enter recipe name"
               label="Recipe Name"
-            />
-            <Textarea
-              name="comments"
-              placeholder="Enter comment"
-              label="Comments"
             />
             <AudioRecorderInput name="audio" />
             <div className="h-8" />
