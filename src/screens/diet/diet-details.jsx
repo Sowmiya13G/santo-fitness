@@ -164,7 +164,13 @@ const DietDetailsScreen = () => {
               onClick={() =>
                 navigate(`/${navigateTo}?type=${x?.type}`, {
                   state: {
-                    filter: filter,
+                    filter: fromMTracker
+                      ? filter
+                      : {
+                          type: x?.type,
+                          user: watch("person"),
+                          date: format(new Date(), "yyyy-MM-dd"),
+                        },
                   },
                 })
               }
