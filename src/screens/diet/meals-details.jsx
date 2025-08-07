@@ -46,7 +46,7 @@ const MealDetailsScreen = () => {
   const isClient = userData?.role === "client";
   const type = query.get("type");
   const { data, filter } = location.state || {};
-  console.log("filter: ", filter);
+  // console.log("filter: ", filter);
   const isNutrientAdded = mealsData[0]?.meals[0]?.isNutrientAdded;
 
   const fetchData = async () => {
@@ -128,7 +128,9 @@ const MealDetailsScreen = () => {
         <p className="text-base text-black font-medium mb-2">
           {isClient ? "Your Voice Note :" : "Client Voice Note :"}
         </p>
-        <AudioRecorderInput value={mealsData[0]?.meals[0]?.voiceNote} />
+        <AudioRecorderInput
+          value={mealsData[0]?.meals[0]?.voiceNote}
+        />
       </div>
     );
   };

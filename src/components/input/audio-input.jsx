@@ -26,6 +26,7 @@ const AudioRecorderInput = ({ name = "audio", value = null }) => {
 
   useEffect(() => {
     if (!value || audioBlob || audioUrl) return;
+    console.log('value: ', value);
 
     const fetchAndProcessAudio = async () => {
       try {
@@ -363,7 +364,7 @@ const AudioRecorderInput = ({ name = "audio", value = null }) => {
             </div>
           )}
 
-          {readonlyMode && audioUrl && !isRecording && !isConverting && (
+          { audioUrl && !isRecording && !isConverting && (
             <div className="flex items-center gap-4 w-full">
               <button
                 type="button"

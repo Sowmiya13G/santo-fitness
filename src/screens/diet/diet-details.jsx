@@ -32,7 +32,10 @@ const DietDetailsScreen = () => {
 
   const fetchData = async () => {
     try {
-      const formattedDate = format(filter?.date, "yyyy-MM-dd");
+      const formattedDate = format(
+        fromMTracker ? filter?.date : new Date(),
+        "yyyy-MM-dd"
+      );
       const type = "all";
 
       const params = {
@@ -52,9 +55,10 @@ const DietDetailsScreen = () => {
   useEffect(() => {
     fetchData();
   }, []);
-
   const availableMealTypes =
-    mealsData[0]?.meals?.map((meal) => meal.type) || [];
+    mealsData[0]?.meals?.map((meal) => {
+      return meal?.type;
+    }) || [];
 
   const calorieSplit = {
     breakfast: 0.25,
@@ -132,13 +136,11 @@ const DietDetailsScreen = () => {
           />
         )}
         {sections?.map((x, y) => {
-          const isMealUploaded = availableMealTypes.includes(x?.type);
-          console.log('isMealUploaded: ', isMealUploaded);
+          const isMealUploaded = availableMealTypes?.includes(x?.type);
           const mealForType = mealsData[0]?.meals?.find((meal) => {
             return meal?.type == x?.type;
           });
           const isNutrientAdded = mealForType?.isNutrientAdded;
-          console.log('isNutrientAdded: ',  mealForType?.isNutrientAdded);
           const buttonLabel = isClient
             ? isMealUploaded
               ? "View Details"
