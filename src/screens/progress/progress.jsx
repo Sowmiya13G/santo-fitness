@@ -92,7 +92,7 @@ const ProgressScreen = () => {
   };
 
   useEffect(() => {
-    if (userList) {
+    if (userList && !isClient) {
       setValue("person", userList[0]?.value);
       fetchProgressList(userList[0]?.value);
     }

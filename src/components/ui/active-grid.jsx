@@ -4,44 +4,47 @@ import NutrientProgress from "../card/nutrient-progress";
 
 const ActivityGrid = () => {
   const { todayLogs } = useSelector((state) => state.dailyLogs);
+  const { userData } = useSelector((state) => state.auth);
+  console.log('userData: ', userData);
 
   const initialData = [
     {
       label: "Calories",
       consumed: 0,
-      total: 100,
+      total: userData.targetCalories,
     },
     {
       label: "Protein",
       consumed: 0,
-      total: 100,
+      total: userData.targetProtein,
     },
     {
       label: "Fat",
       consumed: 0,
-      total: 100,
+      total: userData.targetFat,
     },
     {
-      label: "Fiber",
+      label: "Carbs",
       consumed: 0,
-      total: 100,
+      total: userData.targetCarbs,
     },
   ];
   const [nutrients, setNutrients] = useState(initialData);
+  console.log("nutrients: ", nutrients);
 
   useEffect(() => {
-
-    if(!todayLogs){
-      return
+    if (!todayLogs) {
+      return;
     }
     const todayData = todayLogs;
+    console.log('todayData: ', todayData);
 
     // You can define "total" values based on user target, or statically for now
     const totals = {
-      Calories: 1000,
-      Protein: 60,
-      Fat: 30,
-      Fiber: 25,
+      Calories: userData.targetCalories,
+      Protein: userData.targetProtein,
+      Fat: userData.targetFat,
+      Carbs: userData.targetCarbs,
     };
 
     const formatted = [
@@ -61,15 +64,16 @@ const ActivityGrid = () => {
         total: totals.Fat,
       },
       {
-        label: "Fiber",
-        consumed: todayData.fibre,
-        total: totals.Fiber,
+        label: "Carbs",
+        consumed: todayData.carbs,
+        total: totals.Carbs,
       },
     ];
 
     setNutrients(formatted);
   }, [todayLogs]);
 
+  console.log("nutrients: ", nutrients);
   return (
     <div>
       <h2 className="text-md text-center font-semibold mb-4 text-gradient">

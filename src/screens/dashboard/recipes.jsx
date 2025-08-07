@@ -1,16 +1,14 @@
 import HorizontalCalendar from "@/components/horizontal-calendar";
+import Dropdown from "@/components/input/dropdown";
 import ScreenHeader from "@/components/screen-header";
-import DietProgress from "@/components/ui/diet-progress";
 import FilterBar from "@/components/ui/filter-bar";
 import ProgressView from "@/components/ui/progress-view";
 import { getDietProgress } from "@/features/daily-logs/daily-logs-api";
-import { getUsersList } from "@/features/user/user-api";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { FormProvider, useForm } from "react-hook-form";
-import Dropdown from "@/components/input/dropdown";
 
 const initialNutritionData = [
   { type: "Calories", value: `0 kCal`, percentage: 0, icon: "🔥" },
@@ -51,6 +49,7 @@ const Recipes = () => {
     if (!isClient && !selectedUser) return;
     try {
       const formattedDate = format(selectedDate, "yyyy-MM-dd");
+      console.log("formattedDate: ", formattedDate);
       const typeMap = {
         All: "all",
         "Morning snacks": "morning_snack",
@@ -116,14 +115,16 @@ const Recipes = () => {
 
   useEffect(() => {
     setLoading(true);
+
     fetchData();
   }, [selectedFilter, selectedDate, selectedUser]);
 
   useEffect(() => {
-    if (userList) {
+    if (userList && !isClient) {
       setValue("person", userList[0]?.value);
     }
-  }, [setValue, userList]);
+  }, [isClient, setValue, userList]);
+
   return (
     <div className="h-full w-screen bg-white space-y-6 py-5 px-5 overflow-y-auto overflow-hidden mb-5">
       <FormProvider {...methods}>

@@ -3,20 +3,19 @@ import BMRCard from "@/components/card/bmr-card";
 import RankCard from "@/components/card/rank-card";
 import ScreenHeader from "@/components/screen-header";
 import ActivityGrid from "@/components/ui/active-grid";
-import BestDietMeals from "@/components/ui/best-diet-meals";
 import DietProgress from "@/components/ui/diet-progress";
 import { getDietProgress } from "@/features/daily-logs/daily-logs-api";
 import {
   setTodayLogs,
   setWeekLogs,
 } from "@/features/daily-logs/daily-logs-slice";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const ClientDashboard = () => {
   const { userData } = useSelector((state) => state.auth);
-  
+
   const { topClient } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
@@ -27,9 +26,14 @@ const ClientDashboard = () => {
           days: 14,
         };
         const raw = await getDietProgress(params);
+        console.log("raw: ", raw);
         dispatch(setWeekLogs(raw));
         const today = format(new Date(), "yyyy-MM-dd");
-        const todayLog = raw.find((log) => log.date === today);
+        console.log("today: ", today);
+        const todayLog = raw.find(
+          (log) => format(parseISO(log.date), "yyyy-MM-dd") === today
+        );
+        console.log("todayLog: ", todayLog);
 
         if (todayLog) {
           dispatch(setTodayLogs(todayLog));
@@ -47,7 +51,6 @@ const ClientDashboard = () => {
   return (
     <div className="w-full h-full space-y-6 px-3 text-gray-800 hide-scrollbar py-6 ">
       <ScreenHeader isHome />
-     
       <div className="flex gap-4 overflow-x-auto overflow-hidden hide-scrollbar h-full snap-x snap-mandatory">
         <div className="min-w-[90%] h-full snap-center snap-always ">
           <BMICard bmi={userData.BMI} />
@@ -56,12 +59,12 @@ const ClientDashboard = () => {
           <BMRCard bmr={userData.BMR} />
         </div>
       </div>{" "}
-       {topClient && (
+      {topClient && (
         <RankCard label={"top performed client "} data={topClient} />
       )}
       <ActivityGrid />
       <DietProgress />
-      <BestDietMeals />
+      {/* <BestDietMeals /> */}
     </div>
   );
 };
