@@ -29,3 +29,38 @@ export const setPasswordSchema = yup.object().shape({
     .required("Please confirm your password")
     .oneOf([yup.ref("password"), null], "Passwords do not match"),
 });
+
+const transformEmptyStringToUndefined = (value, originalValue) =>
+  originalValue === "" ? undefined : value;
+
+export const nutrientsValidationSchema = yup.object().shape({
+  protein: yup
+    .number()
+    .transform(transformEmptyStringToUndefined)
+    .typeError("Protein must be a number")
+    .required("Protein is required")
+    .min(0, "Protein must be non-negative"),
+
+  fat: yup
+    .number()
+    .transform(transformEmptyStringToUndefined)
+    .typeError("Fat must be a number")
+    .required("Fat is required")
+    .min(0, "Fat must be non-negative"),
+
+  kcal: yup
+    .number()
+    .transform(transformEmptyStringToUndefined)
+    .typeError("KCal must be a number")
+    .required("KCal is required")
+    .min(0, "KCal must be non-negative"),
+
+  carbs: yup
+    .number()
+    .transform(transformEmptyStringToUndefined)
+    .typeError("Carbs must be a number")
+    .required("Carbs is required")
+    .min(0, "Carbs must be non-negative"),
+
+  comment: yup.string().nullable(),
+});

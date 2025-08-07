@@ -9,36 +9,44 @@ import { useLocation, useNavigate } from "react-router-dom";
 // components
 import Button from "@/components/button";
 import AudioRecorderInput from "@/components/input/audio-input";
+import Input from "@/components/input/input";
+import Textarea from "@/components/input/text-area";
 import ProfileWrapper from "@/components/profile-wrapper";
-import { showToast } from "@/components/toast";
 
 import {
   createDailyLogs,
   getDietProgress,
 } from "@/features/daily-logs/daily-logs-api";
 import { getMealsLabel } from "@/utils/helper";
+import { nutrientsValidationSchema } from "@/utils/validation";
+import { yupResolver } from "@hookform/resolvers/yup";
 import Workout from "../../assets/images/panCake.svg";
+import { showToast } from "@/components/toast";
 
 const MealDetailsScreen = () => {
   const { userData } = useSelector((state) => state.auth);
-  const isClient = userData?.role === "client";
+
   const navigate = useNavigate();
   const location = useLocation();
+  const query = new URLSearchParams(location.search);
 
-  const { data, filter } = location.state || {};
-  console.log("data: ", data);
-  const methods = useForm({});
+  const methods = useForm({
+    resolver: yupResolver(nutrientsValidationSchema),
+  });
 
   const {
     handleSubmit,
     formState: { isSubmitting, errors },
   } = methods;
 
-  const query = new URLSearchParams(location.search);
-  const type = query.get("type");
   const [loading, setLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
   const [mealsData, setMealsData] = React.useState([]);
+
+  const isClient = userData?.role === "client";
+  const type = query.get("type");
+  const { data, filter } = location.state || {};
+  const isNutrientAdded = mealsData[0]?.meals[0]?.isNutrientAdded;
 
   const fetchData = async () => {
     setLoadingData(true);
@@ -69,21 +77,20 @@ const MealDetailsScreen = () => {
     try {
       const payload = {
         type: type,
-        calories: Number(userData?.targetCalories),
-        protein: Number(userData?.targetProtein),
-        carbs: Number(userData?.targetCarbs),
-        fat: Number(userData?.targetFat),
-        comment: data.comments,
+        calories: Number(data?.kcal),
+        protein: Number(data?.protein),
+        carbs: Number(data?.carbs),
+        fat: Number(data?.fat),
+        comment: data.comment,
         isNutrientAdded: true,
+        targetId: filter?.user,
       };
-      console.log("payload: ", payload);
-
-      // const result = await createDailyLogs(payload);
-      // if (result?.status === 200) {
-      //   setLoading(false);
-      //   showToast("success", "Meals Review Added Successfully!");
-      //   navigate(-1);
-      // }
+      const result = await createDailyLogs(payload);
+      if (result?.status === 200) {
+        setLoading(false);
+        showToast("success", "Meals Nutrients Added Successfully!");
+        navigate(-1);
+      }
     } catch (err) {
       console.error("Submission failed:", err);
       setLoading(false);
@@ -129,14 +136,51 @@ const MealDetailsScreen = () => {
     return (
       <div className="flex-col">
         <p className="text-base text-black font-medium">
-          {!isClient ? "Your Comment :" : "Trainer Comment :"}
-          <span className="text-normal">
-            {" "}
-            {mealsData[0]?.meals[0]?.comment}
-          </span>
+          {!isClient
+            ? isNutrientAdded
+              ? "Nutrients count:"
+              : "Update Nutrients count"
+            : "Trainer Comment :"}
         </p>
-        <AudioRecorderInput value={mealsData[0]?.meals[0]?.voiceNote} />
-        {!isClient && (
+        <div className="w-full flex space-x-4 mt-4">
+          <Input
+            name={"protein"}
+            label={"Protein"}
+            placeholder={`Enter protein`}
+            type="numeric"
+            editable={isNutrientAdded ? false : true}
+          />
+          <Input
+            name={"fat"}
+            label={"Fat"}
+            placeholder={`Enter fat`}
+            type="numeric"
+            editable={isNutrientAdded ? false : true}
+          />
+        </div>
+        <div className="w-full flex space-x-4 mt-4">
+          <Input
+            name={"kcal"}
+            label={"KCal"}
+            placeholder={`Enter kcal`}
+            type="numeric"
+            editable={isNutrientAdded ? false : true}
+          />
+          <Input
+            name={"carbs"}
+            label={"Carbs"}
+            placeholder={`Enter carbs`}
+            type="numeric"
+            editable={isNutrientAdded ? false : true}
+          />
+        </div>
+        <Textarea
+          name={"comment"}
+          label={"Comment"}
+          placeholder={`Enter comment`}
+          editable={isNutrientAdded ? false : true}
+        />
+        {!isClient && !isNutrientAdded && (
           <div className="w-full bg-white absolute pb-8 pt-2 bottom-0 left-0 px-6">
             <Button label="Submit" loading={loading} type="submit" />
           </div>

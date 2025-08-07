@@ -20,7 +20,7 @@ import Dropdown from "@/components/input/dropdown";
 const DietDetailsScreen = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { data, filter } = location.state || {};
+  const { data, filter, fromMTracker } = location.state || {};
   const { userData } = useSelector((state) => state.auth);
   const methods = useForm();
   const { watch, setValue } = methods;
@@ -68,7 +68,6 @@ const DietDetailsScreen = () => {
     ? userData
     : userList.find((x) => x.value === selectedUser);
 
-  console.log("getUserData: ", getUserData);
   const getSplitTargetData = (type) => {
     const cal = Math.round(getUserData?.targetCalories * calorieSplit[type]);
     const protein = Math.round(getUserData?.targetProtein * calorieSplit[type]);
@@ -112,15 +111,15 @@ const DietDetailsScreen = () => {
   ];
   useEffect(() => {
     if (userList) {
-      console.log("userList: ", userList);
       setValue("person", userList[0]?.value);
     }
   }, [setValue, userList]);
+
   return (
     <div className="w-screen space-y-6 hide-scrollbar px-5 py-6 mb-10">
       <FormProvider {...methods}>
         <ScreenHeader title="Diet Details" />
-        {userData.role !== "client" && (
+        {userData.role !== "client" && !fromMTracker && (
           <Dropdown
             name="person"
             label="Select Client"
@@ -148,11 +147,11 @@ const DietDetailsScreen = () => {
               : "Review"
             : "View More";
 
-        const navigateTo = isClient
-          ? isMealUploaded
-            ? "meals-details"
-            : "meals-upload"
-          : "meals-details";
+          const navigateTo = isClient
+            ? isMealUploaded
+              ? "meals-details"
+              : "meals-upload"
+            : "meals-details";
 
           return (
             <UserCard
