@@ -170,7 +170,7 @@ const MealDetailsScreen = () => {
               <img
                 src={x}
                 alt={"img"}
-                className="rounded-lg object-fit w-full h-48"
+                className="rounded-lg object-contain w-full h-48"
               />
             </div>
           ))}
