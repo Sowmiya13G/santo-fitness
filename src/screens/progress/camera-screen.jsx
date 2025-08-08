@@ -89,6 +89,8 @@ export default function CameraScreen() {
     try {
       const newStream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode },
+         width: { ideal: 1920 }, // or 2560 for very high res
+    height: { ideal: 1080 },
       });
 
       if (videoRef.current) {
@@ -160,7 +162,7 @@ export default function CameraScreen() {
     canvas.height = video.videoHeight;
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-    const imageData = canvas.toDataURL("image/png");
+    const imageData = canvas.toDataURL("image/png", 1.0);
 
     stopCamera();
 
@@ -242,7 +244,7 @@ export default function CameraScreen() {
             ref={videoRef}
             autoPlay
             playsInline
-            className="scale-x-[1]"
+            className="h-full w-full object-cover scale-x-[1]"
           />
         )}
         <canvas ref={canvasRef} className="hidden" />
