@@ -177,7 +177,7 @@ const ProgressScreen = () => {
           </p>
 
           {images?.length > 0 ? (
-            <div className="grid grid-cols-3 gap-4 h-[55vh] overflow-y-scroll overflow-hidden  hide-scrollbar !m-0 pb-10">
+            <div className="grid grid-cols-3 gap-4 h-[55vh] overflow-y-scroll overflow-hidden  hide-scrollbar !m-0 pb-10 animate-fade-in">
               {images.map((img, idx) => (
                 <div
                   key={idx}

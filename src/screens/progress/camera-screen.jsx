@@ -242,7 +242,7 @@ export default function CameraScreen() {
             ref={videoRef}
             autoPlay
             playsInline
-            className="h-full w-full object-cover scale-x-[1]"
+            className="scale-x-[1]"
           />
         )}
         <canvas ref={canvasRef} className="hidden" />
