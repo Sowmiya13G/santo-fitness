@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 
-const TrainerDashboard = () => {
+const TrainerDashboard = ({ loading }) => {
   const { topClient } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const fetchDietPendingProgress = async () => {
@@ -22,8 +22,12 @@ const TrainerDashboard = () => {
   return (
     <div className="w-full space-y-6 px-3 hide-scrollbar ">
       <ScreenHeader isHome />
-      <div className="h-2"/>
-
+      <div className="h-2" />
+      {loading && (
+        <p className="text-center text-gray-500 text-base font-medium my-2">
+          Loading...
+        </p>
+      )}
       <RankCard label={"top performed client "} data={topClient} />
       <UserDetailsCard label={"My Clients"} />
       <PendingListCard label={"pending List"} />

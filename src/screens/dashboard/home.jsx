@@ -9,30 +9,34 @@ import { useDispatch, useSelector } from "react-redux";
 import AdminDashboard from "../home/admin-home";
 import ClientDashboard from "../home/client-home";
 import TrainerDashboard from "../home/trainer-home";
-import { logoutUser } from "@/utils/helper";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const Home = () => {
   const { userData } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const isClient = userData?.role === "client";
+
+  const [loading, setLoading] = useState(false);
   const renderHome = (role) => {
     switch (role) {
       case "admin":
-        return <AdminDashboard />;
+        return <AdminDashboard loading={loading} />;
       case "trainer":
-        return <TrainerDashboard />;
+        return <TrainerDashboard loading={loading} />;
       case "client":
-        return <ClientDashboard />;
+        return <ClientDashboard loading={loading} />;
       default:
         return <div>Role not found</div>;
     }
   };
-  const navigate = useNavigate();
 
   // logoutUser(dispatch, navigate)
   const fetchTopClient = async () => {
     const response = await getTopClient();
     dispatch(setTopClient(response?.data));
+    if (isClient) {
+      setLoading(false);
+    }
   };
 
   const fetchUsersList = async () => {
@@ -61,20 +65,23 @@ const Home = () => {
           }));
         dispatch(setUserList(users));
         dispatch(setTrainerList(trainers));
-
       }
     } catch (err) {
       console.error("Failed to fetch users:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
+    setLoading(true);
     fetchTopClient();
     if (userData?.role === "client") {
       return;
+    } else {
+      fetchUsersList();
     }
-    fetchUsersList();
-  }, [fetchUsersList, userData?.role]);
+  }, [userData?.role]);
   return (
     <div className="min-h-screen  bg-white w-screen overflow-scroll pb-10 hide-scrollbar">
       {renderHome(userData?.role)}

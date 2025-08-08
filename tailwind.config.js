@@ -11,8 +11,8 @@ export default {
         // common
         primary: "#9C0707",
         secondary: "#E54D4D",
-        red_25:"#B1252590",
-        primaryOpacity:"#f4b1a79e",
+        red_25: "#B1252590",
+        primaryOpacity: "#f4b1a79e",
         red_50: "#B1252450",
         red_30: "#B1252430",
         // background
@@ -28,7 +28,7 @@ export default {
         opacity_primary: "#9C070720",
         icon: "#8E8E93",
         field_primary: "#F7F8F8",
-        field_primaryDisabled:"#ececec",
+        field_primaryDisabled: "#ececec",
       },
       backgroundImage: {
         // "primary-gradient": "linear-gradient(to right, #E54D4D, #9C0707)",
@@ -36,6 +36,15 @@ export default {
       },
       fontFamily: {
         poppin: ["Poppins", "sans-serif"],
+      },
+      keyframes: {
+        "fade-in": {
+          "0%": { opacity: "0", transform: "translateY(10px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+      },
+      animation: {
+        "fade-in": "fade-in 0.4s ease-out forwards",
       },
     },
   },

@@ -13,6 +13,7 @@ import { showToast } from "@/components/toast";
 
 import { createDailyLogs } from "@/features/daily-logs/daily-logs-api";
 import { uploadFile } from "@/features/user/user-api";
+import { getMealsLabel } from "@/utils/helper";
 import Workout from "../../assets/images/panCake.svg";
 
 const UploadMealsScreen = () => {
@@ -72,7 +73,10 @@ const UploadMealsScreen = () => {
       const result = await createDailyLogs(payload);
       if (result?.status === 200) {
         setLoading(false);
-        showToast("success", "Meals Uploaded Successfully!");
+        showToast(
+          "success",
+          `${getMealsLabel(type)} Meals Uploaded Successfully!`
+        );
         navigate(-1);
       }
     } catch (err) {
@@ -95,8 +99,7 @@ const UploadMealsScreen = () => {
           and stress management
         </p>
         <p className="text-font_primary text-base font-medium text-center my-5">
-          focus on regular physical activity, a balanced diet, sufficient sleep,
-          and stress management
+          Upload {getMealsLabel(type)}
         </p>
         <FormProvider {...methods}>
           <form

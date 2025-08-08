@@ -17,6 +17,22 @@ const initialNutritionData = [
   { type: "Fats", value: `0g`, percentage: 0, icon: "🥚" },
 ];
 
+const getFilterType = (data) => {
+  switch (true) {
+    case "Morning snacks":
+      return "morning_snack";
+    case "Breakfast":
+      return "breakfast";
+    case "Lunch":
+      return "lunch";
+    case "Evening Snacks":
+      return "evening_snack";
+    case "Dinner":
+      return "dinner";
+    default:
+      return "all";
+  }
+};
 const Recipes = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -165,7 +181,7 @@ const Recipes = () => {
                   filter: {
                     date: selectedDate,
                     user: selectedUser,
-                    type: selectedFilter,
+                    type: getFilterType(selectedFilter),
                   },
                   fromMTracker: true,
                 },

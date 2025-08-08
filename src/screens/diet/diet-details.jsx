@@ -20,16 +20,19 @@ import MorningSnack from "../../assets/images/morning-snacks.svg";
 const DietDetailsScreen = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { data, filter, fromMTracker } = location.state || {};
-  console.log("filter: ", filter);
+
   const { userData } = useSelector((state) => state.auth);
+  const { userList } = useSelector((state) => state.user);
+
   const methods = useForm();
   const { watch, setValue } = methods;
-  const selectedUser = watch("person");
 
-  const isClient = userData?.role === "client";
   const [mealsData, setMealsData] = React.useState([]);
-  const { userList } = useSelector((state) => state.user);
+  const [loading, setLoading] = React.useState([]);
+
+  const { data, filter, fromMTracker } = location.state || {};
+  const isClient = userData?.role === "client";
+  const selectedUser = watch("person");
 
   const fetchData = async () => {
     try {
@@ -50,12 +53,14 @@ const DietDetailsScreen = () => {
     } catch (error) {
       console.error("Failed to fetch diet data", error);
     } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
+    setLoading(true);
     fetchData();
-  }, [selectedUser]);
+  }, [selectedUser, userData?._id]);
 
   const availableMealTypes =
     mealsData[0]?.meals?.map((meal) => {
@@ -137,55 +142,69 @@ const DietDetailsScreen = () => {
             placeholder="Select client"
           />
         )}
-        {sections?.map((x, y) => {
-          const isMealUploaded = availableMealTypes?.includes(x?.type);
-          const mealForType = mealsData[0]?.meals?.find((meal) => {
-            return meal?.type == x?.type;
-          });
-          const isNutrientAdded = mealForType?.isNutrientAdded;
-          const buttonLabel = isClient
-            ? isMealUploaded
-              ? "View Details"
-              : "Upload Meals Image"
-            : !isClient
-            ? isNutrientAdded
-              ? "View Details"
-              : "Review"
-            : "View More";
+        {loading ? (
+          <p className="text-center text-gray-500 text-base font-medium">
+            Loading...
+          </p>
+        ) : (
+          <div className={`space-y-4 animate-fade-in`}>
+            {/* <div
+            className={`space-y-4 transform transition-opacity duration-500 ease-in-out ${
+              loading ? "opacity-0" : "opacity-100"
+            }`}
+          ></div> */}
 
-          const navigateTo = isClient
-            ? isMealUploaded
-              ? "meals-details"
-              : "meals-upload"
-            : "meals-details";
+            {sections?.map((x, y) => {
+              const isMealUploaded = availableMealTypes?.includes(x?.type);
+              const mealForType = mealsData[0]?.meals?.find((meal) => {
+                return meal?.type == x?.type;
+              });
+              const isNutrientAdded = mealForType?.isNutrientAdded;
+              const buttonLabel = isClient
+                ? isMealUploaded
+                  ? "View Details"
+                  : "Upload Meals Image"
+                : !isClient
+                ? isNutrientAdded
+                  ? "View Details"
+                  : "Review"
+                : "View More";
 
-          return (
-            <UserCard
-              user={{
-                name: x?.label,
-                goal: x?.targetData,
-                profileImg: x?.image,
-              }}
-              key={y}
-              onClick={() =>
-                navigate(`/${navigateTo}?type=${x?.type}`, {
-                  state: {
-                    filter: fromMTracker
-                      ? filter
-                      : {
-                          type: x?.type,
-                          user: watch("person"),
-                          date: format(new Date(), "yyyy-MM-dd"),
-                        },
-                  },
-                })
-              }
-              isSwipe={false}
-              buttonLabel={buttonLabel}
-              customButtonClass={"!h-12 !w-auto py-3 text-sm font-normal"}
-            />
-          );
-        })}
+              const navigateTo = isClient
+                ? isMealUploaded
+                  ? "meals-details"
+                  : "meals-upload"
+                : "meals-details";
+
+              return (
+                <UserCard
+                  user={{
+                    name: x?.label,
+                    goal: x?.targetData,
+                    profileImg: x?.image,
+                  }}
+                  key={y}
+                  onClick={() =>
+                    navigate(`/${navigateTo}?type=${x?.type}`, {
+                      state: {
+                        filter: fromMTracker
+                          ? filter
+                          : {
+                              type: x?.type,
+                              user: watch("person"),
+                              date: format(new Date(), "yyyy-MM-dd"),
+                            },
+                      },
+                    })
+                  }
+                  isSwipe={false}
+                  buttonLabel={buttonLabel}
+                  customButtonClass={"!h-12 !w-auto py-3 text-sm font-normal"}
+                />
+              );
+            })}
+          </div>
+        )}
       </FormProvider>
     </div>
   );

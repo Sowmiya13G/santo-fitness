@@ -13,7 +13,7 @@ import { format, parseISO } from "date-fns";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-const ClientDashboard = () => {
+const ClientDashboard = ({loading}) => {
   const { userData } = useSelector((state) => state.auth);
 
   const { topClient } = useSelector((state) => state.user);
@@ -59,6 +59,11 @@ const ClientDashboard = () => {
           <BMRCard bmr={userData.BMR} />
         </div>
       </div>{" "}
+      {loading && (
+        <p className="text-center text-gray-500 text-base font-medium my-2">
+          Loading...
+        </p>
+      )}
       {topClient && (
         <RankCard label={"top performed client "} data={topClient} />
       )}

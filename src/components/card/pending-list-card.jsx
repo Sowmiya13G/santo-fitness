@@ -1,12 +1,14 @@
-import { useEffect, useRef, useState } from "react";
-import { FastAverageColor } from "fast-average-color";
 import { Card } from "@/components/card/card";
-import PendingAlert from "../../assets/images/pending-alert.svg"; // 🟡 Make sure the path is correct
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import PendingAlert from "../../assets/images/pending-alert.svg";
 
-const PendingUserCard = ({ list }) => {
+const PendingUserCard = ({ list, onClick }) => {
   return (
-    <Card className="relative text-white !bg-primaryOpacity rounded-3xl p-4 shadow-lg w-full h-24 mb-4 overflow-hidden">
+    <Card
+      onClick={onClick}
+      className="relative text-white !bg-primaryOpacity rounded-3xl p-4 shadow-lg w-full h-24 mb-4 overflow-hidden"
+    >
       {/* Decorative Bubbles */}
       <div className="absolute w-16 h-16 bg-secondary opacity-20 rounded-full bottom-[-20px] left-[-20px]" />
       <div className="absolute w-10 h-10 bg-secondary opacity-20 rounded-full top-[-10px] right-[-10px]" />
@@ -42,6 +44,7 @@ const PendingUserCard = ({ list }) => {
 };
 
 const PendingListCard = ({ label }) => {
+  const navigate = useNavigate();
   const { pendingLogsList } = useSelector((state) => state.dailyLogs);
 
   return (
@@ -58,9 +61,25 @@ const PendingListCard = ({ label }) => {
       )}
 
       <div className="flex flex-col gap-3">
-        {pendingLogsList?.map((user) => (
-          <PendingUserCard key={user.id} list={user} />
-        ))}
+        {pendingLogsList?.map((user) => {
+          return (
+            <PendingUserCard
+              key={user?.userId}
+              list={user}
+              onClick={() => {
+                navigate(`/meals-details?type=${user?.type}`, {
+                  state: {
+                    filter: {
+                      type: user?.type,
+                      user: user?.userId,
+                      date: user?.date,
+                    },
+                  },
+                });
+              }}
+            />
+          );
+        })}
       </div>
     </div>
   );

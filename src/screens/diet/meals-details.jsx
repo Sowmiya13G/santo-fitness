@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { format } from "date-fns";
 import { FormProvider, useForm } from "react-hook-form";
 import { FaDownload } from "react-icons/fa";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowBack, IoIosArrowForward, IoIosClose } from "react-icons/io";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 // components
@@ -64,11 +64,15 @@ const MealDetailsScreen = () => {
   };
 
   const prevImage = () => {
-    setSelectedImageIndex((prev) => (prev > 0 ? prev - 1 : images.length - 1));
+    setSelectedImageIndex((prev) =>
+      prev > 0 ? prev - 1 : mealsData[0]?.meals[0]?.images.length - 1
+    );
   };
 
   const nextImage = () => {
-    setSelectedImageIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0));
+    setSelectedImageIndex((prev) =>
+      prev < mealsData[0]?.meals[0]?.images.length - 1 ? prev + 1 : 0
+    );
   };
 
   const downloadImage = async (url) => {
@@ -104,14 +108,15 @@ const MealDetailsScreen = () => {
       const res = await getDietProgress(params);
       setMealsData(res);
       const data = res[0]?.meals[0];
-      console.log("data: ", data);
-      reset({
-        kcal: data?.calories,
-        protein: data?.protein,
-        carbs: data?.carbs,
-        fat: data?.fat,
-        comment: data.comment,
-      });
+      if (data?.isNutrientAdded) {
+        reset({
+          kcal: data?.calories ?? "",
+          protein: data?.protein ?? "",
+          carbs: data?.carbs ?? "",
+          fat: data?.fat ?? "",
+          comment: data.comment,
+        });
+      }
     } catch (error) {
       console.error("Failed to fetch diet data", error);
     } finally {
@@ -151,15 +156,15 @@ const MealDetailsScreen = () => {
   const renderClientData = () => {
     return (
       <div className="flex-col">
-        <p className="text-base text-black font-medium mt-4 mb-2">
-          {isClient ? "Uploaded Images :" : "Client Uploaded Images :"}
+        <p className="text-base text-black font-medium mt-4 mb-3">
+          {isClient ? "Uploaded Images" : "Client Uploaded Images"}
         </p>
 
         <div className="relative overflow-x-auto flex gap-4 scroll-smooth no-scrollbar mb-4">
           {mealsData[0]?.meals[0]?.images?.map((x, y) => (
             <div
               key={y}
-              onClick={() => openModal(idx)}
+              onClick={() => openModal(y)}
               className="relative  flex min-w-[250px] max-w-[250px]"
             >
               <img
@@ -171,7 +176,7 @@ const MealDetailsScreen = () => {
           ))}
         </div>
         <p className="text-base text-black font-medium mb-2">
-          {isClient ? "Your Voice Note :" : "Client Voice Note :"}
+          {isClient ? "Your Voice Note" : "Client Voice Note"}
           <span className="text-normal">
             {" "}
             {mealsData[0]?.meals[0]?.voiceNote ? "" : "--"}
@@ -191,9 +196,9 @@ const MealDetailsScreen = () => {
         <p className="text-base text-black font-medium">
           {!isClient
             ? isNutrientAdded
-              ? "Nutrients count:"
+              ? "Nutrients count"
               : "Update Nutrients count"
-            : "Trainer Comment :"}
+            : "Trainer Comment "}
         </p>
         <div className="w-full flex space-x-4 mt-4">
           <Input
@@ -211,7 +216,7 @@ const MealDetailsScreen = () => {
             editable={isNutrientAdded ? false : true}
           />
         </div>
-        <div className="w-full flex space-x-4 mt-4">
+        <div className="w-full flex space-x-4 mt-4 mb-4">
           <Input
             name={"kcal"}
             label={"KCal"}
@@ -264,7 +269,7 @@ const MealDetailsScreen = () => {
       title=""
       image={Workout}
       bgColor="bg-red_25"
-      imgClass={"scale-150 rounded-none object-contain"}
+      imgClass={"!scale-175 rounded-none object-contain top-[25px] absolute"}
     >
       <div className="w-screen min-h-screen px-5 py-4">
         {loadingData ? (
@@ -273,7 +278,7 @@ const MealDetailsScreen = () => {
           </p>
         ) : (
           <>
-            <p className="text-black text-base text-center font-medium">
+            <p className="text-black text-base text-center font-medium mb-2">
               {`${getMealsLabel(type)} Detials`}
             </p>
             <FormProvider {...methods}>
@@ -286,7 +291,7 @@ const MealDetailsScreen = () => {
               </form>
             </FormProvider>
             {isModalOpen && (
-              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80">
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                 <div className="relative max-w-3xl w-full mx-4 bg-white p-4 rounded-xl">
                   <button
                     onClick={closeModal}
@@ -297,9 +302,7 @@ const MealDetailsScreen = () => {
                   </button>
 
                   <img
-                    src={
-                      mealsData[0]?.meals[0]?.images[selectedImageIndex]?.url
-                    }
+                    src={mealsData[0]?.meals[0]?.images[selectedImageIndex]}
                     alt={`Progress ${selectedImageIndex + 1}`}
                     className="w-full max-h-[70vh] object-contain rounded"
                   />
@@ -319,7 +322,9 @@ const MealDetailsScreen = () => {
 
                   <button
                     onClick={() =>
-                      downloadImage(images[selectedImageIndex].url)
+                      downloadImage(
+                        mealsData[0]?.meals[0]?.images[selectedImageIndex]
+                      )
                     }
                     className="absolute bottom-0 right-0  bg-white px-3 py-2 rounded-full  flex items-center gap-2"
                   >
