@@ -38,13 +38,23 @@ export default {
         poppin: ["Poppins", "sans-serif"],
       },
       keyframes: {
+        "slide-left-to-right": {
+          "0%": { transform: "translateX(0%)", opacity: "0" },
+          "100%": { transform: "translateX(-100%)", opacity: "1" },
+        },
         "fade-in": {
           "0%": { opacity: "0", transform: "translateY(10px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
+        "zoom-in": {
+          "0%": { opacity: "0", transform: "scale(1.25)" },
+          "100%": { opacity: "1", transform: "scale(1)" },
+        },
       },
       animation: {
-        "fade-in": "fade-in 0.4s ease-out forwards",
+        "fade-in": "fade-in 0.4s ease-out forwards ",
+        "zoom-in": "zoom-in 0.4s ease-out forwards ",
+        "slide-left-to-right": "slide-left-to-right 0.4s ease-out forwards",
       },
     },
   },

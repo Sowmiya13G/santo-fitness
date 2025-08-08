@@ -83,7 +83,7 @@ const Home = () => {
     }
   }, [userData?.role]);
   return (
-    <div className="min-h-screen  bg-white w-screen overflow-scroll pb-10 hide-scrollbar">
+    <div className="min-h-screen animate-fade-in  bg-white w-screen overflow-scroll pb-10 hide-scrollbar">
       {renderHome(userData?.role)}
     </div>
   );

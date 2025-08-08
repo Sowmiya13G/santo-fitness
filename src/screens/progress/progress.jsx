@@ -105,7 +105,7 @@ const ProgressScreen = () => {
   }, []);
 
   return (
-    <div className="w-screen space-y-6 hide-scrollbar px-5 py-6 mb-10">
+    <div className="w-screen  space-y-6 hide-scrollbar px-5 py-6 mb-10">
       <ScreenHeader title="Progress Photo" />
       <div
         className="bg-primary-gradient w-14 h-14 rounded-full flex items-center justify-center fixed bottom-[13%] right-2"

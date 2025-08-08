@@ -19,7 +19,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="p-4 bg-white w-screen overflow-scroll pb-10 h-full hide-scrollbar">
+    <div className="p-4 animate-fade-in bg-white w-screen overflow-scroll pb-10 h-full hide-scrollbar">
       {renderProfile(userData?.role)}
     </div>
   );

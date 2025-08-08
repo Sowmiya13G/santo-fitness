@@ -6,7 +6,7 @@ import { onboardingContent } from "../../constants/static-data";
 export default function Onboarding() {
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
-
+  const [animate, setAnimate] = useState(false);
   const isLastStep = step === onboardingContent.length - 1;
   const totalSteps = onboardingContent.length;
   const progressPercent = ((step + 1) / totalSteps) * 100;
@@ -14,8 +14,13 @@ export default function Onboarding() {
   const { image, title, content } = onboardingContent[step];
 
   const handleNext = () => {
+    setAnimate(true); // start animation
+
     if (!isLastStep) {
-      setStep((prev) => prev + 1);
+      setStep((prev) => (prev + 1) % onboardingContent.length);
+      setTimeout(() => {
+        setAnimate(false); // reset animation
+      }, 300);
     } else {
       navigate("/login");
     }
@@ -26,12 +31,21 @@ export default function Onboarding() {
       <img
         src={image}
         alt={title}
-        className="object-contain w-full max-h-[60%]"
+        className={`object-contain w-full max-h-[60%] ${
+          !animate ? "" : "animate-zoom-in"
+        }`}
       />
-
       <div className="mx-5 max-w-md ">
-        <h2 className="text-font_primary text-2xl font-bold mb-2">{title}</h2>
-        <p className="text-gray-600">{content}</p>
+        <h2
+          className={`text-font_primary text-2xl font-bold mb-2  ${
+            !animate ? "" : "animate-zoom-in"
+          }`}
+        >
+          {title}
+        </h2>
+        <p className={`text-gray-600  ${!animate ? "" : "animate-zoom-in"}`}>
+          {content}
+        </p>
       </div>
 
       <div className="flex justify-end items-center p-5 max-w-md">

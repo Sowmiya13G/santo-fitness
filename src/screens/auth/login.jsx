@@ -60,7 +60,7 @@ function Login() {
         dispatch(setUserData(response?.data?.user));
         handleSendFCM();
         showToast("success", "Login successful!");
-        navigate("/welcome");
+        navigate("/home");
       }
     } catch (err) {
       const msg =
@@ -76,7 +76,7 @@ function Login() {
   // ---------------------------------- render ui ---------------------------------- //
 
   return (
-    <div className="h-full overflow-hidden  w-screen bg-white flex flex-col items-center px-6 justify-center ">
+    <div className="h-full overflow-hidden animate-fade-in  w-screen bg-white flex flex-col items-center px-6 justify-center ">
       <div className="w-full max-w-md text-center  ">
         <p className="text-font_primary text-base mb-2">Hey there,</p>
         <p className="text-font_primary font-bold text-xl">Welcome back</p>
