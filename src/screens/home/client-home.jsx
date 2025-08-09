@@ -26,14 +26,11 @@ const ClientDashboard = ({loading}) => {
           days: 14,
         };
         const raw = await getDietProgress(params);
-        console.log("raw: ", raw);
         dispatch(setWeekLogs(raw));
         const today = format(new Date(), "yyyy-MM-dd");
-        console.log("today: ", today);
         const todayLog = raw.find(
           (log) => format(parseISO(log.date), "yyyy-MM-dd") === today
         );
-        console.log("todayLog: ", todayLog);
 
         if (todayLog) {
           dispatch(setTodayLogs(todayLog));

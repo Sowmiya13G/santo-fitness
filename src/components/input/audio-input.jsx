@@ -26,7 +26,6 @@ const AudioRecorderInput = ({ name = "audio", value = null }) => {
 
   useEffect(() => {
     if (!value || audioBlob || audioUrl) return;
-    console.log('value: ', value);
 
     const fetchAndProcessAudio = async () => {
       try {

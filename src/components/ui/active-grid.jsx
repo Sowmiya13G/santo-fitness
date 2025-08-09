@@ -35,7 +35,6 @@ const ActivityGrid = () => {
       return;
     }
     const todayData = todayLogs;
-    console.log('todayData: ', todayData);
 
     // You can define "total" values based on user target, or statically for now
     const totals = {
@@ -71,7 +70,6 @@ const ActivityGrid = () => {
     setNutrients(formatted);
   }, [todayLogs, userData.targetCalories, userData.targetCarbs, userData.targetFat, userData.targetProtein]);
 
-  console.log("nutrients: ", nutrients);
   return (
     <div>
       <h2 className="text-md text-center font-semibold mb-4 text-gradient">

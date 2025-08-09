@@ -65,7 +65,6 @@ const Recipes = () => {
     if (!isClient && !selectedUser) return;
     try {
       const formattedDate = format(selectedDate, "yyyy-MM-dd");
-      console.log("formattedDate: ", formattedDate);
       const typeMap = {
         All: "all",
         "Morning snacks": "morning_snack",

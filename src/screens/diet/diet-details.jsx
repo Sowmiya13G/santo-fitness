@@ -162,8 +162,6 @@ const DietDetailsScreen = () => {
               const mealForType = mealsData[0]?.meals?.find((meal) => {
                 return meal?.type == x?.type;
               });
-              console.log("mealsData: ", mealsData);
-              console.log("mealForType: ", mealForType);
               const isNutrientAdded = mealForType?.isNutrientAdded;
               const buttonDisabled = Boolean(mealForType);
               const buttonLabel = isClient
