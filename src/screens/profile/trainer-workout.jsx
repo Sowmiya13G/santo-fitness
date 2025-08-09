@@ -99,7 +99,8 @@ const TrainerWorkoutNotes = () => {
   };
 
   return (
-    <ProfileWrapper title="" image={Workout}>
+    <ProfileWrapper title="" image={Workout}
+     imgClass={"!scale-175 rounded-none object-contain top-[25px] absolute"}>
       <div className="w-screen h-full px-5 py-5 flex flex-col">
         <p className="font-bold text-font_primary mb-2">Assign Workout</p>
         <FormProvider {...methods}>

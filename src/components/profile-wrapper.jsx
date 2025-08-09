@@ -74,7 +74,7 @@ export default function ProfileWrapper({
       setShowModal(false);
     }
   };
-  const maxScroll = 100; // Adjust to control fade-out speed
+  const maxScroll =10; // Adjust to control fade-out speed
   const scrollRatio = Math.min(scrollY / maxScroll, 1);
 
   const containerHeight = `${200 - scrollRatio * 200}px`; // from 200px to 0px
@@ -83,7 +83,7 @@ export default function ProfileWrapper({
 
   return (
     <div className={`flex flex-col h-full ${bgColor} relative`}>
-      <div className="h-14" />
+      <div className="h-12" />
       <ScreenHeader
         title={title}
         isBack={isBack}

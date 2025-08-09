@@ -157,7 +157,9 @@ const MealDetailsScreen = () => {
     return (
       <div className="flex-col">
         <p className="text-base text-black font-medium mt-4 mb-3">
-          {isClient ? "Uploaded Images" : "Client Uploaded Images"}
+          {isClient
+            ? `Uploaded ${getMealsLabel(type)} Images`
+            : `${getMealsLabel(type)} Images`}
         </p>
 
         <div className="relative overflow-x-auto flex gap-4 scroll-smooth no-scrollbar mb-4">
@@ -165,7 +167,7 @@ const MealDetailsScreen = () => {
             <div
               key={y}
               onClick={() => openModal(y)}
-              className="relative  flex min-w-[250px] max-w-[250px]"
+              className="relative  flex min-w-[250px] w-full"
             >
               <img
                 src={x}
@@ -175,13 +177,11 @@ const MealDetailsScreen = () => {
             </div>
           ))}
         </div>
-        <p className="text-base text-black font-medium mb-2">
-          {isClient ? "Your Voice Note" : "Client Voice Note"}
-          <span className="text-normal">
-            {" "}
-            {mealsData[0]?.meals[0]?.voiceNote ? "" : "--"}
-          </span>
-        </p>
+        {mealsData[0]?.meals[0]?.voiceNote && (
+          <p className="text-base text-black font-medium mb-2">
+            {isClient ? "Your Voice Note" : "Client Voice Note"}
+          </p>
+        )}
 
         {mealsData[0]?.meals[0]?.voiceNote && (
           <AudioRecorderInput value={mealsData[0]?.meals[0]?.voiceNote} />
@@ -197,7 +197,7 @@ const MealDetailsScreen = () => {
           {!isClient
             ? isNutrientAdded
               ? "Nutrients count"
-              : "Update Nutrients count"
+              : "Update Nutrients Data"
             : "Trainer Comment "}
         </p>
         <div className="w-full flex space-x-4 mt-4">
@@ -239,7 +239,7 @@ const MealDetailsScreen = () => {
           editable={isNutrientAdded ? false : true}
         />
         {!isClient && !isNutrientAdded && (
-          <div className="w-full bg-white absolute pb-8 pt-2 bottom-0 left-0 px-6">
+          <div className="w-full  pt-8 ">
             <Button label="Submit" loading={loading} type="submit" />
           </div>
         )}
@@ -266,21 +266,18 @@ const MealDetailsScreen = () => {
   };
   return (
     <ProfileWrapper
-      title=""
+      title={`${getMealsLabel(type)} Details`}
       image={Workout}
       bgColor="bg-red_25"
       imgClass={"!scale-175 rounded-none object-contain top-[25px] absolute"}
     >
-      <div className="w-screen min-h-screen px-5 py-4">
+      <div className="w-screen min-h-screen px-5 py-1 !mt-0">
         {loadingData ? (
-          <p className="text-center text-base font-medium text-icon">
+          <p className="text-center text-base  mt-3 font-medium text-icon">
             Loading..!
           </p>
         ) : (
           <>
-            <p className="text-black text-base text-center font-medium mb-2">
-              {`${getMealsLabel(type)} Detials`}
-            </p>
             <FormProvider {...methods}>
               <form
                 onSubmit={handleSubmit(onSubmit)}

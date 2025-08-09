@@ -30,7 +30,7 @@ const DietDetailsScreen = () => {
   const [mealsData, setMealsData] = React.useState([]);
   const [loading, setLoading] = React.useState([]);
 
-  const { data, filter, fromMTracker } = location.state || {};
+  const { filter, fromMTracker } = location.state || {};
   const isClient = userData?.role === "client";
   const selectedUser = watch("person");
 
@@ -45,7 +45,7 @@ const DietDetailsScreen = () => {
       const params = {
         date: formattedDate,
         type,
-        userId: isClient ? userData?._id : filter?.user,
+        userId: fromMTracker ? filter?.user : selectedUser,
       };
 
       const res = await getDietProgress(params);
@@ -59,7 +59,12 @@ const DietDetailsScreen = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetchData();
+    if (selectedUser) {
+      fetchData();
+    }
+    if (isClient) {
+      fetchData();
+    }
   }, [selectedUser, userData?._id]);
 
   const availableMealTypes =
@@ -120,17 +125,21 @@ const DietDetailsScreen = () => {
       image: Dinner,
     },
   ];
+
   useEffect(() => {
-    if (userList) {
+    if (userList && !fromMTracker) {
       setValue("person", userList[0]?.value);
     }
-  }, [setValue, userList]);
+    if (fromMTracker) {
+      setValue("person", filter.user);
+    }
+  }, [fromMTracker, setValue, userList]);
 
   return (
     <div className="w-screen space-y-6 hide-scrollbar px-5 py-6 mb-10">
       <FormProvider {...methods}>
         <ScreenHeader title="Diet Details" />
-        {userData.role !== "client" && !fromMTracker && (
+        {userData.role !== "client" && (
           <Dropdown
             name="person"
             label="Select Client"
@@ -148,24 +157,23 @@ const DietDetailsScreen = () => {
           </p>
         ) : (
           <div className={`space-y-4 animate-fade-in`}>
-            {/* <div
-            className={`space-y-4 transform transition-opacity duration-500 ease-in-out ${
-              loading ? "opacity-0" : "opacity-100"
-            }`}
-          ></div> */}
-
             {sections?.map((x, y) => {
               const isMealUploaded = availableMealTypes?.includes(x?.type);
               const mealForType = mealsData[0]?.meals?.find((meal) => {
                 return meal?.type == x?.type;
               });
+              console.log("mealsData: ", mealsData);
+              console.log("mealForType: ", mealForType);
               const isNutrientAdded = mealForType?.isNutrientAdded;
+              const buttonDisabled = Boolean(mealForType);
               const buttonLabel = isClient
                 ? isMealUploaded
                   ? "View Details"
                   : "Upload Meals Image"
                 : !isClient
-                ? isNutrientAdded
+                ? !buttonDisabled
+                  ? "Awaiting"
+                  : isNutrientAdded
                   ? "View Details"
                   : "Review"
                 : "View More";
@@ -175,7 +183,6 @@ const DietDetailsScreen = () => {
                   ? "meals-details"
                   : "meals-upload"
                 : "meals-details";
-
               return (
                 <UserCard
                   user={{
@@ -198,6 +205,7 @@ const DietDetailsScreen = () => {
                     })
                   }
                   isSwipe={false}
+                  buttonDisabled={!buttonDisabled}
                   buttonLabel={buttonLabel}
                   customButtonClass={"!h-12 !w-auto py-3 text-sm font-normal"}
                 />

@@ -122,7 +122,7 @@ const UploadMealsScreen = () => {
             />
             <AudioRecorderInput name="audio" />
             <div className="h-8" />
-            <div className="w-full bg-white absolute pb-8 pt-2 bottom-0 left-0 px-6">
+            <div className="w-full  pt-8 ">
               <Button label="Submit" loading={loading} type="submit" />
             </div>
           </form>

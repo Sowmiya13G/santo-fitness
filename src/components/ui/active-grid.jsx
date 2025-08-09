@@ -5,7 +5,6 @@ import NutrientProgress from "../card/nutrient-progress";
 const ActivityGrid = () => {
   const { todayLogs } = useSelector((state) => state.dailyLogs);
   const { userData } = useSelector((state) => state.auth);
-  console.log('userData: ', userData);
 
   const initialData = [
     {
@@ -30,7 +29,6 @@ const ActivityGrid = () => {
     },
   ];
   const [nutrients, setNutrients] = useState(initialData);
-  console.log("nutrients: ", nutrients);
 
   useEffect(() => {
     if (!todayLogs) {
@@ -71,7 +69,7 @@ const ActivityGrid = () => {
     ];
 
     setNutrients(formatted);
-  }, [todayLogs]);
+  }, [todayLogs, userData.targetCalories, userData.targetCarbs, userData.targetFat, userData.targetProtein]);
 
   console.log("nutrients: ", nutrients);
   return (

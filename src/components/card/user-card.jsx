@@ -12,6 +12,7 @@ const UserCard = ({
   isSwipe = true,
   buttonLabel = "View",
   customButtonClass,
+  buttonDisabled,
 }) => {
   const imgRef = useRef(null);
   const [bgColor, setBgColor] = useState("#adabb0");
@@ -73,6 +74,7 @@ const UserCard = ({
               customClassName={`${customButtonClass} bg-field_primary !text-font_primary opacity-70 w-auto !h-8 mb-0 mt-5`}
               buttonColor={`text-[${textColor}]`}
               variant=""
+              disabled={buttonDisabled}
             />
           </div>
 
