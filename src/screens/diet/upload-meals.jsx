@@ -88,19 +88,17 @@ const UploadMealsScreen = () => {
 
   return (
     <ProfileWrapper
-      title=""
+      title={`Upload ${getMealsLabel(type)}`}
       image={Workout}
       bgColor="bg-red_25"
       imgClass={"!scale-175 rounded-none object-contain top-[25px] absolute"}
     >
       <div className="w-screen min-h-screen px-5 py-4">
-        <p className="text-icon text-sm text-center">
+        <p className="text-icon text-sm text-center mb-3">
           focus on regular physical activity, a balanced diet, sufficient sleep,
           and stress management
         </p>
-        <p className="text-font_primary text-base font-medium text-center my-5">
-          Upload {getMealsLabel(type)}
-        </p>
+     
         <FormProvider {...methods}>
           <form
             onSubmit={handleSubmit(onSubmit)}
@@ -111,7 +109,7 @@ const UploadMealsScreen = () => {
               name="file"
               label="Upload Report (PDF, PNG, JPG)"
               accept=".pdf,.png,.jpg,.jpeg"
-              placeholder={"Upload Image"}
+              placeholder={`Upload ${getMealsLabel(type)}`}
               isArray
               type="meals"
             />

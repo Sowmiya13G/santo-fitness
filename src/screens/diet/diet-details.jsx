@@ -59,6 +59,7 @@ const DietDetailsScreen = () => {
 
   useEffect(() => {
     setLoading(true);
+    console.log("selectedUser: ", selectedUser);
     if (selectedUser) {
       fetchData();
     }
@@ -127,7 +128,7 @@ const DietDetailsScreen = () => {
   ];
 
   useEffect(() => {
-    if (userList && !fromMTracker) {
+    if (userList && !fromMTracker && !isClient) {
       setValue("person", userList[0]?.value);
     }
     if (fromMTracker) {
@@ -163,7 +164,7 @@ const DietDetailsScreen = () => {
                 return meal?.type == x?.type;
               });
               const isNutrientAdded = mealForType?.isNutrientAdded;
-              const buttonDisabled = Boolean(mealForType);
+              const buttonDisabled = isClient ? true : Boolean(mealForType);
               const buttonLabel = isClient
                 ? isMealUploaded
                   ? "View Details"

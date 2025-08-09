@@ -31,12 +31,12 @@ export default function ScreenHeader({
             </h1>
           </div>
 
-          <button
+          {/* <button
             onClick={() => navigate("/notification")}
             className="p-3 rounded-xl"
           >
             <FaBell className="w-5 h-5 text-icon" />
-          </button>
+          </button> */}
         </div>
       ) : (
         <div

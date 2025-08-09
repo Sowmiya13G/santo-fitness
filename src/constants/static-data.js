@@ -51,11 +51,11 @@ export const adminAccountItems = [
     icon: Report,
     toPath: "/profile/testing-reports",
   },
-  {
-    title: "Activity History",
-    icon: Activity,
-    toPath: "/profile/activity-history",
-  },
+  // {
+  //   title: "Activity History",
+  //   icon: Activity,
+  //   toPath: "/home",
+  // },
 ];
 
 export const clientAccountItems = [
@@ -72,7 +72,7 @@ export const clientAccountItems = [
   {
     title: "Activity History",
     icon: Activity,
-    toPath: "/profile/activity-history",
+    toPath: "/home",
   },
   {
     title: "Workout Notes",
@@ -83,7 +83,7 @@ export const clientAccountItems = [
 
 export const trainerAccountItems = [
   {
-    title: "Client   Data",
+    title: "Client Data",
     icon: Profile,
     toPath: "/profile/personal-data",
   },
@@ -92,11 +92,11 @@ export const trainerAccountItems = [
     icon: Report,
     toPath: "/profile/testing-reports-trainer",
   },
-  {
-    title: "Activity History",
-    icon: Activity,
-    toPath: "/profile/activity-history",
-  },
+  // {
+  //   title: "Activity History",
+  //   icon: Activity,
+  //   toPath: "/profile/activity-history",
+  // },
   {
     title: "Workout Notes",
     icon: Notes,
