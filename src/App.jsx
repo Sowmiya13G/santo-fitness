@@ -5,6 +5,7 @@ import "./index.css";
 import AppRoutes from "./routes/app-routes";
 import InstallSplashScreen from "./screens/auth/install-splash";
 import { registerSW } from "./registerSW";
+import useAskNotificationPermission from "./useAskNotificationPermission";
 
 const App = () => {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
@@ -14,21 +15,8 @@ const App = () => {
   useEffect(() => {
     registerSW();
   }, []);
-  // ✅ Ask for notification permission on first load
-  useEffect(() => {
-    if ("Notification" in window && Notification.permission === "default") {
-      // Small delay so it doesn't feel abrupt
-      setTimeout(() => {
-        Notification.requestPermission().then((permission) => {
-          if (permission === "granted") {
-            toast.success("Notifications enabled!");
-          } else if (permission === "denied") {
-            toast.info("You can enable notifications in browser settings.");
-          }
-        });
-      }, 2000);
-    }
-  }, []);
+
+  useAskNotificationPermission();
 
   // ✅ Viewport height fix for mobile
   useEffect(() => {
