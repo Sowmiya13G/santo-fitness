@@ -108,7 +108,9 @@ const PersonalData = () => {
       const res = await getUserData(id);
       if (res?.status === 200) {
         reset(buildResetData(res.user));
-        dispatch(setUserData(res?.user));
+        if (userData.role === "client") {
+          dispatch(setUserData(res?.user));
+        }
       }
     } catch (err) {
       console.error("Error fetching user data:", err);
