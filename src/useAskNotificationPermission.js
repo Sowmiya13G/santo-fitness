@@ -7,17 +7,28 @@ export default function useAskNotificationPermission() {
   );
 
   useEffect(() => {
-    // Don't ask if we've already asked before or permission is not "default"
-    if (!notifAsked && "Notification" in window && Notification.permission === "default") {
+    // Only run if notifications are supported
+    if (!("Notification" in window)) return;
+
+    // If permission already granted — show success and stop
+    if (Notification.permission === "granted" && !notifAsked) {
+      toast.success("Notifications enabled!");
+      localStorage.setItem("notifAsked", "true");
+      setNotifAsked(true);
+      return;
+    }
+
+    // If permission is default — ask
+    if (!notifAsked && Notification.permission === "default") {
       const timer = setTimeout(() => {
         Notification.requestPermission().then((permission) => {
-          localStorage.setItem("notifAsked", "true"); // Remember in localStorage
-          setNotifAsked(true); // Remember in state too
-
           if (permission === "granted") {
             toast.success("Notifications enabled!");
+            localStorage.setItem("notifAsked", "true"); // ✅ Only store when granted
+            setNotifAsked(true);
           } else if (permission === "denied") {
             toast.info("You can enable notifications in browser settings.");
+            // ❌ Don't set localStorage here, so it will ask again next time
           }
         });
       }, 2000);
