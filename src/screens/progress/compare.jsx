@@ -5,7 +5,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import { FaAngleRight, FaCalendarAlt } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
 // components
 import Button from "@/components/button";
 import ScreenHeader from "@/components/screen-header";
