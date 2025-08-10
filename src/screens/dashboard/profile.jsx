@@ -100,10 +100,12 @@ const Profile = () => {
   };
 
   return (
-    <div className="p-4 animate-fade-in bg-white w-screen overflow-scroll pb-10 h-full hide-scrollbar">
-      {renderProfile(userData?.role)}
+    <div>
+      <div className="p-4 animate-fade-in bg-white w-screen overflow-scroll pb-10 h-full hide-scrollbar">
+        {renderProfile(userData?.role)}
+      </div>
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-50 h-full flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl p-6 w-80 flex flex-col items-center relative">
             {!isUploading && (
               <button
