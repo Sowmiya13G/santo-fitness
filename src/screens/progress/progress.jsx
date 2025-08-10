@@ -19,7 +19,8 @@ const ProgressScreen = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [images, setImages] = useState([]); // [{ monthYear, images: [{ url }] }]
+  // [{ monthYear: "August 2025", images: [{ url }] }]
+  const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedGroupIndex, setSelectedGroupIndex] = useState(null);
@@ -52,7 +53,7 @@ const ProgressScreen = () => {
       const prevGroup = images[selectedGroupIndex - 1];
       setSelectedGroupIndex((prev) => prev - 1);
       setSelectedImageIndex(prevGroup.images.length - 1);
-    } else {
+    } else if (images.length > 0) {
       // wrap to last
       const lastGroupIndex = images.length - 1;
       const lastImageIndex = images[lastGroupIndex].images.length - 1;
@@ -62,12 +63,19 @@ const ProgressScreen = () => {
   };
 
   const nextImage = () => {
-    if (selectedImageIndex < images[selectedGroupIndex].images.length - 1) {
+    if (
+      selectedGroupIndex != null &&
+      selectedImageIndex != null &&
+      selectedImageIndex < images[selectedGroupIndex].images.length - 1
+    ) {
       setSelectedImageIndex((prev) => prev + 1);
-    } else if (selectedGroupIndex < images.length - 1) {
+    } else if (
+      selectedGroupIndex != null &&
+      selectedGroupIndex < images.length - 1
+    ) {
       setSelectedGroupIndex((prev) => prev + 1);
       setSelectedImageIndex(0);
-    } else {
+    } else if (images.length > 0) {
       // wrap to first
       setSelectedGroupIndex(0);
       setSelectedImageIndex(0);
@@ -82,7 +90,7 @@ const ProgressScreen = () => {
 
       const link = document.createElement("a");
       link.href = objectURL;
-      link.download = `progress-${selectedImageIndex + 1}.jpg`;
+      link.download = `progress-${(selectedImageIndex ?? 0) + 1}.jpg`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -94,52 +102,77 @@ const ProgressScreen = () => {
   };
 
   const fetchProgressList = async (targetId) => {
+    if (!targetId) return;
     setLoading(true);
     try {
-      const response = await getProgressData(isClient ? {} : { targetId });
+      const response = await getProgressData({ targetId });
 
-      if (response?.progress) {
+      if (response?.progress && Array.isArray(response.progress)) {
         // Sort newest first
         const sortedProgress = [...response.progress].sort(
           (a, b) => new Date(b.date) - new Date(a.date)
         );
 
-        // Group into { monthYear, images }
-        const grouped = sortedProgress.map((entry) => {
-          const monthYear = new Date(entry.date).toLocaleDateString("en-US", {
+        // Group by month-year; merge images from entries within the same month
+        const groupedMap = sortedProgress.reduce((acc, entry) => {
+          const entryDate = new Date(entry.date);
+          if (isNaN(entryDate.getTime())) return acc;
+
+          const monthYear = entryDate.toLocaleDateString("en-US", {
             month: "long",
             year: "numeric",
           });
-          return {
-            monthYear,
-            images: entry.images.map((img) => ({ url: img.url })),
-          };
+
+          if (!acc.has(monthYear)) {
+            acc.set(monthYear, { monthYear, images: [] });
+          }
+          const bucket = acc.get(monthYear);
+
+          if (Array.isArray(entry.images)) {
+            for (const img of entry.images) {
+              if (img?.url) bucket.images.push({ url: img.url });
+            }
+          }
+          return acc;
+        }, new Map());
+
+        // Convert to array
+        const grouped = Array.from(groupedMap.values());
+
+        // Ensure month groups are newest-first
+        grouped.sort((a, b) => {
+          const dA = new Date(`${a.monthYear} 1`);
+          const dB = new Date(`${b.monthYear} 1`);
+          return dB - dA;
         });
 
         setImages(grouped);
+      } else {
+        setImages([]);
       }
     } catch (err) {
       console.error("Failed to fetch progress:", err);
+      setImages([]);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (userList && !isClient) {
+    if (userList && !isClient && userList.length > 0) {
       setValue("person", userList[0]?.value);
       fetchProgressList(userList[0]?.value);
     }
-  }, [setValue, userList]);
+  }, [setValue, userList, isClient]);
 
   useEffect(() => {
-    if (isClient) {
-      fetchProgressList();
+    if (isClient && userData?._id) {
+      fetchProgressList(userData._id);
     }
-  }, []);
+  }, [isClient, userData?._id]);
 
   const hasCurrentMonthImages = images.some(
-    (group) => group.monthYear === currentMonthYear
+    (group) => group.monthYear === currentMonthYear && group.images?.length > 0
   );
 
   return (
@@ -147,7 +180,7 @@ const ProgressScreen = () => {
       <ScreenHeader title="Progress Photo" />
 
       <div
-        className="bg-primary-gradient w-14 h-14 rounded-full flex items-center justify-center fixed bottom-[13%] right-2"
+        className="bg-primary-gradient w-14 h-14 rounded-full flex items-center justify-center fixed bottom-[13%] right-2 cursor-pointer"
         onClick={() => navigate("/camera-screen")}
       >
         <FaCamera className="text-white text-xl" />
@@ -170,6 +203,7 @@ const ProgressScreen = () => {
               />
             </form>
           </FormProvider>
+
           {!hasCurrentMonthImages && !loading && (
             <div className="relative bg-yellow-100 border border-yellow-300 text-yellow-800 p-4 w-full rounded-3xl flex items-center gap-4">
               <div className="p-4 rounded-full bg-yellow-200 max-w-16 w-1/5">
@@ -179,10 +213,8 @@ const ProgressScreen = () => {
                 <p className="text-base text-yellow-900 font-semibold">
                   Reminder!
                 </p>
-                <p className="font-normal ">
-                  {" "}
-                  No progress photos added for {currentMonthYear}. Don’t forget
-                  to upload!
+                <p className="font-normal">
+                  No progress photos added for {currentMonthYear}. Don’t forget to upload!
                 </p>
               </div>
             </div>
@@ -208,7 +240,7 @@ const ProgressScreen = () => {
             }}
           />
         </div>
-        <img src={ReminderImage} alt="Calendar Icon" className="w-15 h-15" />
+        <img src={ReminderImage} alt="Reminder" className="w-15 h-15" />
       </div>
 
       {loading ? (
@@ -218,16 +250,17 @@ const ProgressScreen = () => {
           <div key={gIdx} className="mb-6">
             <h3 className="text-lg font-semibold mb-3">{group.monthYear}</h3>
             <div className="grid grid-cols-3 gap-4">
-              {group.images.map((img, idx) => (
+              {group.images?.map((img, idx) => (
                 <div
                   key={idx}
-                  className="w-28 h-28 rounded-xl overflow-hidden border border-gray-200"
+                  className="w-28 h-28 rounded-xl overflow-hidden border border-gray-200 cursor-pointer"
                   onClick={() => openModal(gIdx, idx)}
                 >
                   <img
                     src={img.url}
                     alt={`Progress ${idx + 1}`}
                     className="w-full h-full object-cover"
+                    loading="lazy"
                   />
                 </div>
               ))}
@@ -238,8 +271,7 @@ const ProgressScreen = () => {
         <p className="text-center text-icon">No data available.</p>
       )}
 
-      {/* Modal */}
-      {isModalOpen && (
+      {isModalOpen && selectedGroupIndex != null && selectedImageIndex != null && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80">
           <div className="relative max-w-3xl w-full mx-4 bg-white p-4 rounded-xl">
             <button
@@ -252,11 +284,11 @@ const ProgressScreen = () => {
 
             <img
               src={images[selectedGroupIndex]?.images[selectedImageIndex]?.url}
-              alt={`Progress`}
+              alt="Progress"
+              loading="lazy"
               className="w-full max-h-[70vh] object-contain rounded"
             />
 
-            {/* Navigation Arrows */}
             <button
               onClick={prevImage}
               className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
@@ -270,7 +302,6 @@ const ProgressScreen = () => {
               <IoIosArrowForward className="text-xl" />
             </button>
 
-            {/* Download Button */}
             <button
               onClick={() =>
                 downloadImage(
