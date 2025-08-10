@@ -4,7 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./index.css";
 import AppRoutes from "./routes/app-routes";
 import InstallSplashScreen from "./screens/auth/install-splash";
-import { registerSW } from "virtual:pwa-register";
+import { registerSW } from "./registerSW";
 
 const App = () => {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
@@ -12,33 +12,7 @@ const App = () => {
 
   // ✅ Service Worker update registration
   useEffect(() => {
-    const updateSW = registerSW({
-      onNeedRefresh() {
-        toast.info(
-          <div>
-            <span>A new version is available.</span>
-            <button
-              style={{
-                marginLeft: "10px",
-                padding: "4px 8px",
-                background: "#4cafef",
-                color: "#fff",
-                border: "none",
-                borderRadius: "4px",
-                cursor: "pointer",
-              }}
-              onClick={() => updateSW()}
-            >
-              Update
-            </button>
-          </div>,
-          { autoClose: false }
-        );
-      },
-      onOfflineReady() {
-        toast.success("App is ready to work offline");
-      },
-    });
+  registerSW()
   }, []);
 
   // ✅ Viewport height fix for mobile
