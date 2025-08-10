@@ -12,7 +12,22 @@ const App = () => {
 
   // ✅ Service Worker update registration
   useEffect(() => {
-  registerSW()
+    registerSW();
+  }, []);
+  // ✅ Ask for notification permission on first load
+  useEffect(() => {
+    if ("Notification" in window && Notification.permission === "default") {
+      // Small delay so it doesn't feel abrupt
+      setTimeout(() => {
+        Notification.requestPermission().then((permission) => {
+          if (permission === "granted") {
+            toast.success("Notifications enabled!");
+          } else if (permission === "denied") {
+            toast.info("You can enable notifications in browser settings.");
+          }
+        });
+      }, 2000);
+    }
   }, []);
 
   // ✅ Viewport height fix for mobile

@@ -25,7 +25,7 @@ export default function ScreenHeader({
           className={`w-full z-50 text-md absolute left-0 top-0 flex items-center justify-between px-4 h-20 bg-white/70 backdrop-blur-sm ${headerStyle}`}
         >
           <div>
-            <p className="text-base text-icon">Welcome Back e,</p>
+            <p className="text-base text-icon">Welcome Back,</p>
             <h1 className={`text-md font-semibold ${titleColor}`}>
               {userData?.name || "User"}
             </h1>
