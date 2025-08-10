@@ -74,7 +74,7 @@ export default function ProfileWrapper({
       setShowModal(false);
     }
   };
-  const maxScroll =10; // Adjust to control fade-out speed
+  const maxScroll = 10; // Adjust to control fade-out speed
   const scrollRatio = Math.min(scrollY / maxScroll, 1);
 
   const containerHeight = `${200 - scrollRatio * 200}px`; // from 200px to 0px

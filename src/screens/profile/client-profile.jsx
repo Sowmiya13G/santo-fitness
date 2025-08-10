@@ -1,7 +1,6 @@
-import { useState } from "react";
 // packages
 import { FiBell, FiChevronRight, FiLogOut } from "react-icons/fi";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 // redux
 // component
@@ -13,25 +12,14 @@ import ShadowView from "@/components/shadow-view";
 import Switch from "@/components/switch";
 import { clientAccountItems } from "@/constants/static-data";
 import { logoutUser } from "@/utils/helper";
-import maleProfile from "../../assets/icons/male-profile.svg";
 
-const ClientProfile = () => {
+const ClientProfile = ({setShowModal ,enabled ,setEnabled}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [enabled, setEnabled] = useState(false);
-  const { userData } = useSelector((state) => state.auth);
-
   return (
     <div className="h-full bg-white space-y-6">
       <ScreenHeader title="Profile" />
-      <ProfileCard
-        name={userData?.name}
-        image={userData?.profileImg ? userData?.profileImg : maleProfile}
-        program={userData?.goal}
-        height={userData.height}
-        weight={userData.weight}
-        age={userData.age}
-      />
+      <ProfileCard setShowModal={setShowModal} />
       <ShadowView title="Account">
         <div className="space-y-4">
           {clientAccountItems?.map(({ title, icon: Icon, toPath }) => (
@@ -58,6 +46,7 @@ const ClientProfile = () => {
         icon={<FiLogOut />}
         onAction={() => logoutUser(dispatch, navigate)}
       />
+  
     </div>
   );
 };

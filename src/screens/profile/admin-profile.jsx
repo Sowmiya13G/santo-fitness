@@ -16,23 +16,15 @@ import { adminAccountItems } from "@/constants/static-data";
 import maleProfile from "../../assets/icons/male-profile.svg";
 import { logoutUser } from "@/utils/helper";
 
-const AdminProfile = () => {
+const AdminProfile = ({setShowModal ,enabled ,setEnabled}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [enabled, setEnabled] = useState(false);
-  const { userData } = useSelector((state) => state.auth);
 
   return (
     <div className="h-full bg-white space-y-6">
       <ScreenHeader title="Profile" />
-      <ProfileCard
-        image={userData?.profileImg ? userData?.profileImg : maleProfile}
-        name={userData?.name}
-        program="Admin"
-        height={180}
-        weight={65}
-        age={22}
-      />
+        <ProfileCard setShowModal={setShowModal} />
+  
       <ShadowView title="Account">
         <div className="space-y-4">
           {adminAccountItems?.map(({ title, icon: Icon, toPath }) => (

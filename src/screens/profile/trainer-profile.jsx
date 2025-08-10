@@ -1,7 +1,6 @@
-import { useState } from "react";
 // packages
 import { FiBell, FiChevronRight, FiLogOut } from "react-icons/fi";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 // redux
 // component
@@ -13,22 +12,16 @@ import ShadowView from "@/components/shadow-view";
 import Switch from "@/components/switch";
 import { trainerAccountItems } from "@/constants/static-data";
 import { logoutUser } from "@/utils/helper";
-import maleProfile from "../../assets/icons/male-profile.svg";
 
-const TrainerProfile = () => {
+const TrainerProfile = ({ setShowModal, enabled, setEnabled }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [enabled, setEnabled] = useState(false);
-  const { userData } = useSelector((state) => state.auth);
 
   return (
     <div className="h-full bg-white space-y-6">
       <ScreenHeader title="Profile" />
-      <ProfileCard
-        image={maleProfile}
-        name={userData?.name}
-        program="Lose a Fat Program"
-      />
+      <ProfileCard setShowModal={setShowModal} />
+
       <ShadowView title="Account">
         <div className="space-y-4">
           {trainerAccountItems?.map(({ title, icon: Icon, toPath }) => (

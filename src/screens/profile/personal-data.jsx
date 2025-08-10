@@ -7,12 +7,14 @@ import UserData from "@/components/user-data";
 import maleProfile from "../../assets/icons/male-profile.svg";
 
 import { showToast } from "@/components/toast";
+import { setUserData } from "@/features/auth/auth-slice";
 import {
   createUser,
   getUserData,
   getUsersList,
   updateUser,
 } from "@/features/user/user-api";
+import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 
 const PersonalData = () => {
@@ -20,7 +22,7 @@ const PersonalData = () => {
 
   const methods = useForm();
   const { handleSubmit, reset, watch, setValue } = methods;
-
+  const dispatch = useDispatch();
   const { pathname } = useLocation(); // full location info
   const lastSegment = pathname.split("/").filter(Boolean).pop();
   const [list, setList] = useState([]);
@@ -60,15 +62,16 @@ const PersonalData = () => {
     legsSFat: client.legsSFat ?? "",
     legsMuscle: client.legsMuscle ?? "",
     DOB: client.DOB ? new Date(client.DOB) : null,
-    profileImg: client?.profileImg ?? "",
     assignedTrainer: client?.assignedTrainer ?? null,
     subscriptionPlan: client.subscriptionPlan,
     phoneNumber: client.phoneNumber,
-    targetProtein:client?.targetProtein,
-    targetCalories:client?.targetCalories,
-    targetCarbs:client?.targetCarbs,
-    targetFat:client?.targetFat,
-    goal:client?.goal,
+    targetProtein: client?.targetProtein,
+    targetCalories: client?.targetCalories,
+    targetCarbs: client?.targetCarbs,
+    targetFat: client?.targetFat,
+    goal: client?.goal,
+    profileImg: client?.profileImg ?? "",
+    notification: client?.notification,
     ...(isAdmin && { role: methods.getValues("role") }),
     ...(!isClient && { person: methods.getValues("person") }),
     // ...(!isClient && { assignedTrainer: methods.getValues("assignedTrainer") }),
@@ -105,6 +108,7 @@ const PersonalData = () => {
       const res = await getUserData(id);
       if (res?.status === 200) {
         reset(buildResetData(res.user));
+        dispatch(setUserData(res?.user));
       }
     } catch (err) {
       console.error("Error fetching user data:", err);
