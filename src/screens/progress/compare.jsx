@@ -95,15 +95,9 @@ const CompareScreen = () => {
               const startYear = format(month1, "yyyy");
               const endMonth = format(month2, "LLLL");
               const endYear = format(month2, "yyyy");
-              if (isClient) {
-                navigate(
-                  `/result?startMonth=${startMonth}&startYear=${startYear}&endMonth=${endMonth}&endYear=${endYear}`
-                );
-              } else {
-                navigate(
-                  `/result?startMonth=${startMonth}&startYear=${startYear}&endMonth=${endMonth}&endYear=${endYear}&targetId=${person}`
-                );
-              }
+              navigate(
+                `/result?startMonth=${startMonth}&startYear=${startYear}&endMonth=${endMonth}&endYear=${endYear}&targetId=${person}`
+              );
             }
           }}
         />

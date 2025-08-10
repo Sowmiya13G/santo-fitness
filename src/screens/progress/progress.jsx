@@ -214,7 +214,8 @@ const ProgressScreen = () => {
                   Reminder!
                 </p>
                 <p className="font-normal">
-                  No progress photos added for {currentMonthYear}. Don’t forget to upload!
+                  No progress photos added for {currentMonthYear}. Don’t forget
+                  to upload!
                 </p>
               </div>
             </div>
@@ -233,7 +234,7 @@ const ProgressScreen = () => {
             customClassName="!w-36 !h-12"
             onClick={() => {
               if (isClient) {
-                navigate(`/compare-progress`);
+                navigate(`/compare-progress?person=${userData._id}`);
               } else {
                 navigate(`/compare-progress?person=${watch("person")}`);
               }
@@ -271,51 +272,55 @@ const ProgressScreen = () => {
         <p className="text-center text-icon">No data available.</p>
       )}
 
-      {isModalOpen && selectedGroupIndex != null && selectedImageIndex != null && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80">
-          <div className="relative max-w-3xl w-full mx-4 bg-white p-4 rounded-xl">
-            <button
-              onClick={closeModal}
-              type="button"
-              className="absolute top-5 right-5 text-gray-600 bg-white p-1 rounded-full w-10 h-10 hover:text-black text-xl font-bold"
-            >
-              <IoIosClose className="text-3xl" />
-            </button>
+      {isModalOpen &&
+        selectedGroupIndex != null &&
+        selectedImageIndex != null && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80">
+            <div className="relative max-w-3xl w-full mx-4 bg-white p-4 rounded-xl">
+              <button
+                onClick={closeModal}
+                type="button"
+                className="absolute top-5 right-5 text-gray-600 bg-white p-1 rounded-full w-10 h-10 hover:text-black text-xl font-bold"
+              >
+                <IoIosClose className="text-3xl" />
+              </button>
 
-            <img
-              src={images[selectedGroupIndex]?.images[selectedImageIndex]?.url}
-              alt="Progress"
-              loading="lazy"
-              className="w-full max-h-[70vh] object-contain rounded"
-            />
-
-            <button
-              onClick={prevImage}
-              className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
-            >
-              <IoIosArrowBack className="text-xl" />
-            </button>
-            <button
-              onClick={nextImage}
-              className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
-            >
-              <IoIosArrowForward className="text-xl" />
-            </button>
-
-            <button
-              onClick={() =>
-                downloadImage(
+              <img
+                src={
                   images[selectedGroupIndex]?.images[selectedImageIndex]?.url
-                )
-              }
-              className="absolute bottom-0 right-0 bg-white px-3 py-2 rounded-full flex items-center gap-2"
-            >
-              <FaDownload />
-              <span className="text-sm">Download</span>
-            </button>
+                }
+                alt="Progress"
+                loading="lazy"
+                className="w-full max-h-[70vh] object-contain rounded"
+              />
+
+              <button
+                onClick={prevImage}
+                className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
+              >
+                <IoIosArrowBack className="text-xl" />
+              </button>
+              <button
+                onClick={nextImage}
+                className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
+              >
+                <IoIosArrowForward className="text-xl" />
+              </button>
+
+              <button
+                onClick={() =>
+                  downloadImage(
+                    images[selectedGroupIndex]?.images[selectedImageIndex]?.url
+                  )
+                }
+                className="absolute bottom-0 right-0 bg-white px-3 py-2 rounded-full flex items-center gap-2"
+              >
+                <FaDownload />
+                <span className="text-sm">Download</span>
+              </button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
     </div>
   );
 };
