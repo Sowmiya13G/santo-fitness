@@ -4,15 +4,44 @@ import "react-toastify/dist/ReactToastify.css";
 import "./index.css";
 import AppRoutes from "./routes/app-routes";
 import InstallSplashScreen from "./screens/auth/install-splash";
-// import { logoutUser } from "./utils/helper";
-// import { useDispatch, useSelector } from "react-redux";
-// import { useNavigate } from "react-router-dom";
+import { registerSW } from "virtual:pwa-register";
+
 const App = () => {
-  // const navigate = useNavigate();
-  // const dispatch = useDispatch();
-  // logoutUser(dispatch, navigate);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [isPWAInstalled, setIsPWAInstalled] = useState(false);
+
+  // ✅ Service Worker update registration
+  useEffect(() => {
+    const updateSW = registerSW({
+      onNeedRefresh() {
+        toast.info(
+          <div>
+            <span>A new version is available.</span>
+            <button
+              style={{
+                marginLeft: "10px",
+                padding: "4px 8px",
+                background: "#4cafef",
+                color: "#fff",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+              }}
+              onClick={() => updateSW()}
+            >
+              Update
+            </button>
+          </div>,
+          { autoClose: false }
+        );
+      },
+      onOfflineReady() {
+        toast.success("App is ready to work offline");
+      },
+    });
+  }, []);
+
+  // ✅ Viewport height fix for mobile
   useEffect(() => {
     const setVH = () => {
       document.documentElement.style.setProperty(
@@ -25,29 +54,26 @@ const App = () => {
     return () => window.removeEventListener("resize", setVH);
   }, []);
 
+  // ✅ Install prompt handling
   useEffect(() => {
-    // Detect standalone mode
     const isStandalone =
       window.matchMedia("(display-mode: standalone)").matches ||
       window.navigator.standalone === true;
     setIsPWAInstalled(isStandalone);
 
-    // Listen for beforeinstallprompt
     const handler = (e) => {
       e.preventDefault();
-      setDeferredPrompt(e); // Save the event
+      setDeferredPrompt(e);
     };
 
     window.addEventListener("beforeinstallprompt", handler);
 
-    // Listen for install success
     window.addEventListener("appinstalled", () => {
       toast.success("App successfully installed!");
       setDeferredPrompt(null);
       setIsPWAInstalled(true);
     });
 
-    // Cleanup
     return () => {
       window.removeEventListener("beforeinstallprompt", handler);
     };
@@ -55,16 +81,18 @@ const App = () => {
 
   const handleInstallClick = async () => {
     if (deferredPrompt) {
-      deferredPrompt.prompt(); // Show install prompt
+      deferredPrompt.prompt();
       setDeferredPrompt(null);
     }
   };
+
+  // ✅ If install prompt available, show splash
   if (!isPWAInstalled && deferredPrompt) {
     return <InstallSplashScreen handleInstallClick={handleInstallClick} />;
   }
 
   return (
-    <div className="h-screen-dynamic  hide-scrollbar w-full">
+    <div className="h-screen-dynamic hide-scrollbar w-full">
       <AppRoutes />
       <ToastContainer position="top-center" autoClose={3000} />
     </div>

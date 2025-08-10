@@ -1,5 +1,3 @@
-
-
 import { QueryClientProvider } from "@tanstack/react-query";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
@@ -10,14 +8,34 @@ import App from "./App.jsx";
 import { queryClient } from "./app/query-client";
 import { persistor, store } from "./features/store.js";
 import "./index.css";
-// ✅ Register the service worker (provided by vite-plugin-pwa)
-registerSW({
+import { toast } from "react-toastify";
+
+// ✅ Register the service worker
+const updateSW = registerSW({
   onNeedRefresh() {
-    if (confirm("New version available. Reload?")) {
-      window.location.reload();
-    }
+    toast.info(
+      <div>
+        <span>A new version is available.</span>
+        <button
+          style={{
+            marginLeft: "10px",
+            padding: "4px 8px",
+            background: "#4cafef",
+            color: "#fff",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+          }}
+          onClick={() => updateSW()}
+        >
+          Update
+        </button>
+      </div>,
+      { autoClose: false }
+    );
   },
   onOfflineReady() {
+    toast.success("App is ready to work offline");
   },
 });
 
@@ -30,5 +48,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         </BrowserRouter>
       </QueryClientProvider>
     </PersistGate>
-  </Provider>,
+  </Provider>
 );
