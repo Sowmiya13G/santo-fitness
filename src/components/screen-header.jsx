@@ -52,7 +52,7 @@ export default function ScreenHeader({
               <FaAngleLeft className="w-5 h-5" />
             </button>
           )}
-          <p className={`text-lg text-center font-semibold ${titleColor}`}>
+          <p className={`text-md text-center font-semibold ${titleColor}`}>
             {title}
           </p>
         </div>

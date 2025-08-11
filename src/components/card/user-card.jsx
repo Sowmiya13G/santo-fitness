@@ -60,7 +60,7 @@ const UserCard = ({
         <div className="flex w-full justify-between h-full relative z-5">
           <div className="w-[70%]">
             <h2
-              className="text-lg font-medium leading-tight mb-2 capitalize"
+              className="text-md font-medium leading-tight mb-2 capitalize"
               style={{ color: textColor }}
             >
               {user?.name}

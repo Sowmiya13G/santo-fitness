@@ -249,7 +249,7 @@ const ProgressScreen = () => {
       ) : images.length > 0 ? (
         images.map((group, gIdx) => (
           <div key={gIdx} className="mb-6">
-            <h3 className="text-lg font-semibold mb-3">{group.monthYear}</h3>
+            <h3 className="text-md font-semibold mb-3">{group.monthYear}</h3>
             <div className="grid grid-cols-3 gap-2">
               {group.images?.map((img, idx) => (
                 <div

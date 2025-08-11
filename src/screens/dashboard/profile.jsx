@@ -110,7 +110,7 @@ const Profile = () => {
             {!isUploading && (
               <button
                 onClick={() => setShowModal(false)}
-                className="absolute top-2 right-3 text-lg font-bold"
+                className="absolute top-2 right-3 text-md font-bold"
               >
                 ✕
               </button>

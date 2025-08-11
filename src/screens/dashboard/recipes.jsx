@@ -169,7 +169,7 @@ const Recipes = () => {
         />
 
         <div className="flex flex-row justify-between items-center">
-          <p className="text-lg font-medium text-font_primary">
+          <p className="text-md font-medium text-font_primary">
             Meals Nutritions
           </p>
           <button

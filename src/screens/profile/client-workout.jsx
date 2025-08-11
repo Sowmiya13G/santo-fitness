@@ -143,18 +143,18 @@ const ClientWorkoutNotes = () => {
     >
       <div className="w-screen h-full px-2 py-4">
         {loading ? (
-          <p className="text-center text-gray-500 text-lg font-medium">
+          <p className="text-center text-gray-500 text-md font-medium">
             Loading workout...
           </p>
         ) : !workoutData ? (
-          <p className="text-center text-gray-500 text-lg font-medium">
+          <p className="text-center text-gray-500 text-md font-medium">
             No workout assigned today 💪
           </p>
         ) : (
           <>
             <div className="flex justify-between">
               <div className="flex-col">
-                <p className="font-bold text-lg text-font_primary mb-2">
+                <p className="font-bold text-md text-font_primary mb-2">
                   {workoutData?.workoutName}
                 </p>
                 <p className="text-base text-font_primary">

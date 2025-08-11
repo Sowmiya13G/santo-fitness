@@ -17,14 +17,14 @@ const MealsDetails = () => {
     >
       <div className="w-screen h-full px-2 py-4">
         {isEmpty ? (
-          <p className="text-center text-gray-500 text-lg font-medium">
+          <p className="text-center text-gray-500 text-md font-medium">
             No meals available for this date 🍽️
           </p>
         ) : (
           <div className="space-y-6">
             {meals.map((meal) => (
               <div key={meal._id} className="shadow-sm">
-                <p className="text-lg font-semibold text-font_primary capitalize">
+                <p className="text-md font-semibold text-font_primary capitalize">
                   {meal.type} - {meal.name}
                 </p>
 
