@@ -223,15 +223,15 @@ const ProgressScreen = () => {
         </>
       )}
 
-      <div className="relative bg-red_30 py-7 px-6 rounded-3xl flex items-center">
+      <div className="relative w-full bg-red_30 py-7 px-6 rounded-3xl flex items-center">
         <div className="w-3/4 space-y-3">
-          <p className="text-base">
+          <p className="text-md">
             Track Your Progress Each Month With{" "}
             <span className="text-gradient font-semibold"> Photo</span>
           </p>
           <Button
             label={"Compare"}
-            customClassName="!w-36 !h-12"
+            customClassName="!w-28 !h-10 text-sm"
             onClick={() => {
               if (isClient) {
                 navigate(`/compare-progress?person=${userData._id}`);
@@ -241,7 +241,7 @@ const ProgressScreen = () => {
             }}
           />
         </div>
-        <img src={ReminderImage} alt="Reminder" className="w-15 h-15" />
+        <img src={ReminderImage} alt="Reminder" className="h-full w-1/4" />
       </div>
 
       {loading ? (

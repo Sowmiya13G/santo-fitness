@@ -11,10 +11,10 @@ const ProgressView = ({ data }) => {
     }, [data]);
   
     return (
-      <div className="py-3 px-4 bg-white rounded-2xl shadow-md space-y-2 w-full transition-all duration-500 mb-5">
+      <div className="py-3 px-4 text-md  bg-white rounded-2xl shadow-md space-y-2 w-full transition-all duration-500 mb-5">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <p className="text-base font-semibold text-font_primary">{data?.type}</p>
+            <p className="text-md font-semibold text-font_primary">{data?.type}</p>
             <span className="text-xl">{data?.icon}</span>
           </div>
           <p className="text-icon font-medium">{data?.value}</p>
