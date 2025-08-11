@@ -93,7 +93,7 @@ const UploadMealsScreen = () => {
       bgColor="bg-red_25"
       imgClass={"!scale-175 rounded-none object-contain top-[25px] absolute"}
     >
-      <div className="w-screen min-h-screen px-5 py-4">
+      <div className="w-screen min-h-screen px-2 py-4">
         <p className="text-icon text-sm text-center mb-3">
           focus on regular physical activity, a balanced diet, sufficient sleep,
           and stress management

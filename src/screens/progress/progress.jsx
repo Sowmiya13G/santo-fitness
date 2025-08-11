@@ -176,7 +176,7 @@ const ProgressScreen = () => {
   );
 
   return (
-    <div className="w-screen space-y-6 hide-scrollbar px-5 py-6 mb-10">
+    <div className="w-screen space-y-6 hide-scrollbar px-2 py-6 mb-10">
       <ScreenHeader title="Progress Photo" />
 
       <div
@@ -250,11 +250,11 @@ const ProgressScreen = () => {
         images.map((group, gIdx) => (
           <div key={gIdx} className="mb-6">
             <h3 className="text-lg font-semibold mb-3">{group.monthYear}</h3>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-2">
               {group.images?.map((img, idx) => (
                 <div
                   key={idx}
-                  className="w-28 h-28 rounded-xl overflow-hidden border border-gray-200 cursor-pointer"
+                  className="max-w-32 max-h-28  min-w-20 min-h-20 rounded-xl overflow-hidden border border-gray-200 cursor-pointer"
                   onClick={() => openModal(gIdx, idx)}
                 >
                   <img

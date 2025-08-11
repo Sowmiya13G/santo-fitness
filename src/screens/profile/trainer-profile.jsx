@@ -18,8 +18,9 @@ const TrainerProfile = ({ setShowModal, enabled, setEnabled }) => {
   const dispatch = useDispatch();
 
   return (
-    <div className="h-full bg-white space-y-6">
+    <div className="h-full bg-white  space-y-2">
       <ScreenHeader title="Profile" />
+      <div className="!h-5"></div>
       <ProfileCard setShowModal={setShowModal} />
 
       <ShadowView title="Account">

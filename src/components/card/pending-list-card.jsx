@@ -20,7 +20,7 @@ const PendingUserCard = ({ list, onClick }) => {
       <div className="flex w-full justify-between h-full relative z-10">
         {/* Avatar */}
         <div className="w-[30%] flex justify-center items-center">
-          <div className="bg-white relative rounded-full w-20 h-20 overflow-hidden p-4 ">
+          <div className="bg-white relative rounded-full w-20 h-20 overflow-hidden p-3 mr-2 ">
             <img
               src={PendingAlert}
               alt="Pending Icon"
@@ -48,7 +48,7 @@ const PendingListCard = ({ label }) => {
   const { pendingLogsList } = useSelector((state) => state.dailyLogs);
 
   return (
-    <div className="w-full px-2">
+    <div className="w-full ">
       {label && (
         <div className="flex items-center gap-2 mb-2">
           <p className="text-gray-600 capitalize text-left">{label}</p>

@@ -271,7 +271,7 @@ const MealDetailsScreen = () => {
       bgColor="bg-red_25"
       imgClass={"!scale-175 rounded-none object-contain top-[25px] absolute"}
     >
-      <div className="w-screen min-h-screen px-5 py-1 !mt-0">
+      <div className="w-screen min-h-screen px-2 py-1 !mt-0">
         {loadingData ? (
           <p className="text-center text-base  mt-3 font-medium text-icon">
             Loading..!

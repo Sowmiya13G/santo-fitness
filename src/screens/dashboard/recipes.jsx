@@ -141,7 +141,7 @@ const Recipes = () => {
   }, [isClient, setValue, userList]);
 
   return (
-    <div className="h-full w-screen bg-white space-y-6 py-5 px-5 overflow-y-auto overflow-hidden mb-5">
+    <div className="h-full w-screen bg-white space-y-6 py-5 px-2 overflow-y-auto overflow-hidden mb-5">
       <FormProvider {...methods}>
         <ScreenHeader title="Meals Tracker" />
         {userData.role !== "client" && (

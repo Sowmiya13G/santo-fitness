@@ -34,7 +34,7 @@ const CompareScreen = () => {
   };
 
   return (
-    <div className="w-screen space-y-6 hide-scrollbar px-5 py-6">
+    <div className="w-screen space-y-6 hide-scrollbar px-2 py-6">
       <ScreenHeader title="Comparison" isBack />
       <div className="space-y-5">
         <button

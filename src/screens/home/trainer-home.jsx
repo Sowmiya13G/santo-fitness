@@ -20,7 +20,7 @@ const TrainerDashboard = ({ loading }) => {
     fetchDietPendingProgress();
   }, []);
   return (
-    <div className="w-full space-y-6 px-3 hide-scrollbar ">
+    <div className="w-full space-y-6 px-2 hide-scrollbar ">
       <ScreenHeader isHome />
       <div className="h-2" />
       {loading && (

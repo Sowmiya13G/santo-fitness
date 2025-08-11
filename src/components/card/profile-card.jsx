@@ -11,7 +11,7 @@ export default function ProfileCard({ setShowModal }) {
   ];
 
   return (
-    <div className="bg-white rounded-2xl p-4 space-y-4">
+    <div className="bg-white rounded-2xl px-4 ">
       <div className="flex items-center space-x-4">
         <img
           src={userData.profileImg}
@@ -27,7 +27,7 @@ export default function ProfileCard({ setShowModal }) {
         </div>
       </div>
 
-      <div className="flex justify-between">
+      <div className="flex justify-between mt-2">
         {userData.height &&
           userData.weight &&
           userData.age &&
