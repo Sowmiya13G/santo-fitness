@@ -102,7 +102,6 @@ export default function CameraScreen() {
       };
 
       const result = await uploadBodyProgressData(finalPayload);
-      console.log("result: ", result);
       if (result?.status === 201) {
         navigate(-1);
         setIsUploading(false);
