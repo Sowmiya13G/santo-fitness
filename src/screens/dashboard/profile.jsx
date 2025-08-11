@@ -1,14 +1,11 @@
-import { useSelector } from "react-redux";
+import { showToast } from "@/components/toast";
+import { setUserData } from "@/features/auth/auth-slice";
+import { updateUser, uploadFile } from "@/features/user/user-api";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import AdminProfile from "../profile/admin-profile";
 import ClientProfile from "../profile/client-profile";
 import TrainerProfile from "../profile/trainer-profile";
-import { useEffect } from "react";
-import { showToast } from "@/components/toast";
-import { setUserData } from "@/features/auth/auth-slice";
-import { useRef } from "react";
-import { useDispatch } from "react-redux";
-import { useState } from "react";
-import { updateUser, uploadFile } from "@/features/user/user-api";
 
 const Profile = () => {
   const { userData } = useSelector((state) => state.auth);
