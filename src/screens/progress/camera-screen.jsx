@@ -64,12 +64,6 @@ export default function CameraScreen() {
 
   const allCaptured = Object.keys(capturedImages).length === poses.length;
 
-  // useEffect(() => {
-  //   if (!capturedImages[selectedPose]) {
-  //     openFilePicker();
-  //   }
-  // }, [selectedPose]);
-
   const handleRetake = () => {
     setCapturedImages((prev) => {
       const updated = { ...prev };
