@@ -10,16 +10,22 @@ export const logoutUser = (dispatch) => {
   window.location.href = "/login";
 };
 
-export function base64ToFile(dataUrl, filename) {
-  const arr = dataUrl.split(",");
-  const mime = arr[0].match(/:(.*?);/)[1];
-  const bstr = atob(arr[1]);
-  let n = bstr.length;
-  const u8arr = new Uint8Array(n);
-  while (n--) {
-    u8arr[n] = bstr.charCodeAt(n);
+
+export function getMimeTypeFromBase64(base64) {
+  const match = base64.match(/^data:(.*);base64,/);
+  return match ? match[1] : 'image/png';
+}
+
+export function base64ToFile(base64, nameWithoutExt, mimeType) {
+  const ext = mimeType.split('/')[1];
+  const filename = `${nameWithoutExt}.${ext}`;
+  const base64Data = base64.split(',')[1];
+  const binary = atob(base64Data);
+  const array = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    array[i] = binary.charCodeAt(i);
   }
-  return new File([u8arr], filename, { type: mime });
+  return new File([array], filename, { type: mimeType });
 }
 
 const mealsTypeData = [

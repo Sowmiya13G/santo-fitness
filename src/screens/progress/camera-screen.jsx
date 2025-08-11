@@ -1,7 +1,9 @@
-import { useEffect, useState, useRef } from "react";
+import imageCompression from "browser-image-compression";
+import { useRef, useState } from "react";
 import { FaCamera, FaRedo, FaUpload } from "react-icons/fa";
 import { IoMdFlash } from "react-icons/io";
 import { SiTicktick } from "react-icons/si";
+import { useNavigate } from "react-router-dom";
 
 import BackActive from "../../assets/images/back-active.svg";
 import FrontActive from "../../assets/images/front-active.svg";
@@ -26,8 +28,7 @@ import { GradientSpinner } from "@/components/ui/spin-loader";
 
 import { uploadBodyProgressData } from "@/features/progress/progress-api";
 import { uploadFile } from "@/features/user/user-api";
-import { base64ToFile } from "@/utils/helper";
-import { useNavigate } from "react-router-dom";
+import { base64ToFile, getMimeTypeFromBase64 } from "@/utils/helper";
 
 const poses = [
   {
@@ -77,38 +78,47 @@ export default function CameraScreen() {
     setIsUploading(true);
     try {
       const formData = new FormData();
-
+  
       const entries = await Promise.all(
         Object.entries(capturedImages).map(async ([pose, base64]) => {
-          const file = await base64ToFile(base64, `${pose.toLowerCase()}.png`);
+          const mimeType = getMimeTypeFromBase64(base64);
+          let file = base64ToFile(base64, pose.toLowerCase(), mimeType);
+  
+          const fileSizeMB = file.size / (1024 * 1024);
+          if (fileSizeMB > 2) {
+            const options = {
+              maxSizeMB: 1,
+              maxWidthOrHeight: 1024,
+              useWebWorker: true,
+            };
+            file = await imageCompression(file, options);
+          }
+  
           return { pose, file };
         })
       );
-
+  
       entries.forEach(({ file }) => {
         formData.append("files", file);
       });
-
+  
       const uploadResponse = await uploadFile(formData);
-
+  
       const imagePayload = entries.map(({ pose }, index) => ({
         url: uploadResponse?.urls[index],
         progressType: pose.toLowerCase(),
       }));
-
-      const finalPayload = {
-        images: imagePayload,
-        // note: "Week 1 - visible muscle definition"
-      };
-
+  
+      const finalPayload = { images: imagePayload };
       const result = await uploadBodyProgressData(finalPayload);
+  
       if (result?.status === 201) {
         navigate(-1);
-        setIsUploading(false);
         showToast("success", "Progress uploaded successfully!");
       }
     } catch (err) {
       console.error("File upload or metadata sending failed:", err);
+    } finally {
       setIsUploading(false);
     }
   };
@@ -197,8 +207,8 @@ export default function CameraScreen() {
               allCaptured
                 ? "Upload Images"
                 : capturedImages[selectedPose]
-                ? "Continue to Next Pose"
-                : "Capture Photo"
+                  ? "Continue to Next Pose"
+                  : "Capture Photo"
             }
           >
             {allCaptured ? (
@@ -238,11 +248,10 @@ export default function CameraScreen() {
                     openFilePicker();
                   }
                 }}
-                className={`w-14 h-20 flex items-center justify-center rounded-lg transition-all duration-200 ${
-                  selectedPose === pose
+                className={`w-14 h-20 flex items-center justify-center rounded-lg transition-all duration-200 ${selectedPose === pose
                     ? "bg-field_primary border-icon border"
                     : "bg-white/20"
-                }`}
+                  }`}
               >
                 <img
                   src={imageSrc}
