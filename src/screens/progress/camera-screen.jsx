@@ -56,20 +56,19 @@ const poses = [
 ];
 
 export default function CameraScreen() {
+  const fileInputRef = useRef(null);
+
   const [capturedImages, setCapturedImages] = useState({});
   const [selectedPose, setSelectedPose] = useState("Front");
   const [isUploading, setIsUploading] = useState(false);
 
   const allCaptured = Object.keys(capturedImages).length === poses.length;
 
-  useEffect(() => {
-    if (!capturedImages[selectedPose]) {
-      openFilePicker();
-    }
-  }, [selectedPose]);
-
-
-  const stopCamera = () => { };
+  // useEffect(() => {
+  //   if (!capturedImages[selectedPose]) {
+  //     openFilePicker();
+  //   }
+  // }, [selectedPose]);
 
   const handleRetake = () => {
     setCapturedImages((prev) => {
@@ -119,7 +118,6 @@ export default function CameraScreen() {
     }
   };
 
-  const fileInputRef = useRef(null);
   const openFilePicker = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
