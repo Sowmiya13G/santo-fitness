@@ -18,7 +18,7 @@ const ClientProfile = ({setShowModal ,enabled ,setEnabled}) => {
   const dispatch = useDispatch();
   return (
     <div className="h-full bg-white space-y-6">
-      <ScreenHeader title="Profile" />
+      <ScreenHeader title="Profile"  />
       <ProfileCard setShowModal={setShowModal} />
       <ShadowView title="Account">
         <div className="space-y-4">

@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 
-const TrainerDashboard = ({ loading }) => {
+const TrainerDashboard = ({ loading,setShowModal}) => {
   const { topClient } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const fetchDietPendingProgress = async () => {
@@ -21,7 +21,7 @@ const TrainerDashboard = ({ loading }) => {
   }, []);
   return (
     <div className="w-full space-y-6 px-2 hide-scrollbar ">
-      <ScreenHeader isHome />
+      <ScreenHeader isHome setShowModal={setShowModal} />
       <div className="h-2" />
       {loading && (
         <p className="text-center text-gray-500 text-base font-medium my-2">
