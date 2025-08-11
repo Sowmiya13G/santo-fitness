@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
-import { useFormContext } from "react-hook-form";
-import ScreenHeader from "./screen-header";
-import { updateUser, uploadFile } from "@/features/user/user-api";
-import { showToast } from "./toast";
-import { useSelector } from "react-redux";
 import { setUserData } from "@/features/auth/auth-slice";
-import { useDispatch } from "react-redux";
+import { updateUser, uploadFile } from "@/features/user/user-api";
+import { convertImageToFormat } from "@/helpers";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import ScreenHeader from "./screen-header";
+import { showToast } from "./toast";
 
 export default function ProfileWrapper({
   title,
@@ -50,18 +49,30 @@ export default function ProfileWrapper({
     setIsUploading(true);
 
     try {
-      setValue("profileImg", uploaded);
+      // Convert the image to PNG or JPG in browser
+      const convertedFile = await convertImageToFormat(uploaded, "image/jpeg"); // or "image/png"
+
+      setValue("profileImg", convertedFile);
+
       const formData = new FormData();
-      formData.append("files", uploaded);
+      formData.append(
+        "files",
+        convertedFile,
+        `profile.${convertedFile.type.split("/")[1]}`
+      );
+
       const response = await uploadFile(formData);
       const url = response?.urls[0];
+
       if (url) {
         setValue("profileImg", url);
         setPreviewImage(url);
+
         const id = userData._id;
         const data = { profileImg: url };
-        const response = await updateUser(id, data);
-        dispatch(setUserData(response?.user));
+        const updateRes = await updateUser(id, data);
+
+        dispatch(setUserData(updateRes?.user));
         showToast("success", "Profile Photo Updated!");
       } else {
         throw new Error("No URL returned");
@@ -74,6 +85,9 @@ export default function ProfileWrapper({
       setShowModal(false);
     }
   };
+
+  // Helper: convert any image to desired format (JPEG/PNG)
+
   const maxScroll = 10; // Adjust to control fade-out speed
   const scrollRatio = Math.min(scrollY / maxScroll, 1);
 
@@ -122,8 +136,8 @@ export default function ProfileWrapper({
 
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl p-6 w-80 flex flex-col items-center relative">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center  justify-center z-50">
+          <div className="bg-white rounded-2xl p-6 w-80 flex flex-col items-center relative animate-fade-in">
             {!isUploading && (
               <button
                 onClick={() => setShowModal(false)}

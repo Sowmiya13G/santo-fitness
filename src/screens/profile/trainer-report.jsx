@@ -9,18 +9,25 @@ import Button from "@/components/button";
 import Dropdown from "@/components/input/dropdown";
 import UploadInput from "@/components/input/upload";
 import ScreenHeader from "@/components/screen-header";
-import { getUsersList } from "@/features/user/user-api";
+import {
+  createUserReport,
+  getUsersList,
+  uploadFile,
+} from "@/features/user/user-api";
 
 // ✅ Yup validation schema
 const schema = yup.object().shape({
-  clientName: yup.object().required("Client name is required"),
+  clientName: yup.string().required("Client name is required"),
   file: yup
     .mixed()
     .required("A file is required")
     .test("fileType", "Only PDF, PNG, JPG allowed", (value) => {
-      if (!value || !value.length) return false;
-      const file = value[0];
-      return ["application/pdf", "image/png", "image/jpeg"].includes(file.type);
+      if (!value) return false;
+      const file = Array.isArray(value) ? value[0] : value;
+      return (
+        file &&
+        ["application/pdf", "image/png", "image/jpeg"].includes(file.type)
+      );
     }),
 });
 
@@ -63,17 +70,33 @@ const TrainerPostReport = () => {
     fetchUsersList();
   }, []);
 
-  // Submit handler
   const onSubmit = async (data) => {
-
-    const formData = new FormData();
-    formData.append("clientId", data.clientName.value);
-    formData.append("file", data.file[0]);
-
-    // 👉 Replace this with actual API call
     try {
-      // const res = await uploadReport(formData); // e.g., POST API
-      navigate(-1); // Go back after success
+      const file = Array.isArray(data.file) ? data.file[0] : data.file;
+
+      // 1️⃣ Upload file to Cloudinary (or your upload service)
+      const formData = new FormData();
+      formData.append("files", file);
+
+      const uploadRes = await uploadFile(formData); // should return { urls: [...] }
+      if (!uploadRes?.urls?.length) {
+        throw new Error("File upload failed");
+      }
+
+      // 2️⃣ Prepare JSON payload for /api/reports
+      const payload = {
+        clientId: watch("clientName"),
+        title: "Monthly Progress", // You can make this dynamic
+        description: "Client has shown good improvement.", // also dynamic
+        attachments: uploadRes.urls, // array of file URLs
+      };
+
+      // 3️⃣ Send to your backend
+      const reportRes = await createUserReport(payload);
+      console.log("Report created:", reportRes);
+
+      // 4️⃣ Navigate after success
+      navigate(-1);
     } catch (err) {
       console.error("Error submitting report:", err);
     }
@@ -103,9 +126,10 @@ const TrainerPostReport = () => {
             {/* File Upload */}
             <UploadInput
               name="file"
-              label="Upload Report (PDF, PNG, JPG)"
-              accept=".pdf,.png,.jpg,.jpeg"
+              placeholder="Upload Report (PDF, PNG, JPG)"
+              acceptFormat={[".pdf", ".png", ".jpg", ".jpeg"]}
               error={errors.file?.message}
+              isArray={false} // explicitly single file
             />
 
             {/* Submit Button */}
@@ -114,7 +138,8 @@ const TrainerPostReport = () => {
                 type="submit"
                 disabled={isSubmitting}
                 loading={isSubmitting}
-                label="Create"
+                onClick={handleSubmit(onSubmit)}
+                label="Upload Report"
               />
             </div>
           </form>

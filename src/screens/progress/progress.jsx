@@ -250,7 +250,7 @@ const ProgressScreen = () => {
           <p className="text-center text-base text-icon">loading...!</p>
         ) : images.length > 0 ? (
           images.map((group, gIdx) => (
-            <div key={gIdx} className="mb-6">
+            <div key={gIdx} className="mb-6 animate-fade-in">
               <h3 className="text-md font-semibold mb-3">{group.monthYear}</h3>
               <div className="grid grid-cols-3 gap-2">
                 {group.images?.map((img, idx) => (
@@ -277,7 +277,7 @@ const ProgressScreen = () => {
       {isModalOpen &&
         selectedGroupIndex != null &&
         selectedImageIndex != null && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center h-ful bg-black bg-opacity-80">
+          <div className="fixed inset-0 z-50 flex items-center justify-center h-ful bg-black bg-opacity-80 animate-zoom-in">
             <div className="relative max-w-3xl w-full mx-4 bg-white p-4 rounded-xl">
               <button
                 onClick={closeModal}

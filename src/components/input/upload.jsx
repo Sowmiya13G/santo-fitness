@@ -4,10 +4,31 @@ import { AiOutlineFileImage, AiOutlineFilePdf } from "react-icons/ai";
 import { MdCancel } from "react-icons/md";
 import { GradientIcon } from "../gradient-icon";
 
-const getFileType = (extension) => {
-  if (["pdf"].includes(extension)) return "pdf";
+const getFileType = (fileItem) => {
+  let extension = "";
+  let mimeType = "";
+
+  if (typeof fileItem === "string") {
+    try {
+      const url = new URL(fileItem);
+      extension = url.pathname.split(".").pop()?.toLowerCase();
+    } catch {
+      extension = fileItem.split(".").pop()?.toLowerCase();
+    }
+  } else {
+    mimeType = fileItem.type;
+    extension = fileItem.name.split(".").pop()?.toLowerCase() || "";
+  }
+
+  if (mimeType === "application/pdf" || extension === "pdf") return "pdf";
   if (["doc", "docx"].includes(extension)) return "word";
   return "image";
+};
+
+const formatFileSize = (size) => {
+  if (!size) return "";
+  const kb = size / 1024;
+  return kb > 1024 ? `${(kb / 1024).toFixed(2)} MB` : `${kb.toFixed(1)} KB`;
 };
 
 const UploadInput = ({
@@ -36,29 +57,20 @@ const UploadInput = ({
   useEffect(() => {
     if (!files || (isArray && files.length === 0)) return;
 
-    const determineType = (fileItem) => {
-      let extension = "";
-      if (typeof fileItem === "string") {
-        try {
-          const url = new URL(fileItem);
-          extension = url.pathname.split(".").pop()?.toLowerCase();
-        } catch {
-          extension = fileItem.split(".").pop()?.toLowerCase();
-        }
-      } else {
-        extension = fileItem.name.split(".").pop()?.toLowerCase() || "";
-      }
-      return getFileType(extension);
-    };
-
     const allFiles = isArray ? files : [files];
-    const types = allFiles.map(determineType);
+    const types = allFiles.map(getFileType);
     const urls = allFiles.map((f) =>
       typeof f === "string" ? f : URL.createObjectURL(f)
     );
 
     setFileTypes(types);
     setPreviewUrls(urls.filter(Boolean));
+
+    return () => {
+      urls.forEach((url) => {
+        if (url.startsWith("blob:")) URL.revokeObjectURL(url);
+      });
+    };
   }, [files, isArray]);
 
   const handleFileChange = async (e) => {
@@ -114,7 +126,7 @@ const UploadInput = ({
   return (
     <div className="flex flex-col gap-2">
       {/* Upload Dropzone */}
-      <div className="border-dashed border-red border-[1px] w-full h-[118px] bg-opacity_primary rounded-xl flex items-center justify-center">
+      <div className="border-dashed border-primary border-[1px] w-full h-[118px] bg-opacity_primary rounded-xl flex items-center justify-center">
         <label
           htmlFor={`file-input-${name}`}
           className={`text-icon text-10 flex flex-col items-center justify-center cursor-pointer ${
@@ -150,45 +162,58 @@ const UploadInput = ({
         />
       </div>
 
+      {/* Multiple files preview */}
       {isArray && previewUrls.length > 0 ? (
-        <div className="relative overflow-x-auto flex gap-4 py-2 scroll-smooth no-scrollbar">
+        <div className="relative overflow-x-auto flex gap-4 py-2 scroll-smooth no-scrollbar snap-mandatory snap-x">
           {previewUrls.map((url, idx) => {
-            if (!url) return null;
             const fileType = fileTypes[idx] || "image";
+            const fileObj = files[idx];
             const fileLabel =
-              typeof files[idx] === "string"
-                ? files[idx]?.split("/").pop()?.split("?")[0]
-                : files[idx]?.name?.slice(0, 30) || "File";
+              typeof fileObj === "string"
+                ? fileObj?.split("/").pop()?.split("?")[0]
+                : fileObj?.name || "File";
+            const fileSize =
+              typeof fileObj !== "string" ? formatFileSize(fileObj.size) : "";
 
             return fileType === "image" ? (
-              <div key={idx} className="relative min-w-[250px] max-w-[250px]">
+              <div key={idx} className="relative min-w-[50%] snap-center ">
                 <img
                   src={url}
                   alt={fileLabel}
-                  className="rounded-lg object-fit w-full h-48"
+                  style={{ objectPosition: "0% 0%" }}
+                  className="rounded-lg object-cover w-full h-48 border border-gray-300"
                 />
                 <button
                   type="button"
-                  className="absolute top-1 right-1 text-white  p-1 rounded-full"
+                  className="absolute top-1 right-1 text-white p-1 rounded-full"
                   onClick={() => handleRemove(idx)}
                 >
                   <GradientIcon Icon={MdCancel} />
                 </button>
               </div>
-            ) : isReports ? (
+            ) : fileType === "pdf" ? (
               <div
                 key={idx}
-                className="relative flex items-center gap-2 px-3 py-4 rounded-lg bg-opacity_primary"
+                className="relative flex items-center gap-3 p-3 rounded-lg border border-gray-300 bg-white min-w-[250px]"
               >
-                <GradientIcon
-                  Icon={
-                    fileType === "pdf" ? AiOutlineFilePdf : AiOutlineFileImage
-                  }
-                />
-                <span className="text-base text-gradient">{fileLabel}</span>
+                <AiOutlineFilePdf className="text-red-500 text-3xl" />
+                <div className="flex flex-col overflow-hidden">
+                  <span className="text-sm font-medium truncate max-w-[150px]">
+                    {fileLabel}
+                  </span>
+                  <span className="text-xs text-gray-500">{fileSize}</span>
+                </div>
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ml-auto text-blue-500 underline text-xs"
+                >
+                  View
+                </a>
                 <button
                   type="button"
-                  className="ml-auto text-gradient"
+                  className="ml-2 text-gradient"
                   onClick={() => handleRemove(idx)}
                 >
                   <GradientIcon Icon={MdCancel} />
@@ -198,21 +223,23 @@ const UploadInput = ({
           })}
         </div>
       ) : (
-        // fallback for single file
+        // Single file preview
         previewUrls.map((url, idx) => {
-          if (!url) return null;
           const fileType = fileTypes[idx] || "image";
+          const fileObj = files;
           const fileLabel =
-            typeof files === "string"
-              ? files?.split("/").pop()?.split("?")[0]
-              : files?.name?.slice(0, 30) || "File";
+            typeof fileObj === "string"
+              ? fileObj?.split("/").pop()?.split("?")[0]
+              : fileObj?.name || "File";
+          const fileSize =
+            typeof fileObj !== "string" ? formatFileSize(fileObj.size) : "";
 
           return fileType === "image" ? (
             <div key={idx} className="relative mt-2">
               <img
                 src={url}
                 alt={fileLabel}
-                className="w-full max-h-64 object-contain rounded"
+                className="w-full max-h-64 object-contain rounded border border-gray-300"
               />
               <button
                 type="button"
@@ -223,20 +250,28 @@ const UploadInput = ({
               </button>
             </div>
           ) : fileType === "pdf" ? (
-            <div key={idx} className="relative mt-2">
-              <iframe
-                src={url}
-                title={`PDF Preview ${idx}`}
-                className="w-full h-64 rounded"
-              />
+            <a
+              href={url}
+              target="_blank"
+              key={idx}
+              className="relative flex items-center gap-3 p-3 rounded-lg border  border-gray-300 bg-white"
+            >
+              <AiOutlineFilePdf className="text-red-500 text-3xl" />
+              <div className="flex flex-col overflow-hidden">
+                <span className="text-sm font-medium truncate w-80">
+                  {fileLabel}
+                </span>
+                <span className="text-xs text-gray-500">{fileSize}</span>
+              </div>
+
               <button
                 type="button"
-                className="absolute top-1 right-1 text-gradient"
+                className="ml-2 text-gradient"
                 onClick={() => handleRemove(idx)}
               >
                 <GradientIcon Icon={MdCancel} />
               </button>
-            </div>
+            </a>
           ) : null;
         })
       )}
