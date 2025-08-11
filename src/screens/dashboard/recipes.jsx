@@ -20,15 +20,15 @@ const initialNutritionData = [
 const getFilterType = (data) => {
   switch (true) {
     case "Morning snacks":
-      return "morning_snack";
+      return "MorningSnack";
     case "Breakfast":
-      return "breakfast";
+      return "Breakfast";
     case "Lunch":
-      return "lunch";
+      return "Lunch";
     case "Evening Snacks":
-      return "evening_snack";
+      return "EveningSnack";
     case "Dinner":
-      return "dinner";
+      return "Dinner";
     default:
       return "all";
   }
@@ -67,11 +67,11 @@ const Recipes = () => {
       const formattedDate = format(selectedDate, "yyyy-MM-dd");
       const typeMap = {
         All: "all",
-        "Morning snacks": "morning_snack",
-        Breakfast: "breakfast",
-        Lunch: "lunch",
-        "Evening Snacks": "evening_snack",
-        Dinner: "dinner",
+        "Morning snacks": "MorningSnack",
+        Breakfast: "Breakfast",
+        Lunch: "Lunch",
+        "Evening Snacks": "EveningSnack",
+        Dinner: "Dinner",
       };
       const type = typeMap[selectedFilter] || "all";
 

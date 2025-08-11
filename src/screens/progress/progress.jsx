@@ -256,7 +256,7 @@ const ProgressScreen = () => {
                 {group.images?.map((img, idx) => (
                   <div
                     key={idx}
-                    className="max-w-32 max-h-28  min-w-20 min-h-20 rounded-xl overflow-hidden border border-gray-200 cursor-pointer"
+                    className="max-w-32 h-28  min-w-20  rounded-xl overflow-hidden border border-gray-200 cursor-pointer"
                     onClick={() => openModal(gIdx, idx)}
                   >
                     <img

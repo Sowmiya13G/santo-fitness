@@ -11,7 +11,7 @@ import ScreenHeader from "@/components/screen-header";
 
 import { getDietProgress } from "@/features/daily-logs/daily-logs-api";
 import { FormProvider, useForm } from "react-hook-form";
-import Breakfast from "../../assets/images/breakfast.svg";
+import Breakfast from "../../assets/images/Breakfast.svg";
 import Dinner from "../../assets/images/dinner.svg";
 import EveningSnack from "../../assets/images/evening-snacks.svg";
 import Lunch from "../../assets/images/lunch-img.svg";
@@ -74,11 +74,11 @@ const DietDetailsScreen = () => {
     }) || [];
 
   const calorieSplit = {
-    breakfast: 0.25,
-    morning_snack: 0.1,
-    lunch: 0.3,
-    evening_snack: 0.1,
-    dinner: 0.25,
+    Breakfast: 0.25,
+    MorningSnack: 0.1,
+    Lunch: 0.3,
+    EveningSnack: 0.1,
+    Dinner: 0.25,
   };
 
   const getUserData = isClient
@@ -96,33 +96,33 @@ const DietDetailsScreen = () => {
 
   const sections = [
     {
-      type: "breakfast",
+      type: "Breakfast",
       label: "Breakfast",
-      targetData: getSplitTargetData("breakfast"),
+      targetData: getSplitTargetData("Breakfast"),
       image: Breakfast,
     },
     {
-      type: "morning_snack",
+      type: "MorningSnack",
       label: "Morning Snack",
-      targetData: getSplitTargetData("morning_snack"),
+      targetData: getSplitTargetData("MorningSnack"),
       image: MorningSnack,
     },
     {
-      type: "lunch",
+      type: "Lunch",
       label: "Lunch",
-      targetData: getSplitTargetData("lunch"),
+      targetData: getSplitTargetData("Lunch"),
       image: Lunch,
     },
     {
-      type: "evening_snack",
+      type: "EveningSnack",
       label: "Evening Snack",
-      targetData: getSplitTargetData("evening_snack"),
+      targetData: getSplitTargetData("EveningSnack"),
       image: EveningSnack,
     },
     {
-      type: "dinner",
+      type: "Dinner",
       label: "Dinner",
-      targetData: getSplitTargetData("dinner"),
+      targetData: getSplitTargetData("Dinner"),
       image: Dinner,
     },
   ];

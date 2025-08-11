@@ -24,23 +24,23 @@ export function base64ToFile(dataUrl, filename) {
 
 const mealsTypeData = [
   {
-    type: "breakfast",
+    type: "Breakfast",
     label: "Breakfast",
   },
   {
-    type: "morning_snack",
+    type: "MorningSnack",
     label: "Morning Snack",
   },
   {
-    type: "lunch",
+    type: "Lunch",
     label: "Lunch",
   },
   {
-    type: "evening_snack",
+    type: "EveningSnack",
     label: "Evening Snack",
   },
   {
-    type: "dinner",
+    type: "Dinner",
     label: "Dinner",
   },
 ];
