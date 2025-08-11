@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import Button from "@/components/button";
 import Dropdown from "@/components/input/dropdown";
 import ScreenHeader from "@/components/screen-header";
 import { getProgressData } from "@/features/progress/progress-api";
-import { FaAngleRight, FaCamera, FaDownload } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { FaCamera, FaDownload } from "react-icons/fa";
 import { IoIosArrowBack, IoIosArrowForward, IoIosClose } from "react-icons/io";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Calendar from "../../assets/icons/calendar-icon.svg";
 import ReminderImage from "../../assets/images/reminder-image.svg";
 
@@ -178,13 +178,14 @@ const ProgressScreen = () => {
   return (
     <div className="w-screen space-y-6 hide-scrollbar px-2 py-6 mb-10">
       <ScreenHeader title="Progress Photo" />
-
-      <div
-        className="bg-primary-gradient w-14 h-14 rounded-full flex items-center justify-center fixed bottom-[13%] right-2 cursor-pointer"
-        onClick={() => navigate("/camera-screen")}
-      >
-        <FaCamera className="text-white text-xl" />
-      </div>
+      {isClient && (
+        <div
+          className="bg-primary-gradient w-14 h-14 rounded-full flex items-center justify-center fixed bottom-[13%] right-2 cursor-pointer"
+          onClick={() => navigate("/camera-screen")}
+        >
+          <FaCamera className="text-white text-xl" />
+        </div>
+      )}
 
       {!isClient && (
         <>

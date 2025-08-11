@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { FaCamera, FaRedo, FaUpload } from "react-icons/fa";
-import { IoMdFlash, IoMdFlashOff } from "react-icons/io";
+import { IoMdFlash } from "react-icons/io";
 import { SiTicktick } from "react-icons/si";
 
 import BackActive from "../../assets/images/back-active.svg";
@@ -23,6 +23,7 @@ import RightCompleted from "../../assets/images/right-completed.svg";
 import ScreenHeader from "@/components/screen-header";
 import { showToast } from "@/components/toast";
 import { GradientSpinner } from "@/components/ui/spin-loader";
+
 import { uploadBodyProgressData } from "@/features/progress/progress-api";
 import { uploadFile } from "@/features/user/user-api";
 import { base64ToFile } from "@/utils/helper";
@@ -55,122 +56,20 @@ const poses = [
 ];
 
 export default function CameraScreen() {
-  const videoRef = useRef(null);
-  const canvasRef = useRef(null);
-  const streamRef = useRef(null);
-
-  const [facingMode, setFacingMode] = useState("environment");
-  const [flashOn, setFlashOn] = useState(false);
   const [capturedImages, setCapturedImages] = useState({});
   const [selectedPose, setSelectedPose] = useState("Front");
   const [isUploading, setIsUploading] = useState(false);
 
   const allCaptured = Object.keys(capturedImages).length === poses.length;
-  const isDisabled = allCaptured ? false : capturedImages[selectedPose];
-
-  useEffect(() => {
-    startCamera();
-    return () => stopCamera();
-  }, [facingMode]);
-
-  useEffect(() => {
-    return () => stopCamera();
-  }, []);
 
   useEffect(() => {
     if (!capturedImages[selectedPose]) {
-      startCamera();
+      openFilePicker();
     }
   }, [selectedPose]);
 
-  const startCamera = async () => {
-    stopCamera();
 
-    try {
-      const newStream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode },
-         width: { ideal: 1920 }, // or 2560 for very high res
-    height: { ideal: 1080 },
-      });
-
-      if (videoRef.current) {
-        videoRef.current.srcObject = newStream;
-
-        const playPromise = new Promise((resolve, reject) => {
-          videoRef.current.onloadedmetadata = () => {
-            videoRef.current
-              .play()
-              .then(resolve)
-              .catch((err) => {
-                console.warn("Camera play failed:", err);
-                reject(err);
-              });
-          };
-        });
-
-        await playPromise;
-      }
-
-      streamRef.current = newStream;
-    } catch (err) {
-      console.error("Error accessing camera:", err);
-    }
-  };
-
-  const stopCamera = () => {
-    const currentStream = streamRef.current;
-    if (currentStream) {
-      currentStream.getTracks().forEach((track) => track.stop());
-      streamRef.current = null;
-    }
-    if (videoRef.current) {
-      videoRef.current.srcObject = null;
-    }
-  };
-
-  const toggleFlash = async () => {
-    const stream = streamRef.current;
-    if (!stream) return;
-
-    const [videoTrack] = stream.getVideoTracks();
-    if (!videoTrack) return;
-
-    const capabilities = videoTrack.getCapabilities?.();
-    if (!capabilities?.torch) {
-      alert("Flash not supported on this device/browser.");
-      return;
-    }
-
-    try {
-      await videoTrack.applyConstraints({
-        advanced: [{ torch: !flashOn }],
-      });
-      setFlashOn((prev) => !prev);
-    } catch (err) {
-      console.error("Torch toggle failed:", err);
-      alert("Failed to toggle flash. It may not be supported or allowed.");
-    }
-  };
-
-  const capturePhoto = () => {
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
-    if (!video || !canvas || !selectedPose) return;
-
-    const context = canvas.getContext("2d");
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-    const imageData = canvas.toDataURL("image/png", 1.0);
-
-    stopCamera();
-
-    setCapturedImages((prev) => ({
-      ...prev,
-      [selectedPose]: imageData,
-    }));
-  };
+  const stopCamera = () => { };
 
   const handleRetake = () => {
     setCapturedImages((prev) => {
@@ -178,8 +77,6 @@ export default function CameraScreen() {
       delete updated[selectedPose];
       return updated;
     });
-
-    startCamera();
   };
 
   const handleUpload = async () => {
@@ -222,36 +119,67 @@ export default function CameraScreen() {
     }
   };
 
+  const fileInputRef = useRef(null);
+  const openFilePicker = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setCapturedImages((prev) => ({
+        ...prev,
+        [selectedPose]: reader.result,
+      }));
+    };
+    reader.readAsDataURL(file);
+
+    event.target.value = "";
+  };
+
   return (
-    <div className="h-full relative">
+    <div className="h-full w-min-full relative">
       {isUploading && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <GradientSpinner />
         </div>
       )}
-      <div className="absolute top-10 left-0 right-0 z-20">
-        <ScreenHeader isBack onBack={stopCamera} />
+      <div className="absolute top-10 left-0 right-0 z-20 w-full">
+        <ScreenHeader isBack />
       </div>
-      <div className="w-full h-[90%] relative">
+      <div className="w-full h-[90%] relative bg-primary-gradient">
         {capturedImages[selectedPose] ? (
           <img
             src={capturedImages[selectedPose]}
-            alt="Captured"
-            className="h-full w-full object-cover scale-x-[1]"
+            alt={`Captured ${selectedPose}`}
+            className="h-full w-full object-cover"
           />
         ) : (
-          <video
-            ref={videoRef}
-            autoPlay
-            playsInline
-            className="h-full w-full object-cover scale-x-[1]"
-          />
+          <div className="h-[90%] w-screen ">
+            <img
+              src={
+                poses.find((p) => p.pose === selectedPose)?.inactive || ""
+              }
+              alt={selectedPose}
+              className="h-[90%] pt-5 w-full object-fit"
+            />
+          </div>
         )}
-        <canvas ref={canvasRef} className="hidden" />
-
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          capture="environment"
+          style={{ display: "none" }}
+          onChange={handleFileChange}
+        />
         <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 w-[80%] flex items-center justify-evenly gap-6 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 z-10">
-          <button onClick={toggleFlash} className="text-white text-2xl">
-            {flashOn ? <IoMdFlashOff /> : <IoMdFlash />}
+          <button className="text-white text-2xl">
+            <IoMdFlash />
           </button>
 
           <button
@@ -270,7 +198,7 @@ export default function CameraScreen() {
                   setSelectedPose(nextUncaptured.pose);
                 }
               } else {
-                capturePhoto();
+                openFilePicker();
               }
             }}
             className="bg-white p-3 rounded-full border-4 border-white text-red-600"
@@ -278,8 +206,8 @@ export default function CameraScreen() {
               allCaptured
                 ? "Upload Images"
                 : capturedImages[selectedPose]
-                ? "Continue to Next Pose"
-                : "Capture Photo"
+                  ? "Continue to Next Pose"
+                  : "Capture Photo"
             }
           >
             {allCaptured ? (
@@ -298,7 +226,7 @@ export default function CameraScreen() {
       </div>
       <SiTicktick />
       <div className="h-4" />
-      <div className="w-full absolute bottom-0 flex flex-col left-0 bg-primary-gradient">
+      <div className="w-full absolute bottom-0 flex flex-col left-0 bg-field_primary">
         <div className="flex gap-4 px-2 py-5 rounded-full h-full w-full justify-evenly z-10">
           {poses.map(({ active, inactive, completed, pose }) => {
             const isSelected = selectedPose === pose;
@@ -316,14 +244,13 @@ export default function CameraScreen() {
                 onClick={() => {
                   setSelectedPose(pose);
                   if (!capturedImages[pose]) {
-                    startCamera();
+                    openFilePicker();
                   }
                 }}
-                className={`w-14 h-20 flex items-center justify-center rounded-lg transition-all duration-200 ${
-                  selectedPose === pose
-                    ? "bg-field_primary border-icon border"
-                    : "bg-white/20"
-                }`}
+                className={`w-14 h-20 flex items-center justify-center rounded-lg transition-all duration-200 ${selectedPose === pose
+                  ? "bg-field_primary border-icon border"
+                  : "bg-white/20"
+                  }`}
               >
                 <img
                   src={imageSrc}
