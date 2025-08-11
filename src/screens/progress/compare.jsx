@@ -34,6 +34,7 @@ const CompareScreen = () => {
   };
 
   return (
+    <>
     <div className="w-screen space-y-6 hide-scrollbar px-2 py-6">
       <ScreenHeader title="Comparison" isBack />
       <div className="space-y-5">
@@ -60,7 +61,26 @@ const CompareScreen = () => {
         </button>
       </div>
 
-      {openPicker !== null && (
+     
+
+      <div className="w-full absolute bottom-10 left-0 px-6">
+        <Button
+          label="Compare"
+          onClick={() => {
+            if (month1 && month2) {
+              const startMonth = format(month1, "LLLL");
+              const startYear = format(month1, "yyyy");
+              const endMonth = format(month2, "LLLL");
+              const endYear = format(month2, "yyyy");
+              navigate(
+                `/result?startMonth=${startMonth}&startYear=${startYear}&endMonth=${endMonth}&endYear=${endYear}&targetId=${person}`
+              );
+            }
+          }}
+        />
+      </div>
+    </div>
+     {openPicker !== null && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg">
             <DatePicker
@@ -84,24 +104,8 @@ const CompareScreen = () => {
           </div>
         </div>
       )}
+    </>
 
-      <div className="w-full absolute bottom-10 left-0 px-6">
-        <Button
-          label="Compare"
-          onClick={() => {
-            if (month1 && month2) {
-              const startMonth = format(month1, "LLLL");
-              const startYear = format(month1, "yyyy");
-              const endMonth = format(month2, "LLLL");
-              const endYear = format(month2, "yyyy");
-              navigate(
-                `/result?startMonth=${startMonth}&startYear=${startYear}&endMonth=${endMonth}&endYear=${endYear}&targetId=${person}`
-              );
-            }
-          }}
-        />
-      </div>
-    </div>
   );
 };
 

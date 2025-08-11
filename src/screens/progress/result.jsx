@@ -79,10 +79,10 @@ const ResultScreen = () => {
       {/* <div className="h-5" /> */}
 
       <div className="flex flex-row items-center justify-between px-2">
-        <p className="text-icon font-semibold text-xl capitalize">
+        <p className="text-icon font-semibold text-lg capitalize">
           {startMonth}
         </p>
-        <p className="text-icon font-semibold text-xl capitalize">{endMonth}</p>
+        <p className="text-icon font-semibold text-lg capitalize">{endMonth}</p>
       </div>
       {loading ? (
           <p className="text-center text-base text-icon">loading...!</p>

@@ -27,6 +27,7 @@ import { GradientSpinner } from "@/components/ui/spin-loader";
 import { uploadBodyProgressData } from "@/features/progress/progress-api";
 import { uploadFile } from "@/features/user/user-api";
 import { base64ToFile } from "@/utils/helper";
+import { useNavigate } from "react-router-dom";
 
 const poses = [
   {
@@ -57,7 +58,7 @@ const poses = [
 
 export default function CameraScreen() {
   const fileInputRef = useRef(null);
-
+  const navigate = useNavigate();
   const [capturedImages, setCapturedImages] = useState({});
   const [selectedPose, setSelectedPose] = useState("Front");
   const [isUploading, setIsUploading] = useState(false);
@@ -101,7 +102,8 @@ export default function CameraScreen() {
       };
 
       const result = await uploadBodyProgressData(finalPayload);
-      if (result?.progress) {
+      console.log("result: ", result);
+      if (result?.status === 201) {
         navigate(-1);
         setIsUploading(false);
         showToast("success", "Progress uploaded successfully!");
@@ -153,9 +155,7 @@ export default function CameraScreen() {
         ) : (
           <div className="h-[90%] w-screen ">
             <img
-              src={
-                poses.find((p) => p.pose === selectedPose)?.inactive || ""
-              }
+              src={poses.find((p) => p.pose === selectedPose)?.inactive || ""}
               alt={selectedPose}
               className="h-[90%] pt-5 w-full object-fit"
             />
@@ -198,8 +198,8 @@ export default function CameraScreen() {
               allCaptured
                 ? "Upload Images"
                 : capturedImages[selectedPose]
-                  ? "Continue to Next Pose"
-                  : "Capture Photo"
+                ? "Continue to Next Pose"
+                : "Capture Photo"
             }
           >
             {allCaptured ? (
@@ -239,10 +239,11 @@ export default function CameraScreen() {
                     openFilePicker();
                   }
                 }}
-                className={`w-14 h-20 flex items-center justify-center rounded-lg transition-all duration-200 ${selectedPose === pose
-                  ? "bg-field_primary border-icon border"
-                  : "bg-white/20"
-                  }`}
+                className={`w-14 h-20 flex items-center justify-center rounded-lg transition-all duration-200 ${
+                  selectedPose === pose
+                    ? "bg-field_primary border-icon border"
+                    : "bg-white/20"
+                }`}
               >
                 <img
                   src={imageSrc}

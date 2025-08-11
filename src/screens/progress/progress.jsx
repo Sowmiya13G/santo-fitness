@@ -176,107 +176,108 @@ const ProgressScreen = () => {
   );
 
   return (
-    <div className="w-screen space-y-6 hide-scrollbar px-2 py-6 mb-10">
-      <ScreenHeader title="Progress Photo" />
-      {isClient && (
-        <div
-          className="bg-primary-gradient w-14 h-14 rounded-full flex items-center justify-center fixed bottom-[13%] right-2 cursor-pointer"
-          onClick={() => navigate("/camera-screen")}
-        >
-          <FaCamera className="text-white text-xl" />
-        </div>
-      )}
-
-      {!isClient && (
-        <>
-          <FormProvider {...methods}>
-            <form>
-              <Dropdown
-                name="person"
-                label="Select Client"
-                options={userList}
-                value={watch("person")}
-                onChange={(val) => {
-                  methods.setValue("person", val);
-                  fetchProgressList(val);
-                }}
-                placeholder="Select Client"
-              />
-            </form>
-          </FormProvider>
-
-          {!hasCurrentMonthImages && !loading && (
-            <div className="relative bg-yellow-100 border border-yellow-300 text-yellow-800 p-4 w-full rounded-3xl flex items-center gap-4">
-              <div className="p-4 rounded-full bg-yellow-200 max-w-16 w-1/5">
-                <img src={Calendar} alt="Calendar Icon" className="w-8 h-8" />
-              </div>
-              <div className="w-4/5">
-                <p className="text-base text-yellow-900 font-semibold">
-                  Reminder!
-                </p>
-                <p className="font-normal">
-                  No progress photos added for {currentMonthYear}. Don’t forget
-                  to upload!
-                </p>
-              </div>
-            </div>
-          )}
-        </>
-      )}
-
-      <div className="relative w-full bg-red_30 py-7 px-6 rounded-3xl flex items-center">
-        <div className="w-3/4 space-y-3">
-          <p className="text-md">
-            Track Your Progress Each Month With{" "}
-            <span className="text-gradient font-semibold"> Photo</span>
-          </p>
-          <Button
-            label={"Compare"}
-            customClassName="!w-28 !h-10 text-sm"
-            onClick={() => {
-              if (isClient) {
-                navigate(`/compare-progress?person=${userData._id}`);
-              } else {
-                navigate(`/compare-progress?person=${watch("person")}`);
-              }
-            }}
-          />
-        </div>
-        <img src={ReminderImage} alt="Reminder" className="h-full w-1/4" />
-      </div>
-
-      {loading ? (
-        <p className="text-center text-base text-icon">loading...!</p>
-      ) : images.length > 0 ? (
-        images.map((group, gIdx) => (
-          <div key={gIdx} className="mb-6">
-            <h3 className="text-md font-semibold mb-3">{group.monthYear}</h3>
-            <div className="grid grid-cols-3 gap-2">
-              {group.images?.map((img, idx) => (
-                <div
-                  key={idx}
-                  className="max-w-32 max-h-28  min-w-20 min-h-20 rounded-xl overflow-hidden border border-gray-200 cursor-pointer"
-                  onClick={() => openModal(gIdx, idx)}
-                >
-                  <img
-                    src={img.url}
-                    alt={`Progress ${idx + 1}`}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
-              ))}
-            </div>
+    <>
+      <div className="w-screen  space-y-6 hide-scrollbar px-2 py-6 mb-10">
+        <ScreenHeader title="Progress Photo" />
+        {isClient && (
+          <div
+            className="bg-primary-gradient w-14 h-14 rounded-full flex items-center justify-center fixed bottom-[13%] right-2 cursor-pointer"
+            onClick={() => navigate("/camera-screen")}
+          >
+            <FaCamera className="text-white text-xl" />
           </div>
-        ))
-      ) : (
-        <p className="text-center text-icon">No data available.</p>
-      )}
+        )}
 
+        {!isClient && (
+          <>
+            <FormProvider {...methods}>
+              <form>
+                <Dropdown
+                  name="person"
+                  label="Select Client"
+                  options={userList}
+                  value={watch("person")}
+                  onChange={(val) => {
+                    methods.setValue("person", val);
+                    fetchProgressList(val);
+                  }}
+                  placeholder="Select Client"
+                />
+              </form>
+            </FormProvider>
+
+            {!hasCurrentMonthImages && !loading && (
+              <div className="relative bg-yellow-100 border border-yellow-300 text-yellow-800 p-4 w-full rounded-3xl flex items-center gap-4">
+                <div className="p-4 rounded-full bg-yellow-200 max-w-16 w-1/5">
+                  <img src={Calendar} alt="Calendar Icon" className="w-8 h-8" />
+                </div>
+                <div className="w-4/5">
+                  <p className="text-base text-yellow-900 font-semibold">
+                    Reminder!
+                  </p>
+                  <p className="font-normal">
+                    No progress photos added for {currentMonthYear}. Don’t
+                    forget to upload!
+                  </p>
+                </div>
+              </div>
+            )}
+          </>
+        )}
+
+        <div className="relative w-full bg-red_30 py-7 px-6 rounded-3xl flex items-center">
+          <div className="w-3/4 space-y-3">
+            <p className="text-md">
+              Track Your Progress Each Month With{" "}
+              <span className="text-gradient font-semibold"> Photo</span>
+            </p>
+            <Button
+              label={"Compare"}
+              customClassName="!w-28 !h-10 text-sm"
+              onClick={() => {
+                if (isClient) {
+                  navigate(`/compare-progress?person=${userData._id}`);
+                } else {
+                  navigate(`/compare-progress?person=${watch("person")}`);
+                }
+              }}
+            />
+          </div>
+          <img src={ReminderImage} alt="Reminder" className="h-full w-1/4" />
+        </div>
+
+        {loading ? (
+          <p className="text-center text-base text-icon">loading...!</p>
+        ) : images.length > 0 ? (
+          images.map((group, gIdx) => (
+            <div key={gIdx} className="mb-6">
+              <h3 className="text-md font-semibold mb-3">{group.monthYear}</h3>
+              <div className="grid grid-cols-3 gap-2">
+                {group.images?.map((img, idx) => (
+                  <div
+                    key={idx}
+                    className="max-w-32 max-h-28  min-w-20 min-h-20 rounded-xl overflow-hidden border border-gray-200 cursor-pointer"
+                    onClick={() => openModal(gIdx, idx)}
+                  >
+                    <img
+                      src={img.url}
+                      alt={`Progress ${idx + 1}`}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className="text-center text-icon">No data available.</p>
+        )}
+      </div>
       {isModalOpen &&
         selectedGroupIndex != null &&
         selectedImageIndex != null && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80">
+          <div className="fixed inset-0 z-50 flex items-center justify-center h-ful bg-black bg-opacity-80">
             <div className="relative max-w-3xl w-full mx-4 bg-white p-4 rounded-xl">
               <button
                 onClick={closeModal}
@@ -322,7 +323,7 @@ const ProgressScreen = () => {
             </div>
           </div>
         )}
-    </div>
+    </>
   );
 };
 
