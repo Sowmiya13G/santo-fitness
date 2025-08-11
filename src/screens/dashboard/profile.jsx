@@ -100,8 +100,8 @@ const Profile = () => {
   };
 
   return (
-    <div>
-      <div className="p-2 animate-fade-in bg-white w-screen overflow-scroll pb-10 h-full hide-scrollbar">
+    <>
+      <div className="h-full w-screen bg-white space-y-6 py-5 px-2 overflow-y-auto overflow-hidden mb-5">
         {renderProfile(userData?.role)}
       </div>
       {showModal && (
@@ -162,7 +162,7 @@ const Profile = () => {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

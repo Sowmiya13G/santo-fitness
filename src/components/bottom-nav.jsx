@@ -59,7 +59,7 @@ export default function BottomNav() {
         </button>
       </div>
 
-      <div className="bg-white rounded-t-3xl shadow-[0_-4px_10px_rgba(0,0,0,0.1)] px-8 pt-6 pb-5 flex justify-between items-center">
+      <div className="bg-white rounded-t-3xl shadow-[0_-4px_10px_rgba(0,0,0,0.1)] px-4 pt-6 pb-5 flex justify-between items-center">
         {navItems.slice(0, 2).map(({ to, icon }, i) => (
           <NavLink key={i} to={to} end={to === "/home"}>
             {({ isActive }) => (
