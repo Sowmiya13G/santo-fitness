@@ -11,7 +11,7 @@ import ScreenHeader from "@/components/screen-header";
 
 import { getDietProgress } from "@/features/daily-logs/daily-logs-api";
 import { FormProvider, useForm } from "react-hook-form";
-import Breakfast from "../../assets/images/Breakfast.svg";
+import Breakfast from "../../assets/images/breakfast.svg";
 import Dinner from "../../assets/images/dinner.svg";
 import EveningSnack from "../../assets/images/evening-snacks.svg";
 import Lunch from "../../assets/images/lunch-img.svg";
