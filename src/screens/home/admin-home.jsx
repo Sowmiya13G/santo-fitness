@@ -10,7 +10,7 @@ const AdminDashboard = ({ loading }) => {
 
   return (
     <div className="w-full space-y-6 px-3 hide-scrollbar ">
-      <ScreenHeader isHome />
+      <ScreenHeader isHome  />
       <div className="h-2" />
       {loading && (
         <p className="text-center text-gray-500 text-base font-medium my-2">

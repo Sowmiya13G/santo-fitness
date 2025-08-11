@@ -61,10 +61,10 @@ const PendingListCard = ({ label }) => {
       )}
 
       <div className="flex flex-col gap-3">
-        {pendingLogsList?.map((user) => {
+        {pendingLogsList?.map((user, index) => {
           return (
             <PendingUserCard
-              key={user?.userId}
+              key={user?.index}
               list={user}
               onClick={() => {
                 navigate(`/meals-details?type=${user?.type}`, {

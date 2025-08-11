@@ -1,6 +1,7 @@
 import { FaAngleLeft, FaBell } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { TbCalendarBolt } from "react-icons/tb";
 
 export default function ScreenHeader({
   title,
@@ -8,6 +9,7 @@ export default function ScreenHeader({
   titleColor = "text-font_primary",
   isHome = false,
   onBack,
+  setShowModal,
   headerStyle = "",
 }) {
   const navigate = useNavigate();
@@ -30,13 +32,14 @@ export default function ScreenHeader({
               {userData?.name || "User"}
             </h1>
           </div>
-
-          {/* <button
-            onClick={() => navigate("/notification")}
-            className="p-3 rounded-xl"
-          >
-            <FaBell className="w-5 h-5 text-icon" />
-          </button> */}
+          {userData.role === "trainer" && (
+            <button
+              onClick={() => setShowModal(true)}
+              className="p-3 rounded-xl"
+            >
+              <TbCalendarBolt className="w-6 h-8 text-icon" />
+            </button>
+          )}
         </div>
       ) : (
         <div

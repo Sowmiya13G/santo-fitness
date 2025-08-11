@@ -1,15 +1,15 @@
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { getTopClient, getUsersList } from "@/features/user/user-api";
 import {
   setTopClient,
   setTrainerList,
   setUserList,
 } from "@/features/user/user-slice";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import AdminDashboard from "../home/admin-home";
 import ClientDashboard from "../home/client-home";
 import TrainerDashboard from "../home/trainer-home";
-import { useState } from "react";
+import DateCheckModal from "@/components/modal/date-select-modal";
 
 const Home = () => {
   const { userData } = useSelector((state) => state.auth);
@@ -17,20 +17,36 @@ const Home = () => {
   const isClient = userData?.role === "client";
 
   const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
   const renderHome = (role) => {
     switch (role) {
       case "admin":
-        return <AdminDashboard loading={loading} />;
+        return (
+          <AdminDashboard
+            loading={loading}
+            setShowModal={() => setShowModal(true)}
+          />
+        );
       case "trainer":
-        return <TrainerDashboard loading={loading} />;
+        return (
+          <TrainerDashboard
+            loading={loading}
+            setShowModal={() => setShowModal(true)}
+          />
+        );
       case "client":
-        return <ClientDashboard loading={loading} />;
+        return (
+          <ClientDashboard
+            loading={loading}
+            setShowModal={() => setShowModal(true)}
+          />
+        );
       default:
         return <div>Role not found</div>;
     }
   };
 
-  // logoutUser(dispatch, navigate)
   const fetchTopClient = async () => {
     const response = await getTopClient();
     dispatch(setTopClient(response?.data));
@@ -44,7 +60,7 @@ const Home = () => {
       const response = await getUsersList();
       if (response?.status === 200) {
         const users = response.users
-          .filter((x) => x.role == "client")
+          .filter((x) => x.role === "client")
           .map((x) => ({
             value: x._id,
             label: x.name,
@@ -53,8 +69,9 @@ const Home = () => {
             profileImg: x.profileImg,
             ...x,
           }));
+
         const trainers = response.users
-          .filter((x) => x.role == "trainer")
+          .filter((x) => x.role === "trainer")
           .map((x) => ({
             value: x._id,
             label: x.name,
@@ -63,6 +80,7 @@ const Home = () => {
             profileImg: x.profileImg,
             ...x,
           }));
+
         dispatch(setUserList(users));
         dispatch(setTrainerList(trainers));
       }
@@ -76,15 +94,20 @@ const Home = () => {
   useEffect(() => {
     setLoading(true);
     fetchTopClient();
-    if (userData?.role === "client") {
-      return;
-    } else {
+    if (userData?.role !== "client") {
       fetchUsersList();
     }
   }, [userData?.role]);
+
   return (
-    <div className="min-h-screen animate-fade-in  bg-white w-screen overflow-scroll pb-10 hide-scrollbar">
+    <div className="min-h-screen relative animate-fade-in bg-white w-screen overflow-scroll pb-10 hide-scrollbar">
       {renderHome(userData?.role)}
+      {showModal && (
+        <DateCheckModal
+          showModal={showModal}
+          onClose={() => setShowModal(false)}
+        />
+      )}
     </div>
   );
 };
