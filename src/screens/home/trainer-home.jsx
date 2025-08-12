@@ -30,7 +30,7 @@ const TrainerDashboard = ({ loading,setShowModal}) => {
       )}
       <RankCard label={"top performed client "} data={topClient} />
       <UserDetailsCard label={"My Clients"} />
-      <PendingListCard label={"pending List"} />
+      <PendingListCard label={"pending meals"} />
     </div>
   );
 };

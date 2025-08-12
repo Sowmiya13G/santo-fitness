@@ -1,9 +1,8 @@
 import { Card } from "@/components/card/card";
+import { getColorFromLetter } from "@/utils/helper";
 import { FastAverageColor } from "fast-average-color";
 import { useEffect, useRef, useState } from "react";
 import { MdSwipe } from "react-icons/md";
-import femaleProfile from "../../assets/images/femaleProfile.jpeg";
-import maleProfile from "../../assets/images/maleProfile.jpeg";
 import Button from "../button";
 
 const UserCard = ({
@@ -13,12 +12,17 @@ const UserCard = ({
   buttonLabel = "View",
   customButtonClass,
   buttonDisabled,
+  showButton = true,
 }) => {
   const imgRef = useRef(null);
   const [bgColor, setBgColor] = useState("#adabb0");
   const [textColor, setTextColor] = useState("#0e0e0e");
 
+  const hasProfileImage = Boolean(user?.profileImg);
+
   useEffect(() => {
+    if (!hasProfileImage) return; // Skip color extraction if no image
+
     const fac = new FastAverageColor();
     const img = imgRef.current;
 
@@ -38,15 +42,19 @@ const UserCard = ({
       img.addEventListener("load", handleColor);
       return () => img.removeEventListener("load", handleColor);
     }
-  }, []);
+  }, [hasProfileImage]);
 
   return (
-    <div className="min-w-[100%] snap-center snap-always ">
+    <div className="min-w-[100%] snap-center snap-always">
       <Card
         className={`${
           isSwipe ? "" : "py-6 h-[24%]"
         } relative !z-1 text-white rounded-3xl p-4 shadow-lg w-full h-32 overflow-hidden`}
-        style={{ backgroundColor: bgColor }}
+        style={{
+          backgroundColor: hasProfileImage
+            ? bgColor
+            : getColorFromLetter(user?.name?.[0]?.toUpperCase() || "A").dark,
+        }}
       >
         {/* Decorative bubbles */}
         <div className="absolute w-24 h-24 bg-white/10 rounded-full bottom-[-30px] left-[-30px]" />
@@ -65,17 +73,19 @@ const UserCard = ({
             >
               {user?.name}
             </h2>
-            <p className="text-xs  mb-2" style={{ color: textColor }}>
+            <p className="text-xs mb-2" style={{ color: textColor }}>
               {user?.goal}
             </p>
-            <Button
-              label={buttonLabel}
-              onClick={onClick}
-              customClassName={`${customButtonClass} bg-field_primary !text-font_primary opacity-70 w-auto !h-8 mb-0 mt-5`}
-              buttonColor={`text-[${textColor}]`}
-              variant=""
-              disabled={buttonDisabled}
-            />
+            {showButton && (
+              <Button
+                label={buttonLabel}
+                onClick={onClick}
+                customClassName={`${customButtonClass} bg-field_primary !text-font_primary opacity-70 w-auto !h-8 mb-0 mt-5`}
+                buttonColor={`text-[${textColor}]`}
+                variant=""
+                disabled={buttonDisabled}
+              />
+            )}
           </div>
 
           {/* Swipe icon */}
@@ -84,23 +94,34 @@ const UserCard = ({
           )}
 
           <div className="w-[30%] text-center">
-            <div className="bg-white relative rounded-full w-24 h-24 overflow-hidden mx-auto">
-              <img
-                ref={imgRef}
-                src={
-                  user.profileImg
-                    ? user.profileImg
-                    : user?.gender === "female"
-                    ? femaleProfile
-                    : maleProfile
-                }
-                alt={user?.name}
-                crossOrigin="anonymous"
-                className={`${
-                  isSwipe ? "object-cover" : "object-fit"
-                } rounded-full w-full h-full shadow-2xl`}
-                style={{ objectPosition: "0% 0%" }}
-              />
+            <div className="bg-white relative rounded-full w-24 h-24 overflow-hidden mx-auto flex items-center justify-center">
+              {hasProfileImage ? (
+                <img
+                  ref={imgRef}
+                  src={user.profileImg}
+                  alt={user?.name}
+                  crossOrigin="anonymous"
+                  className={`${
+                    isSwipe ? "object-cover" : "object-fit"
+                  } rounded-full w-full h-full shadow-2xl`}
+                  style={{ objectPosition: "0% 0%" }}
+                />
+              ) : (
+                <span
+                  style={{
+                    backgroundColor: getColorFromLetter(
+                      user?.name?.[0]?.toUpperCase() || "A"
+                    ).base,
+                    width: "100%",
+                    height: "100%",
+                  }}
+                  className="flex items-center justify-center"
+                >
+                  <p className="text-3xl font-bold text-gray-700 ">
+                    {user?.name?.[0]?.toUpperCase() || "?"}
+                  </p>
+                </span>
+              )}
             </div>
           </div>
         </div>

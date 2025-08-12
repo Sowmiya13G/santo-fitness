@@ -52,7 +52,7 @@ const PendingListCard = ({ label }) => {
       {label && (
         <div className="flex items-center gap-2 mb-2">
           <p className="text-gray-600 capitalize text-left">{label}</p>
-          {pendingLogsList?.length && (
+          {pendingLogsList?.length > 0 && (
             <span className="text-xs bg-primary-gradient text-white px-3 py-0.5 rounded-full">
               {pendingLogsList?.length}
             </span>
@@ -60,11 +60,15 @@ const PendingListCard = ({ label }) => {
         </div>
       )}
 
-      <div className="flex flex-col gap-3">
-        {pendingLogsList?.map((user, index) => {
-          return (
+      {pendingLogsList?.length === 0 ? (
+        <div className="w-full flex flex-col items-center justify-center py-8 text-center text-gray-500">
+          🎉 Great job! No pending meals — you’re all caught up.
+        </div>
+      ) : (
+        <div className="flex flex-col gap-3">
+          {pendingLogsList.map((user, index) => (
             <PendingUserCard
-              key={user?.index}
+              key={index}
               list={user}
               onClick={() => {
                 navigate(`/meals-details?type=${user?.type}`, {
@@ -78,9 +82,9 @@ const PendingListCard = ({ label }) => {
                 });
               }}
             />
-          );
-        })}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
