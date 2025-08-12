@@ -6,7 +6,7 @@ import HorizontalCalendar from "@/components/horizontal-calendar";
 import ProfileWrapper from "@/components/profile-wrapper";
 import ActivityGrid from "@/components/ui/active-grid";
 import DietProgress from "@/components/ui/diet-progress";
-
+import activityImg from "../../assets/images/activity-history.png";
 import { getDietProgress } from "@/features/daily-logs/daily-logs-api";
 import {
   setTodayLogs,
@@ -86,9 +86,9 @@ const ActivityHistory = () => {
     <FormProvider {...methods}>
       <ProfileWrapper
         title="Activity History"
-        // image={userData?.profileImg}
+        image={activityImg}
         bgColor="bg-secondary"
-        imgClass="!scale-175 rounded-none object-contain top-[25px] absolute"
+        imgClass=" rounded-none object-contain -top-[100px]  absolute w-[90%] !h-[300px] "
       >
         {isLoading && (
           <p className="text-center text-base mt-3 font-medium text-icon">
