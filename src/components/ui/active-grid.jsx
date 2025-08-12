@@ -12,22 +12,22 @@ const ActivityGrid = () => {
     {
       label: "Calories",
       consumed: 0,
-      total: todayLogs?.targetCalories || 0,
+      total: userData?.targetCalories || 0,
     },
     {
       label: "Protein",
       consumed: 0,
-      total: todayLogs?.targetProtein ||0,
+      total: userData?.targetProtein ||0,
     },
     {
       label: "Fat",
       consumed: 0,
-      total: todayLogs?.targetFat || 0,
+      total: userData?.targetFat || 0,
     },
     {
       label: "Carbs",
       consumed: 0,
-      total: todayLogs?.targetCarbs || 0,
+      total: userData?.targetCarbs || 0,
     },
   ];
   const [nutrients, setNutrients] = useState(initialData);
