@@ -177,7 +177,7 @@ const ProgressScreen = () => {
 
   return (
     <>
-      <div className="w-screen  space-y-6 hide-scrollbar px-2 py-6 mb-10">
+      <div className="w-screen  space-y-6 hide-scrollbar px-3 py-6 mb-10">
         <ScreenHeader title="Progress Photo" />
         {isClient && (
           <div
@@ -298,13 +298,13 @@ const ProgressScreen = () => {
 
               <button
                 onClick={prevImage}
-                className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
+                className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-md"
               >
                 <IoIosArrowBack className="text-xl" />
               </button>
               <button
                 onClick={nextImage}
-                className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
+                className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-md"
               >
                 <IoIosArrowForward className="text-xl" />
               </button>

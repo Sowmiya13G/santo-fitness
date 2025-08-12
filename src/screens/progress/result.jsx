@@ -78,7 +78,7 @@ const ResultScreen = () => {
       <ScreenHeader title="Result" isBack />
       {/* <div className="h-5" /> */}
 
-      <div className="flex flex-row items-center justify-between px-2">
+      <div className="flex flex-row items-center justify-between px-3">
         <p className="text-icon font-semibold text-lg capitalize">
           {startMonth}
         </p>

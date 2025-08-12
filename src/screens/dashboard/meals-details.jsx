@@ -15,7 +15,7 @@ const MealsDetails = () => {
       bgColor="bg-red_25"
       imgClass={"scale-150 rounded-none object-contain"}
     >
-      <div className="w-screen h-full px-2 py-4">
+      <div className="w-screen h-full px-3 py-4">
         {isEmpty ? (
           <p className="text-center text-gray-500 text-md font-medium">
             No meals available for this date 🍽️

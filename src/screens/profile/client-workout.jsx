@@ -141,7 +141,7 @@ const ClientWorkoutNotes = () => {
       image={Workout}
       imgClass={"!scale-175 rounded-none object-contain top-[25px] absolute"}
     >
-      <div className="w-screen h-full px-2 py-4">
+      <div className="w-screen h-full px-3 py-4">
         {loading ? (
           <p className="text-center text-gray-500 text-md font-medium">
             Loading workout...

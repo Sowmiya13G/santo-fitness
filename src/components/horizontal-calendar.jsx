@@ -71,7 +71,7 @@ const HorizontalCalendar = ({ onSelectDate }) => {
         </button>
       </div>
 
-      <div className="flex overflow-x-scroll px-2 py-1 space-x-2 hide-scrollbar ">
+      <div className="flex overflow-x-scroll px-3 py-1 space-x-2 hide-scrollbar ">
         {days.map((day) => {
           const isSelected = isSameDay(day, selectedDate);
 

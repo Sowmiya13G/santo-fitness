@@ -17,7 +17,7 @@ const RenderIconRow = ({
       {rightContent ? (
         <div>{rightContent}</div>
       ) : rightIcon ? (
-        <button onClick={onAction} className="text-icon px-2">
+        <button onClick={onAction} className="text-icon px-3">
           {rightIcon}
         </button>
       ) : null}

@@ -20,7 +20,7 @@ const TrainerDashboard = ({ loading,setShowModal}) => {
     fetchDietPendingProgress();
   }, []);
   return (
-    <div className="w-full space-y-6 px-2 hide-scrollbar ">
+    <div className="w-full space-y-6 px-3 hide-scrollbar ">
       <ScreenHeader isHome setShowModal={setShowModal} />
       <div className="h-2" />
       {loading && (

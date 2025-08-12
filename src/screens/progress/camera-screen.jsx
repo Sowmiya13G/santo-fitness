@@ -228,7 +228,7 @@ export default function CameraScreen() {
       <SiTicktick />
       <div className="h-4" />
       <div className="w-full absolute bottom-0 flex flex-col left-0 bg-field_primary">
-        <div className="flex gap-4 px-2 py-5 rounded-full h-full w-full justify-evenly z-10">
+        <div className="flex gap-4 px-3 py-5 rounded-full h-full w-full justify-evenly z-10">
           {poses.map(({ active, inactive, completed, pose }) => {
             const isSelected = selectedPose === pose;
             const isCompleted = !!capturedImages[pose];

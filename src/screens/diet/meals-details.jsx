@@ -271,7 +271,7 @@ const MealDetailsScreen = () => {
       bgColor="bg-red_25"
       imgClass={"!scale-175 rounded-none object-contain top-[25px] absolute"}
     >
-      <div className="w-screen min-h-screen px-2 py-1 !mt-0">
+      <div className="w-screen min-h-screen px-3 py-1 !mt-0">
         {loadingData ? (
           <p className="text-center text-base  mt-3 font-medium text-icon">
             Loading..!
@@ -306,13 +306,13 @@ const MealDetailsScreen = () => {
 
                   <button
                     onClick={prevImage}
-                    className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
+                    className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-md"
                   >
                     <IoIosArrowBack className="text-xl" />
                   </button>
                   <button
                     onClick={nextImage}
-                    className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
+                    className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-md"
                   >
                     <IoIosArrowForward className="text-xl" />
                   </button>

@@ -53,7 +53,7 @@ const PendingListCard = ({ label }) => {
         <div className="flex items-center gap-2 mb-2">
           <p className="text-gray-600 capitalize text-left">{label}</p>
           {pendingLogsList?.length && (
-            <span className="text-xs bg-primary-gradient text-white px-2 py-0.5 rounded-full">
+            <span className="text-xs bg-primary-gradient text-white px-3 py-0.5 rounded-full">
               {pendingLogsList?.length}
             </span>
           )}
