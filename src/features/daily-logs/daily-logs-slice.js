@@ -9,6 +9,7 @@ const dailySlice = createSlice({
   },
   reducers: {
     setTodayLogs(state, action) {
+      console.log('action: ', action);
       state.todayLogs = action.payload;
     },
     setWeekLogs(state, action) {

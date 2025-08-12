@@ -4,36 +4,38 @@ import NutrientProgress from "../card/nutrient-progress";
 
 const ActivityGrid = () => {
   const { todayLogs } = useSelector((state) => state.dailyLogs);
-  console.log('todayLogs: ', todayLogs);
+  console.log("todayLogs: ", todayLogs);
   const { userData } = useSelector((state) => state.auth);
+  console.log('userData: ', userData);
 
   const initialData = [
     {
       label: "Calories",
       consumed: 0,
-      total: userData.targetCalories,
+      total: todayLogs?.targetCalories || 0,
     },
     {
       label: "Protein",
       consumed: 0,
-      total: userData.targetProtein,
+      total: todayLogs?.targetProtein ||0,
     },
     {
       label: "Fat",
       consumed: 0,
-      total: userData.targetFat,
+      total: todayLogs?.targetFat || 0,
     },
     {
       label: "Carbs",
       consumed: 0,
-      total: userData.targetCarbs,
+      total: todayLogs?.targetCarbs || 0,
     },
   ];
   const [nutrients, setNutrients] = useState(initialData);
 
   useEffect(() => {
     if (!todayLogs) {
-      return;
+      setNutrients(initialData);
+      return
     }
     const todayData = todayLogs;
 
@@ -69,12 +71,18 @@ const ActivityGrid = () => {
     ];
 
     setNutrients(formatted);
-  }, [todayLogs, userData.targetCalories, userData.targetCarbs, userData.targetFat, userData.targetProtein]);
+  }, [
+    todayLogs,
+    userData.targetCalories,
+    userData.targetCarbs,
+    userData.targetFat,
+    userData.targetProtein,
+  ]);
 
   return (
     <div>
       <h2 className="text-md text-center font-semibold mb-4 text-gradient">
-         Nutrient Summary
+        Nutrient Summary
       </h2>
       <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {nutrients.map((nutrient) => (

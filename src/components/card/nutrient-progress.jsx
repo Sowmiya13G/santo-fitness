@@ -1,5 +1,4 @@
-// NutrientProgress.jsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export default function NutrientProgress({
   label,
@@ -13,17 +12,27 @@ export default function NutrientProgress({
   const normalizedRadius = radius - stroke / 2;
   const circumference = 2 * Math.PI * normalizedRadius;
   const progress = Math.min(consumed / total, 1);
-  const strokeDashoffset = circumference - progress * circumference;
   const remaining = total - consumed;
+
+  // State for animated strokeDashoffset
+  const [strokeDashoffset, setStrokeDashoffset] = useState(
+    circumference - progress * circumference
+  );
+
+  // Animate strokeDashoffset on consumed/total change
+  useEffect(() => {
+    const newOffset = circumference - progress * circumference;
+    setStrokeDashoffset(newOffset);
+  }, [progress, circumference]);
 
   return (
     <div className="bg-white shadow-lg rounded-2xl border border-b-gray-300 p-4">
       <div className="text-gray-800 font-medium text-sm">{label}</div>
 
-      <div className={`text-xl font-bold  `} style={{ color }}>
+      <div className={`text-xl font-bold`} style={{ color }}>
         {consumed}g
       </div>
-      <div className="relative max-w-[80px] mt-4 max-h-[80px]  w-[100px] h-[100px] flex flex-col items-center justify-center  mx-auto ">
+      <div className="relative max-w-[80px] mt-4 max-h-[80px] w-[100px] h-[100px] flex flex-col items-center justify-center mx-auto">
         <svg
           height={radius * 2}
           width={radius * 2}
@@ -44,6 +53,7 @@ export default function NutrientProgress({
             strokeLinecap="round"
             strokeDasharray={circumference}
             strokeDashoffset={strokeDashoffset}
+            style={{ transition: "stroke-dashoffset 1s ease" }}
             cx={radius}
             cy={radius}
             r={normalizedRadius}
@@ -53,9 +63,7 @@ export default function NutrientProgress({
         <div
           className={`z-10 text-center flex items-center justify-center w-[95%] h-[95%] rounded-full bg-red_25`}
         >
-          <div className="text-sm mt-1 text-white" >
-            {remaining}g left
-          </div>
+          <div className="text-sm mt-1 text-white">{remaining}g left</div>
         </div>
       </div>
     </div>

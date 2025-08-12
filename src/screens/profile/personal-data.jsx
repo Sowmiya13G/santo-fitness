@@ -151,6 +151,8 @@ const PersonalData = () => {
   }, [userData.role]);
 
   return (
+    <div className="w-screen">
+
     <FormProvider {...methods}>
       <ProfileWrapper
         title={isCreate ? "Add New Client" : "Personal Data"}
@@ -162,7 +164,7 @@ const PersonalData = () => {
       >
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="w-full max-w-md space-y-4 pb-5 px-4"
+          className="w-full  space-y-4 pb-5 px-4"
         >
           <UserData
             list={list}
@@ -181,6 +183,8 @@ const PersonalData = () => {
         </form>
       </ProfileWrapper>
     </FormProvider>
+    </div>
+
   );
 };
 

@@ -40,15 +40,10 @@ const ActivityHistory = () => {
       };
       const raw = await getDietProgress(params);
 
-      const today = format(new Date(), "yyyy-MM-dd");
-      const todayLog = raw.find(
-        (log) => format(parseISO(log.date), "yyyy-MM-dd") === today
-      );
-
-      if (todayLog) {
-        dispatch(setTodayLogs(todayLog));
-      } else {
+      if (raw.length == 0) {
         dispatch(setTodayLogs(null));
+      } else {
+        dispatch(setTodayLogs(raw[0]));
       }
     } catch (error) {
       console.error("Failed to fetch diet progress:", error);
@@ -91,7 +86,7 @@ const ActivityHistory = () => {
     <FormProvider {...methods}>
       <ProfileWrapper
         title="Activity History"
-        image={userData?.profileImg}
+        // image={userData?.profileImg}
         bgColor="bg-secondary"
         imgClass="!scale-175 rounded-none object-contain top-[25px] absolute"
       >
