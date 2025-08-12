@@ -31,7 +31,7 @@ export default function Onboarding() {
       <img
         src={image}
         alt={title}
-        className={`object-contain w-full max-h-[60%] ${
+        className={`object-cover w-full h-auto max-h-[70%] ${
           !animate ? "" : "animate-zoom-in"
         }`}
       />
@@ -48,7 +48,7 @@ export default function Onboarding() {
         </p>
       </div>
 
-      <div className="flex justify-end items-center p-5 max-w-md">
+      <div className="flex justify-end items-center p-5 w-full">
         <div className="relative w-16 h-16">
           <svg
             className="absolute top-0 left-0 w-full h-full"
