@@ -169,8 +169,8 @@ export const basicFields = [
 
 export const fatFields = [
   [
-    { name: "fat", label: "Fat" },
-    { name: "VFat", label: "V.Fat" },
+    { name: "fat", label: "Fat", type: "number" },
+    { name: "VFat", label: "V.Fat", type: "number" },
   ],
   [
     { name: "SFat", label: "S.Fat" },

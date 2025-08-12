@@ -96,6 +96,7 @@ function UserData({
             <Input
               key={name}
               name={name}
+              // type={"number"}
               label={label}
               placeholder={`Enter ${label.toLowerCase()}`}
               editable={editable}
@@ -116,6 +117,7 @@ function UserData({
                 label={field.label}
                 placeholder={`Enter ${field.label.toLowerCase()}`}
                 editable={editable}
+                // type={"number"}
                 isLoading={loading}
               />
             ))}
@@ -130,16 +132,18 @@ function UserData({
         isLoading={loading}
       />
 
-    {!isTrainerRole&&  <Dropdown
-        name="subscriptionPlan"
-        label="Subscription"
-        options={subscriptionPlanData}
-        value={watch("subscriptionPlan")}
-        onChange={(val) => setValue("subscriptionPlan", val)}
-        placeholder="Select subscription plan"
-        editable={editable}
-        isLoading={loading}
-      />}
+      {!isTrainerRole && (
+        <Dropdown
+          name="subscriptionPlan"
+          label="Subscription"
+          options={subscriptionPlanData}
+          value={watch("subscriptionPlan")}
+          onChange={(val) => setValue("subscriptionPlan", val)}
+          placeholder="Select subscription plan"
+          editable={editable}
+          isLoading={loading}
+        />
+      )}
 
       {!isClient && (
         <Button

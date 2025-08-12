@@ -205,14 +205,14 @@ const MealDetailsScreen = () => {
             name={"protein"}
             label={"Protein"}
             placeholder={`Enter protein`}
-            type="numeric"
+            type="number"
             editable={isNutrientAdded ? false : true}
           />
           <Input
             name={"fat"}
             label={"Fat"}
             placeholder={`Enter fat`}
-            type="numeric"
+            type="number"
             editable={isNutrientAdded ? false : true}
           />
         </div>
@@ -221,14 +221,14 @@ const MealDetailsScreen = () => {
             name={"kcal"}
             label={"KCal"}
             placeholder={`Enter kcal`}
-            type="numeric"
+            type="number"
             editable={isNutrientAdded ? false : true}
           />
           <Input
             name={"carbs"}
             label={"Carbs"}
             placeholder={`Enter carbs`}
-            type="numeric"
+            type="number"
             editable={isNutrientAdded ? false : true}
           />
         </div>

@@ -5,7 +5,7 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 const Input = ({
   placeholder,
   name,
-  type = "alphabetic",
+  type = "text",
   icon = null,
   iconPosition = "prefix",
   wrapperClassName = "",
@@ -25,13 +25,7 @@ const Input = ({
   const error = errors?.[name]?.message;
   const baseBorder = error ? "border-red-500" : "border-gray-300";
   const inputType =
-    type === "password"
-      ? showPassword
-        ? "text"
-        : "password"
-      : type === "numeric"
-      ? "text"
-      : type;
+    type === "password" ? (showPassword ? "text" : "password") : type;
   const toggleVisibility = () => setShowPassword((prev) => !prev);
 
   const isInputDisabled = !editable || isLoading;
@@ -49,6 +43,8 @@ const Input = ({
         )}
         <input
           type={inputType}
+          autoComplete="off"
+          autoCorrect="off"
           placeholder={isLoading ? "" : placeholder}
           maxLength={maxLength}
           disabled={isInputDisabled}

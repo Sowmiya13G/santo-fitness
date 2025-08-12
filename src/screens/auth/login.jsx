@@ -89,7 +89,7 @@ function Login() {
           <Input
             name="phoneNumber"
             placeholder="Enter phone number"
-            type="numeric"
+            type="number"
             icon={<FiPhone />}
             iconPosition="prefix"
             maxLength={10}
