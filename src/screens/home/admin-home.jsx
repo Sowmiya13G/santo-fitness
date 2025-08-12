@@ -18,7 +18,7 @@ const AdminDashboard = ({ loading }) => {
         </p>
       )}
       <RankCard label={"top performed client "} data={topClient} />
-      <RankCard label={"top performed trainer "} data={trainerList} />
+      {/* <RankCard label={"top performed trainer "} data={trainerList} /> */}
       <UserDetailsCard label={"SFC Trainers"} showTrainer />
       <UserDetailsCard label={"SFC Clients"} />
     </div>

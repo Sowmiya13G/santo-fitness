@@ -210,11 +210,13 @@ export const sectionedFields = [
 ];
 
 export const subscriptionPlanData = [
-  { label: "3 Months", value: "3" },
-  { label: "4 Months", value: "4" },
-  { label: "6 Months", value: "6" },
-  { label: "12 Months", value: "12" },
-  { label: "15 Months", value: "15" },
+  { label: "30 days", value: 30 },
+  { label: "40 days", value: 40 },
+  { label: "50 days", value: 50 },
+  { label: "60 days", value: 60 },
+  { label: "70 days", value: 70 },
+  { label: "80 days", value: 80 },
+  { label: "90 days", value: 90 },
 ];
 
 export const workoutClassData = [

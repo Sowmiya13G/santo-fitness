@@ -16,6 +16,7 @@ import Dinner from "../../assets/images/dinner.svg";
 import EveningSnack from "../../assets/images/evening-snacks.svg";
 import Lunch from "../../assets/images/lunch-img.svg";
 import MorningSnack from "../../assets/images/morning-snacks.svg";
+import { useState } from "react";
 
 const DietDetailsScreen = () => {
   const navigate = useNavigate();
@@ -27,8 +28,8 @@ const DietDetailsScreen = () => {
   const methods = useForm();
   const { watch, setValue } = methods;
 
-  const [mealsData, setMealsData] = React.useState([]);
-  const [loading, setLoading] = React.useState([]);
+  const [mealsData, setMealsData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const { filter, fromMTracker } = location.state || {};
   const isClient = userData?.role === "client";
@@ -36,6 +37,7 @@ const DietDetailsScreen = () => {
 
   const fetchData = async () => {
     try {
+      setLoading(true);
       const formattedDate = format(
         fromMTracker ? filter?.date : new Date(),
         "yyyy-MM-dd"
@@ -58,8 +60,6 @@ const DietDetailsScreen = () => {
   };
 
   useEffect(() => {
-    setLoading(true);
-    console.log("selectedUser: ", selectedUser);
     if (selectedUser) {
       fetchData();
     }

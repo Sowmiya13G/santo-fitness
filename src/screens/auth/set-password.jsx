@@ -77,7 +77,7 @@ function SetPassword() {
               type="submit"
               disabled={isSubmitting}
               loading={isSubmitting}
-              label={"Reset"}
+              label={"Reset Password"}
             />
           </div>
         </form>

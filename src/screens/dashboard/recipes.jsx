@@ -64,6 +64,7 @@ const Recipes = () => {
   const fetchData = async () => {
     if (!isClient && !selectedUser) return;
     try {
+      setLoading(true);
       const formattedDate = format(selectedDate, "yyyy-MM-dd");
       const typeMap = {
         All: "all",
@@ -129,8 +130,6 @@ const Recipes = () => {
   };
 
   useEffect(() => {
-    setLoading(true);
-
     fetchData();
   }, [selectedFilter, selectedDate, selectedUser]);
 

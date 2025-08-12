@@ -130,7 +130,7 @@ function UserData({
         isLoading={loading}
       />
 
-      <Dropdown
+    {!isTrainerRole&&  <Dropdown
         name="subscriptionPlan"
         label="Subscription"
         options={subscriptionPlanData}
@@ -139,7 +139,7 @@ function UserData({
         placeholder="Select subscription plan"
         editable={editable}
         isLoading={loading}
-      />
+      />}
 
       {!isClient && (
         <Button
