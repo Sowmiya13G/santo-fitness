@@ -8,7 +8,7 @@ const API_ENDPOINTS = {
     SAVE_FCM_TOKEN: "/save-token",
     USER: "/users",
     USERS: "/users-list",
-    CREATE_USER:"/create-user"
+    CREATE_USER: "/create-user",
   },
   WORKOUT: {
     CREATE_WORKOUT: "/create-workout-notes",
@@ -31,9 +31,9 @@ const API_ENDPOINTS = {
   PROGRESS: {
     BODY_PROGRESS: "/body-progress",
   },
-  RANKING:{
-    TOP_CLIENTS:"/client-rankings"
-  }
+  RANKING: {
+    TOP_CLIENTS: "/client-rankings",
+  },
 };
 
 export default API_ENDPOINTS;

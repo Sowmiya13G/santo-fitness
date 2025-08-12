@@ -4,6 +4,7 @@ import NutrientProgress from "../card/nutrient-progress";
 
 const ActivityGrid = () => {
   const { todayLogs } = useSelector((state) => state.dailyLogs);
+  console.log('todayLogs: ', todayLogs);
   const { userData } = useSelector((state) => state.auth);
 
   const initialData = [
@@ -38,10 +39,10 @@ const ActivityGrid = () => {
 
     // You can define "total" values based on user target, or statically for now
     const totals = {
-      Calories: userData.targetCalories,
-      Protein: userData.targetProtein,
-      Fat: userData.targetFat,
-      Carbs: userData.targetCarbs,
+      Calories: todayLogs.targetCalories,
+      Protein: todayLogs.targetProtein,
+      Fat: todayLogs.targetFat,
+      Carbs: todayLogs.targetCarbs,
     };
 
     const formatted = [
@@ -73,7 +74,7 @@ const ActivityGrid = () => {
   return (
     <div>
       <h2 className="text-md text-center font-semibold mb-4 text-gradient">
-        Today Nutrient Summary
+         Nutrient Summary
       </h2>
       <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {nutrients.map((nutrient) => (

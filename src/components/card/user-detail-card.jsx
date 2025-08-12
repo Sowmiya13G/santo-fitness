@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import UserCard from "./user-card";
 
-const UserDetailsCard = ({ label, showTrainer = false ,showButton}) => {
+const UserDetailsCard = ({ label, showTrainer = false ,showButton,onClick}) => {
   console.log('showButton: ', showButton);
   const { userList, trainerList } = useSelector((state) => state.user);
   const list = showTrainer ? trainerList : userList;
@@ -14,7 +14,7 @@ const UserDetailsCard = ({ label, showTrainer = false ,showButton}) => {
       {hasData ? (
         <div className="flex gap-4 overflow-x-auto hide-scrollbar px-1 snap-x snap-mandatory">
           {list.map((user) => (
-            <UserCard key={user.id} user={user} customButtonClass="!w-24" showButton={showButton} />
+            <UserCard key={user.id} user={user} onClick={onClick} customButtonClass="!w-24" showButton={showButton} />
           ))}
         </div>
       ) : (

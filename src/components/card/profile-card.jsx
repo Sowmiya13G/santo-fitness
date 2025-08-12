@@ -1,5 +1,7 @@
+import { getColorFromLetter } from "@/utils/helper";
 import React from "react";
 import { useSelector } from "react-redux";
+
 
 export default function ProfileCard({ setShowModal }) {
   const { userData } = useSelector((state) => state.auth);
@@ -13,12 +15,28 @@ export default function ProfileCard({ setShowModal }) {
   return (
     <div className="bg-white rounded-2xl px-4 ">
       <div className="flex items-center space-x-4">
-        <img
-          src={userData.profileImg}
-          alt={userData.name}
-          onClick={() => setShowModal(true)}
-          className="w-14 h-14 rounded-full object-cover"
-        />
+        {userData?.profileImg ? (
+          <img
+            src={userData.profileImg}
+            alt={userData.name}
+            onClick={() => setShowModal(true)}
+            className="w-14 h-14 rounded-full object-cover cursor-pointer"
+          />
+        ) : (
+          <div
+            onClick={() => setShowModal(true)}
+            className="w-14 h-14 rounded-full flex items-center justify-center text-white font-semibold text-lg cursor-pointer"
+            style={{
+              backgroundColor: getColorFromLetter(
+                userData?.name?.[0]?.toUpperCase() || "A"
+              ).base,
+            }}
+          >
+            <p className="text-3xl font-bold text-gray-700 ">
+              {userData?.name?.[0]?.toUpperCase() || "?"}
+            </p>
+          </div>
+        )}
         <div>
           <h2 className="text-base font-semibold text-font_primary">
             {userData.name}
@@ -34,7 +52,7 @@ export default function ProfileCard({ setShowModal }) {
           stats.map(({ label, value }) => (
             <div
               key={label}
-              className={` flex flex-col items-center bg-white shadow-md rounded-xl px-4 py-3 min-w-[90px]`}
+              className="flex flex-col items-center bg-white shadow-md rounded-xl px-4 py-3 min-w-[90px]"
             >
               <span className="text-primary font-semibold">{value}</span>
               <span className="text-xs text-gray-500 mt-1">{label}</span>

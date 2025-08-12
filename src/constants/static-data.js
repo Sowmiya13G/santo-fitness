@@ -72,7 +72,7 @@ export const clientAccountItems = [
   {
     title: "Activity History",
     icon: Activity,
-    toPath: "/home",
+    toPath: "/activity-history",
   },
   {
     title: "Workout Notes",

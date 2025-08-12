@@ -13,7 +13,7 @@ import { format, parseISO } from "date-fns";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-const ClientDashboard = ({loading}) => {
+const ClientDashboard = ({ loading }) => {
   const { userData } = useSelector((state) => state.auth);
 
   const { topClient } = useSelector((state) => state.user);

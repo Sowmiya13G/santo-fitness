@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 
 import ProfileWrapper from "@/components/profile-wrapper";
 import UserData from "@/components/user-data";
-import maleProfile from "../../assets/icons/male-profile.svg";
 
 import { showToast } from "@/components/toast";
 import { setUserData } from "@/features/auth/auth-slice";
@@ -155,11 +154,11 @@ const PersonalData = () => {
     <FormProvider {...methods}>
       <ProfileWrapper
         title={isCreate ? "Add New Client" : "Personal Data"}
-        image={maleProfile}
         profile
         isClient={isClient}
         setValue={setValue}
         watch={watch}
+        bgColor="bg-secondary"
       >
         <form
           onSubmit={handleSubmit(onSubmit)}

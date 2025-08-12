@@ -5,6 +5,9 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ScreenHeader from "./screen-header";
 import { showToast } from "./toast";
+import { getColorFromLetter } from "@/utils/helper";
+
+// Color generator
 
 export default function ProfileWrapper({
   title,
@@ -23,14 +26,14 @@ export default function ProfileWrapper({
   const { userData } = useSelector((state) => state.auth);
   const file = watch("profileImg");
   const [scrollY, setScrollY] = useState(0);
-
   const [previewImage, setPreviewImage] = useState(image);
   const dispatch = useDispatch();
+
   useEffect(() => {
     if (file instanceof File) {
       const url = URL.createObjectURL(file);
       setPreviewImage(url);
-      return () => URL.revokeObjectURL(url); // Clean up
+      return () => URL.revokeObjectURL(url);
     } else if (typeof file === "string") {
       setPreviewImage(file);
     }
@@ -49,9 +52,7 @@ export default function ProfileWrapper({
     setIsUploading(true);
 
     try {
-      // Convert the image to PNG or JPG in browser
-      const convertedFile = await convertImageToFormat(uploaded, "image/jpeg"); // or "image/png"
-
+      const convertedFile = await convertImageToFormat(uploaded, "image/jpeg");
       setValue("profileImg", convertedFile);
 
       const formData = new FormData();
@@ -86,14 +87,11 @@ export default function ProfileWrapper({
     }
   };
 
-  // Helper: convert any image to desired format (JPEG/PNG)
-
-  const maxScroll = 10; // Adjust to control fade-out speed
+  const maxScroll = 10;
   const scrollRatio = Math.min(scrollY / maxScroll, 1);
-
-  const containerHeight = `${200 - scrollRatio * 200}px`; // from 200px to 0px
+  const containerHeight = `${200 - scrollRatio * 200}px`;
   const imageOpacity = 1 - scrollRatio;
-  const imageScale = 1 - scrollRatio * 0.1; // Optional: scale down a bit
+  const imageScale = 1 - scrollRatio * 0.1;
 
   return (
     <div className={`flex flex-col h-full ${bgColor} relative`}>
@@ -111,17 +109,35 @@ export default function ProfileWrapper({
           opacity: imageOpacity,
         }}
       >
-        <img
-          src={previewImage ? previewImage : image}
-          alt="profile"
-          onClick={handleImageClick}
-          className={`cursor-pointer ${imgClass} w-44 h-44 object-cover rounded-full transition-all duration-300`}
-          style={{
-            objectPosition: "0% 0%",
-            opacity: imageOpacity,
-            transform: `scale(${imageScale})`,
-          }}
-        />
+        {previewImage || image ? (
+          <img
+            src={previewImage || image}
+            alt="profile"
+            onClick={handleImageClick}
+            className={`cursor-pointer ${imgClass} w-44 h-44 animate-fade-in object-cover rounded-full transition-all duration-300`}
+            style={{
+              objectPosition: "0% 0%",
+              opacity: imageOpacity,
+              transform: `scale(${imageScale})`,
+            }}
+          />
+        ) : (
+          <div
+            onClick={handleImageClick}
+            className="w-44 h-44 rounded-full flex animate-zoom-in items-center justify-center text-white font-semibold text-5xl cursor-pointer transition-all duration-300"
+            style={{
+              backgroundColor: getColorFromLetter(
+                userData?.name?.[0]?.toUpperCase() || "A"
+              ).dark,
+              opacity: imageOpacity,
+              transform: `scale(${imageScale})`,
+            }}
+          >
+            <p className="text font-bold text-white ">
+              {userData?.name?.[0]?.toUpperCase() || "?"}
+            </p>
+          </div>
+        )}
       </div>
 
       <div
@@ -134,7 +150,6 @@ export default function ProfileWrapper({
         {children}
       </div>
 
-      {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center  justify-center z-50">
           <div className="bg-white rounded-2xl p-6 w-80 flex flex-col items-center relative animate-fade-in">
@@ -147,12 +162,27 @@ export default function ProfileWrapper({
               </button>
             )}
 
-            <img
-              src={previewImage}
-              alt="preview"
-              className="w-40 h-40 object-cover rounded-full mb-4 border"
-              style={{ objectPosition: "0% 0%" }}
-            />
+            {previewImage || image ? (
+              <img
+                src={previewImage || image}
+                alt="preview"
+                className="w-40 h-40 object-cover rounded-full mb-4 border animate-zoom-in"
+                style={{ objectPosition: "0% 0%" }}
+              />
+            ) : (
+              <div
+                className="w-40 h-40 rounded-full flex items-center justify-center animate-fade-in text-white font-semibold text-5xl mb-4 border"
+                style={{
+                  backgroundColor: getColorFromLetter(
+                    userData?.name?.[0]?.toUpperCase() || "A"
+                  ).dark,
+                }}
+              >
+                <p className="text font-bold text-white ">
+                  {userData?.name?.[0]?.toUpperCase() || "?"}
+                </p>
+              </div>
+            )}
 
             {isUploading ? (
               <div className="text-primary text-sm mt-2 flex items-center gap-2">

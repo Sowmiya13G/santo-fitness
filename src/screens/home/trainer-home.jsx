@@ -7,10 +7,12 @@ import { setPendingLogsList } from "@/features/daily-logs/daily-logs-slice";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-const TrainerDashboard = ({ loading,setShowModal}) => {
+const TrainerDashboard = ({ loading, setShowModal }) => {
   const { topClient } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const fetchDietPendingProgress = async () => {
     const response = await getDietPendingProgress();
     dispatch(setPendingLogsList(response));
@@ -29,7 +31,11 @@ const TrainerDashboard = ({ loading,setShowModal}) => {
         </p>
       )}
       <RankCard label={"top performed client "} data={topClient} />
-      <UserDetailsCard label={"My Clients"} />
+      <UserDetailsCard
+        label={"My Clients"}
+        onClick={() => navigate("/activity-history")}
+      />
+
       <PendingListCard label={"pending meals"} />
     </div>
   );

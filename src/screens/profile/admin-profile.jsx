@@ -1,7 +1,6 @@
-import { useState } from "react";
 // packages
 import { FiBell, FiChevronRight, FiLogOut } from "react-icons/fi";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 // redux
 // component
@@ -13,7 +12,6 @@ import ShadowView from "@/components/shadow-view";
 import Switch from "@/components/switch";
 
 import { adminAccountItems } from "@/constants/static-data";
-import maleProfile from "../../assets/icons/male-profile.svg";
 import { logoutUser } from "@/utils/helper";
 
 const AdminProfile = ({setShowModal ,enabled ,setEnabled}) => {

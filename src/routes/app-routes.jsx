@@ -39,6 +39,7 @@ import ResultScreen from "@/screens/progress/result";
 import DietDetailsScreen from "@/screens/diet/diet-details";
 import MealDetailsScreen from "@/screens/diet/meals-details";
 import UploadMealsScreen from "@/screens/diet/upload-meals";
+import ActivityHistory from "@/screens/profile/activity-history";
 
 export default function AppRoutes() {
   const { isLoggedIn } = useAuth();
@@ -70,7 +71,7 @@ export default function AppRoutes() {
             path="/profile/testing-reports-trainer"
             element={<TrainerPostReport />}
           />
-           <Route
+          <Route
             path="/profile/testing-reports-admin"
             element={<TrainerPostReport />}
           />
@@ -88,6 +89,7 @@ export default function AppRoutes() {
           <Route path="/camera-screen" element={<CameraScreen />} />
           <Route path="/compare-progress" element={<CompareScreen />} />
           <Route path="/result" element={<ResultScreen />} />
+          <Route path="/activity-history" element={<ActivityHistory />} />
 
           {/* Diet */}
           <Route path="/meals-upload" element={<UploadMealsScreen />} />
