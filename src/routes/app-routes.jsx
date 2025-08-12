@@ -70,6 +70,10 @@ export default function AppRoutes() {
             path="/profile/testing-reports-trainer"
             element={<TrainerPostReport />}
           />
+           <Route
+            path="/profile/testing-reports-admin"
+            element={<TrainerPostReport />}
+          />
           <Route
             path="/profile/workout-notes"
             element={<ClientWorkoutNotes />}

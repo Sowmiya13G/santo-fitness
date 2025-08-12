@@ -59,14 +59,23 @@ const UserCard = ({ user }) => {
 };
 
 const RankCard = ({ label, data = [] }) => {
+  const hasData = data.length > 0;
+
   return (
     <>
-      <p className="text-gray-600 capitalize text-center ">{label}</p>
-      <div className="flex gap-4 overflow-x-scroll overflow-hidden hide-scrollbar space-y-0 snap-x snap-mandatory">
-        {data.map((user) => (
-          <UserCard key={user.userId} user={user} />
-        ))}
-      </div>
+      <p className="text-gray-600 capitalize text-center">{label}</p>
+
+      {hasData ? (
+        <div className="flex gap-4 overflow-x-scroll overflow-hidden hide-scrollbar space-y-0 snap-x snap-mandatory">
+          {data.map((user) => (
+            <UserCard key={user.userId} user={user} />
+          ))}
+        </div>
+      ) : (
+        <div className="text-gray-400 text-sm text-center py-4">
+          No data available
+        </div>
+      )}
     </>
   );
 };

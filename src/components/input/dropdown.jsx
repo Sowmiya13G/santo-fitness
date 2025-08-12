@@ -68,17 +68,23 @@ const Dropdown = ({
 
         {open && !isInputDisabled && (
           <div className="absolute z-10 top-full mt-1 left-0 w-full bg-white rounded-lg shadow border border-gray-200 max-h-60 overflow-y-auto">
-            {options.map((opt) => (
-              <div
-                key={opt.value}
-                onClick={() => handleSelect(opt.value)}
-                className={`px-4 py-2 cursor-pointer hover:bg-gray-100 z-50 text-sm text-font_primary ${
-                  value === opt.value ? "bg-gray-100 font-medium" : ""
-                }`}
-              >
-                {opt.label}
+            {options.length > 0 ? (
+              options.map((opt) => (
+                <div
+                  key={opt.value}
+                  onClick={() => handleSelect(opt.value)}
+                  className={`px-4 py-2 cursor-pointer hover:bg-gray-100 z-50 text-sm text-font_primary ${
+                    value === opt.value ? "bg-gray-100 font-medium" : ""
+                  }`}
+                >
+                  {opt.label}
+                </div>
+              ))
+            ) : (
+              <div className="px-4 py-2 text-gray-400 text-sm">
+                No data found
               </div>
-            ))}
+            )}
           </div>
         )}
       </div>

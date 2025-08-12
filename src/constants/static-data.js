@@ -49,7 +49,7 @@ export const adminAccountItems = [
   {
     title: "Client Reports",
     icon: Report,
-    toPath: "/profile/testing-reports",
+    toPath: "/profile/testing-reports-admin",
   },
   // {
   //   title: "Activity History",
