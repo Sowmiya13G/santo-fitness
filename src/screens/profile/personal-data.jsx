@@ -16,10 +16,11 @@ import {
 } from "@/features/user/user-api";
 import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const PersonalData = () => {
   const { userData } = useSelector((state) => state.auth);
-
+  const navigate = useNavigate();
   const methods = useForm();
   const { handleSubmit, reset, watch, setValue } = methods;
   const dispatch = useDispatch();
@@ -124,20 +125,21 @@ const PersonalData = () => {
       setIsSubmitting(true);
 
       const userId = selectedPerson;
-      const action = isCreate
-        ? createUser(data)
-        : () => updateUser(userId, data);
 
-      await action(data);
+      const response = isCreate
+        ? await createUser(data)
+        : await updateUser(userId, data);
+      console.log("response: ", response);
       showToast(
         "success",
         isCreate
           ? "Profile Created Successfully"
           : "Profile Updated Successfully"
       );
+      navigate(-1);
     } catch (err) {
-      console.error("Submission error:", err);
-      showToast("error", "Something went wrong");
+      console.error("Submission error:", err.response.data.message);
+      showToast("error", err.response.data.message);
     } finally {
       setIsSubmitting(false);
     }
