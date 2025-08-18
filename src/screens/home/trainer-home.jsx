@@ -33,6 +33,8 @@ const TrainerDashboard = ({ loading, setShowModal }) => {
       <RankCard label={"top performed client "} data={topClient} />
       <UserDetailsCard
         label={"My Clients"}
+        goal={"Goal Not Initiated"}
+        isClient={true}
         onClick={() => navigate("/activity-history")}
       />
 

@@ -22,7 +22,12 @@ const AdminDashboard = ({ loading }) => {
       <RankCard label={"top performed client "} data={topClient} />
       {/* <RankCard label={"top performed trainer "} data={trainerList} /> */}
       <UserDetailsCard label={"SFC Trainers"} showTrainer showButton={false} />
-      <UserDetailsCard label={"SFC Clients"} onClick={() => navigate("/activity-history")} />
+      <UserDetailsCard
+        label={"SFC Clients"}
+        onClick={() => navigate("/activity-history")}
+        goal={"Goal Not Initiated"}
+        isClient={true}
+      />
     </div>
   );
 };

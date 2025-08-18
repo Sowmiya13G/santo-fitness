@@ -3,10 +3,13 @@ import { useSelector } from "react-redux";
 import Dropdown from "../input/dropdown";
 import { FormProvider, useForm } from "react-hook-form";
 import { updateUser } from "@/features/user/user-api";
+import { showToast } from "../toast";
 
 export default function DateCheckModal({ showModal, onClose }) {
   const today = new Date().toLocaleDateString();
   const [checked, setChecked] = useState(false);
+  const [isPlanExpired, setIsPlanExpired] = useState(false);
+
   const { userList } = useSelector((state) => state.user);
 
   const methods = useForm();
@@ -29,7 +32,7 @@ export default function DateCheckModal({ showModal, onClose }) {
             : [today],
         };
         await updateUser(selectedUserId, payload);
-        console.log("User attendance updated successfully");
+        showToast("success", "User Attendance updated successfully");
       } catch (err) {
         console.error("Failed to update user attendance:", err);
       }
@@ -38,6 +41,10 @@ export default function DateCheckModal({ showModal, onClose }) {
   };
 
   if (!showModal) return null;
+
+  if (isPlanExpired) {
+    showToast("error", "User plan has expired, cannot mark attendance.");
+  }
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 h-full flex items-start pt-10 justify-center z-50">
@@ -53,12 +60,15 @@ export default function DateCheckModal({ showModal, onClose }) {
             options={userList}
             value={selectedUserId}
             onChange={(val) => {
-              setValue("totalDaysCompleted", val); // store just ID
+              setValue("totalDaysCompleted", val);
               const user = userList.find((u) => u.value === val);
-              if (user?.totalDaysCompleted?.includes(today)) {
-                setChecked(true);
-              } else {
-                setChecked(false);
+
+              if (user) {
+                setIsPlanExpired(
+                  user.subscriptionPlan - user.totalDaysCompleted.length === 0
+                );
+
+                setChecked(user.totalDaysCompleted?.includes(today));
               }
             }}
             placeholder="Select a client"
@@ -84,10 +94,17 @@ export default function DateCheckModal({ showModal, onClose }) {
             )}
           </button>
 
-          <h2 className="text-xs font-thin my-2 text-left text-gray-500">
-            Select a client, then tap the date to mark attendance. You can only
-            mark it once.
-          </h2>
+          {console.log("isPlanExpired: ", isPlanExpired)}
+          {isPlanExpired ? (
+            <h2 className="text-xs font-thin my-2 text-center text-red-500">
+              Client Plan Expired !
+            </h2>
+          ) : (
+            <h2 className="text-xs font-thin my-2 text-left text-gray-500">
+              Select a client, then tap the date to mark attendance. You can
+              only mark it once.
+            </h2>
+          )}
 
           <div className="flex w-full justify-between">
             <button
@@ -98,6 +115,7 @@ export default function DateCheckModal({ showModal, onClose }) {
             </button>
             <button
               onClick={handleSave}
+              disabled={!selectedUserId || isPlanExpired}
               className="mt-4 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
             >
               Save

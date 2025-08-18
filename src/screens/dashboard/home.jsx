@@ -10,12 +10,13 @@ import AdminDashboard from "../home/admin-home";
 import ClientDashboard from "../home/client-home";
 import TrainerDashboard from "../home/trainer-home";
 import DateCheckModal from "@/components/modal/date-select-modal";
+import { useRef } from "react";
 
 const Home = () => {
   const { userData } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const isClient = userData?.role === "client";
-
+  const hasFirst = useRef(true);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
@@ -93,11 +94,18 @@ const Home = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetchTopClient();
+    if (showModal) {
+      return;
+    }
+    if (hasFirst.current == true) {
+      fetchTopClient();
+    }
+
     if (userData?.role !== "client") {
       fetchUsersList();
     }
-  }, [userData?.role]);
+    hasFirst.current = false;
+  }, [userData?.role, showModal]);
 
   return (
     <div className="min-h-screen relative animate-fade-in bg-white w-screen overflow-scroll pb-10 hide-scrollbar">

@@ -13,6 +13,8 @@ const UserCard = ({
   customButtonClass,
   buttonDisabled,
   showButton = true,
+  goal = "",
+  isClient = false,
 }) => {
   const imgRef = useRef(null);
   const [bgColor, setBgColor] = useState("#adabb0");
@@ -44,6 +46,8 @@ const UserCard = ({
     }
   }, [hasProfileImage]);
 
+  const isPlanExpired =
+    user?.subscriptionPlan - user?.totalDaysCompleted?.length == 0;
   return (
     <div className="min-w-[100%] snap-center snap-always">
       <Card
@@ -74,8 +78,20 @@ const UserCard = ({
               {user?.name}
             </h2>
             <p className="text-xs mb-2" style={{ color: textColor }}>
-              {user?.goal}
+              {Boolean(user?.goal) ? user?.goal : goal}
             </p>
+            {isClient && (
+              <p
+                className={` ${
+                  isPlanExpired ? "text-lg" : "text-xs"
+                } mb-2 absolute top-1/2 -translate-x-1/2 -translate-y-1/2 left-1/2`}
+                style={{ color: isPlanExpired ? "#E54D4D" : textColor }}
+              >
+                {!isPlanExpired
+                  ? `${user.totalDaysCompleted.length}/${user.subscriptionPlan} Days`
+                  : "expired"}
+              </p>
+            )}
             {showButton && (
               <Button
                 label={buttonLabel}

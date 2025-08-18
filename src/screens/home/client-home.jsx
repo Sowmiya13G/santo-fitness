@@ -1,14 +1,19 @@
 import BMICard from "@/components/card/bmi-card";
 import BMRCard from "@/components/card/bmr-card";
+import HeightCard from "@/components/card/height-card";
 import RankCard from "@/components/card/rank-card";
+import SubscriptionCard from "@/components/card/subscription-card";
+import WeightCard from "@/components/card/weight-card";
 import ScreenHeader from "@/components/screen-header";
 import ActivityGrid from "@/components/ui/active-grid";
 import DietProgress from "@/components/ui/diet-progress";
+import { setUserData } from "@/features/auth/auth-slice";
 import { getDietProgress } from "@/features/daily-logs/daily-logs-api";
 import {
   setTodayLogs,
   setWeekLogs,
 } from "@/features/daily-logs/daily-logs-slice";
+import { getUserData } from "@/features/user/user-api";
 import { format, parseISO } from "date-fns";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -45,15 +50,42 @@ const ClientDashboard = ({ loading }) => {
     fetchData();
   }, [dispatch]);
 
+  const fetchUserData = async () => {
+    try {
+      const res = await getUserData();
+      if (res?.status === 200) {
+        dispatch(setUserData(res?.user));
+      }
+    } catch (err) {
+      console.error("Error fetching user data:", err);
+    }
+  };
+  useEffect(() => {
+    if (userData.role === "client") {
+      fetchUserData();
+    }
+  }, [userData.role]);
   return (
     <div className="w-full h-full space-y-6 px-3 text-gray-800 hide-scrollbar py-6 ">
       <ScreenHeader isHome />
-      <div className="flex gap-4 overflow-x-auto overflow-hidden hide-scrollbar h-full snap-x snap-mandatory">
+      <div className="flex gap-4 overflow-x-auto overflow-hidden hide-scrollbar h-full snap-x  snap-mandatory">
+        <div className="min-w-[90%] snap-center snap-always">
+          <SubscriptionCard
+            subscriptionPlan={userData.subscriptionPlan}
+            totalDaysCompleted={userData.totalDaysCompleted}
+          />
+        </div>
         <div className="min-w-[90%] h-full snap-center snap-always ">
           <BMICard bmi={userData.BMI} />
         </div>
         <div className="min-w-[90%] snap-center snap-always">
           <BMRCard bmr={userData.BMR} />
+        </div>
+        <div className="min-w-[90%] snap-center snap-always">
+          <WeightCard weight={userData.weight} />
+        </div>
+        <div className="min-w-[90%] snap-center snap-always">
+          <HeightCard height={userData.height} />
         </div>
       </div>{" "}
       {loading && (

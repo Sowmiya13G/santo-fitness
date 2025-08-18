@@ -2,6 +2,9 @@ import { FaAngleLeft, FaBell } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { TbCalendarBolt } from "react-icons/tb";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setPlanExpired } from "@/features/user/user-slice";
 
 export default function ScreenHeader({
   title,
@@ -14,12 +17,21 @@ export default function ScreenHeader({
 }) {
   const navigate = useNavigate();
   const { userData } = useSelector((state) => state.auth);
-
+  const { isPlanExpired } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const handleBack = () => {
     navigate(-1);
     if (onBack) onBack();
   };
 
+  useEffect(() => {
+    if (userData.role == "client") {
+      const isPlanExpired =
+        userData?.subscriptionPlan - userData?.totalDaysCompleted?.length == 0;
+      console.log("isPlanExpired: ", isPlanExpired);
+      dispatch(setPlanExpired(isPlanExpired));
+    }
+  }, [dispatch, userData]);
   return (
     <>
       {isHome ? (
@@ -31,7 +43,7 @@ export default function ScreenHeader({
             <h1 className={`text-md font-semibold ${titleColor}`}>
               {userData?.name || "User"}
             </h1>
-          </div>  
+          </div>
           {userData.role === "trainer" && (
             <button
               onClick={() => setShowModal(true)}
