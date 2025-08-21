@@ -19,6 +19,7 @@ const AudioRecorderInput = ({ name = "audio", value = null }) => {
   const [isConverting, setIsConverting] = useState(false);
   const canvasRef = useRef(null);
   const audioRef = useRef(null);
+  const streamRef = useRef(null);
   const mediaRecorderRef = useRef(null);
   const readonlyMode = !!value;
   const barWidth = 3;
@@ -229,6 +230,7 @@ const AudioRecorderInput = ({ name = "audio", value = null }) => {
   }, [waveformData]);
   const startRecording = async () => {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    streamRef.current = stream; // store stream so we can stop it later
     const recorder = new MediaRecorder(stream);
     const chunks = [];
 
@@ -294,6 +296,7 @@ const AudioRecorderInput = ({ name = "audio", value = null }) => {
 
   const stopRecording = () => {
     mediaRecorderRef.current?.stop();
+    streamRef.current?.getTracks().forEach((track) => track.stop());
     setIsRecording(false);
   };
 
@@ -331,9 +334,9 @@ const AudioRecorderInput = ({ name = "audio", value = null }) => {
       <div
         className={`${
           audioUrl ? " text-white shadow-lg" : " text-gray-200"
-        } rounded-2xl px-4 h-14 w-full flex flex-col gap-3 bg-secondary`}
+        } rounded-2xl px-4 h-14 w-full flex flex-col gap-3 bg-gray-900`}
       >
-        <div className="flex h-14 items-center justify-between gap-4">
+        <div className="flex  h-14 items-center justify-between gap-4">
           {!readonlyMode && !audioUrl && !isRecording && !isConverting && (
             <button type="button" onClick={startRecording}>
               <FaMicrophone color="white" />
@@ -363,7 +366,7 @@ const AudioRecorderInput = ({ name = "audio", value = null }) => {
             </div>
           )}
 
-          { audioUrl && !isRecording && !isConverting && (
+          {audioUrl && !isRecording && !isConverting && (
             <div className="flex items-center gap-4 w-full">
               <button
                 type="button"
@@ -377,7 +380,7 @@ const AudioRecorderInput = ({ name = "audio", value = null }) => {
                 )}
               </button>
 
-              <canvas ref={canvasRef} width={275} height={50} className="" />
+              <canvas ref={canvasRef}  height={100} className="w-[80%]" />
 
               <span className="text-white text-xs  text-left absolute bottom-0">
                 {formatTime(isPlaying ? currentTime : duration)}
