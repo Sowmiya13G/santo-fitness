@@ -119,6 +119,7 @@ const MealDetailsScreen = () => {
       }
     } catch (error) {
       console.error("Failed to fetch diet data", error);
+      showToast("error", error);
     } finally {
       setLoadingData(false);
     }
@@ -145,10 +146,12 @@ const MealDetailsScreen = () => {
       if (result?.status === 200) {
         setLoading(false);
         showToast("success", "Meals Nutrients Added Successfully!");
-        navigate(-1);
+        // navigate("/diet-details");
       }
     } catch (err) {
       console.error("Submission failed:", err);
+      showToast("error", err);
+
       setLoading(false);
     }
   };
@@ -177,9 +180,10 @@ const MealDetailsScreen = () => {
             </div>
           ))}
         </div>
+
         {mealsData[0]?.meals[0]?.voiceNote && (
           <p className="text-base text-black font-medium mb-2">
-            {isClient ? "Your Voice Note" : "Client Voice Note"}
+            {"Voice Note"}
           </p>
         )}
 
@@ -193,13 +197,6 @@ const MealDetailsScreen = () => {
   const renderReviewData = () => {
     return (
       <div className="flex-col">
-        {/* <p className="text-base text-black font-medium">
-          {!isClient
-            ? isNutrientAdded
-              ? "Nutrients count"
-              : "Update Nutrients Data"
-            : ""}
-        </p> */}
         <div className="w-full flex space-x-4 mt-4">
           <Input
             name={"protein"}
@@ -233,26 +230,24 @@ const MealDetailsScreen = () => {
           />
         </div>
         {renderComments()}
+        <div className="h-2" />
         <Textarea
           name={"comment"}
-          label={"Comment"}
+          // label={"Comment"}
           placeholder={`Enter comment`}
           // editable={isNutrientAdded ? false : true}
         />
         {/* {!isClient  && ( */}
-          <div className="w-full  pt-8 ">
-            <Button label="Submit" loading={loading} type="submit" />
-          </div>
+        <div className="w-full  pt-8 ">
+          <Button label="Submit" loading={loading} type="submit" />
+        </div>
         {/* )} */}
       </div>
     );
   };
 
   const renderComments = () => {
-    const comments = mealsData[0]?.meals[0]?.comment|| [];
-    console.log('mealsData: ', mealsData);
-    console.log('comments: ', comments);
-
+    const comments = mealsData[0]?.meals[0]?.comment || [];
     return (
       <div className="mt-6">
         <p className="text-base font-medium text-black mb-3">Comments</p>
@@ -286,7 +281,6 @@ const MealDetailsScreen = () => {
     );
   };
 
-
   const renderContent = () => {
     return (
       <>
@@ -315,7 +309,7 @@ const MealDetailsScreen = () => {
                 className={"flex-col space-y-6 pb-10 mb-3"}
                 encType="multipart/form-data"
               >
-                { renderContent() }
+                {renderContent()}
               </form>
             </FormProvider>
             {isModalOpen && (

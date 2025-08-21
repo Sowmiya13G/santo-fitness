@@ -15,6 +15,7 @@ import { createDailyLogs } from "@/features/daily-logs/daily-logs-api";
 import { uploadFile } from "@/features/user/user-api";
 import { getMealsLabel } from "@/utils/helper";
 import Workout from "../../assets/images/panCake.svg";
+import Textarea from "@/components/input/text-area";
 
 const UploadMealsScreen = () => {
   const navigate = useNavigate();
@@ -38,6 +39,7 @@ const UploadMealsScreen = () => {
         type: type,
         name: data.name,
         images: [],
+        comment: data.comment,
         voiceNote: null,
         isNutrientAdded: false,
       };
@@ -98,7 +100,7 @@ const UploadMealsScreen = () => {
           focus on regular physical activity, a balanced diet, sufficient sleep,
           and stress management
         </p>
-     
+
         <FormProvider {...methods}>
           <form
             onSubmit={handleSubmit(onSubmit)}
@@ -117,6 +119,11 @@ const UploadMealsScreen = () => {
               name="name"
               placeholder="Enter recipe name"
               label="Recipe Name"
+            />
+            <Textarea
+              name={"comment"}
+              label={"Comment"}
+              placeholder={`Enter comment`}
             />
             <AudioRecorderInput name="audio" />
             <div className="h-8" />
