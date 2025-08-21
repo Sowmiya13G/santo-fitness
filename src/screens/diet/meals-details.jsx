@@ -114,7 +114,7 @@ const MealDetailsScreen = () => {
           protein: data?.protein ?? "",
           carbs: data?.carbs ?? "",
           fat: data?.fat ?? "",
-          comment: data.comment,
+          comments: data.comment,
         });
       }
     } catch (error) {
@@ -232,15 +232,54 @@ const MealDetailsScreen = () => {
             editable={isNutrientAdded ? false : true}
           />
         </div>
+        {renderComments()}
         <Textarea
           name={"comment"}
           label={"Comment"}
           placeholder={`Enter comment`}
-          editable={isNutrientAdded ? false : true}
+          // editable={isNutrientAdded ? false : true}
         />
-        {!isClient && !isNutrientAdded && (
+        {!isClient  && (
           <div className="w-full  pt-8 ">
             <Button label="Submit" loading={loading} type="submit" />
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const renderComments = () => {
+    const comments = mealsData[0]?.meals[0]?.comment|| [];
+    console.log('mealsData: ', mealsData);
+    console.log('comments: ', comments);
+
+    return (
+      <div className="mt-6">
+        <p className="text-base font-medium text-black mb-3">Comments</p>
+
+        {comments.length === 0 ? (
+          <p className="text-sm text-gray-500">No comments yet.</p>
+        ) : (
+          <div className="space-y-4">
+            {comments.map((c, idx) => (
+              <div
+                key={idx}
+                className="flex items-start gap-3 bg-gray-50 p-3 rounded-xl"
+              >
+                <img
+                  src={c.profile || "/default-avatar.png"}
+                  alt={c.name}
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-black">{c.name}</p>
+                  <p className="text-sm text-gray-700">{c.comment}</p>
+                  <p className="text-xs text-gray-400 mt-1">
+                    {format(new Date(c.createdAt), "MMM d, yyyy HH:mm")}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </div>
