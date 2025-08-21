@@ -193,13 +193,13 @@ const MealDetailsScreen = () => {
   const renderReviewData = () => {
     return (
       <div className="flex-col">
-        <p className="text-base text-black font-medium">
+        {/* <p className="text-base text-black font-medium">
           {!isClient
             ? isNutrientAdded
               ? "Nutrients count"
               : "Update Nutrients Data"
-            : "Trainer Comment "}
-        </p>
+            : ""}
+        </p> */}
         <div className="w-full flex space-x-4 mt-4">
           <Input
             name={"protein"}
@@ -239,11 +239,11 @@ const MealDetailsScreen = () => {
           placeholder={`Enter comment`}
           // editable={isNutrientAdded ? false : true}
         />
-        {!isClient  && (
+        {/* {!isClient  && ( */}
           <div className="w-full  pt-8 ">
             <Button label="Submit" loading={loading} type="submit" />
           </div>
-        )}
+        {/* )} */}
       </div>
     );
   };
@@ -286,20 +286,12 @@ const MealDetailsScreen = () => {
     );
   };
 
-  const renderContentTrainer = () => {
-    return (
-      <>
-        {renderClientData()}
-        {renderReviewData()}
-      </>
-    );
-  };
 
-  const renderContentClient = () => {
+  const renderContent = () => {
     return (
       <>
-        {renderReviewData()}
         {renderClientData()}
+        {renderReviewData()}
       </>
     );
   };
@@ -323,7 +315,7 @@ const MealDetailsScreen = () => {
                 className={"flex-col space-y-6 pb-10 mb-3"}
                 encType="multipart/form-data"
               >
-                {isClient ? renderContentClient() : renderContentTrainer()}
+                { renderContent() }
               </form>
             </FormProvider>
             {isModalOpen && (
